@@ -1,0 +1,32 @@
+# 启用配置文件 prod->生产环境  dev->开发环境  本地启动时切换到开发环境
+# spring配置
+spring:
+  profiles:
+    active: dev
+  #文件上传的大小限制
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 30MB
+#  jackson:
+#    default-property-inclusion: non_null
+
+# server配置
+server:
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain
+    min-response-size: 1024
+  port: 8088
+
+# mybatis-plus配置
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+    banner: false
+  mapper-locations: classpath:/mapper/*/*Mapper.xml
+  type-enums-package: org.lanjerry.common.core.enums
+  type-aliases-package: org.lanjerry.common.core.entity
