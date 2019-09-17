@@ -1,4 +1,4 @@
-package org.lanjerry.admin.aspect;
+package org.lanjerry.common.log.aspect;
 
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
@@ -14,15 +14,14 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.lanjerry.admin.annotation.SysLog;
-import org.lanjerry.admin.dto.sys.SysLogSaveDTO;
-import org.lanjerry.admin.event.SysLogEvent;
 import org.lanjerry.common.core.constant.CommonConsts;
 import org.lanjerry.common.core.constant.JsonConsts;
 import org.lanjerry.common.core.exception.ApiException;
 import org.lanjerry.common.core.util.BigDecimalUtil;
+import org.lanjerry.common.log.annotation.SysLog;
+import org.lanjerry.common.log.bean.SysLogSaveDTO;
+import org.lanjerry.common.log.event.SysLogEvent;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -46,13 +45,13 @@ import lombok.extern.log4j.Log4j2;
  */
 @Log4j2
 @Aspect
-@Component
+//@Component
 @AllArgsConstructor
 public class SysLogAspect {
 
     private final ApplicationEventPublisher publisher;
 
-    @Pointcut("@annotation(org.lanjerry.admin.annotation.SysLog)")
+    @Pointcut("@annotation(org.lanjerry.common.log.annotation.SysLog)")
     public void log() {
     }
 

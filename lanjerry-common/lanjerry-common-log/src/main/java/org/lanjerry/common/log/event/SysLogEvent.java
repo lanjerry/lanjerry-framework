@@ -1,6 +1,6 @@
-package org.lanjerry.admin.event;
+package org.lanjerry.common.log.event;
 
-import org.lanjerry.admin.dto.sys.SysLogSaveDTO;
+import org.lanjerry.common.log.bean.SysLogSaveDTO;
 import org.springframework.context.ApplicationEvent;
 
 /**

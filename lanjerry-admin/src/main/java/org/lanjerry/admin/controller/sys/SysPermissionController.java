@@ -3,13 +3,13 @@ package org.lanjerry.admin.controller.sys;
 import java.util.List;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.lanjerry.admin.annotation.SysLog;
 import org.lanjerry.admin.dto.sys.SysPermissionSaveDTO;
 import org.lanjerry.admin.dto.sys.SysPermissionUpdateDTO;
 import org.lanjerry.admin.service.sys.SysPermissionService;
 import org.lanjerry.admin.vo.sys.SysPermissionFindVO;
 import org.lanjerry.admin.vo.sys.SysPermissionTreeVO;
 import org.lanjerry.common.core.bean.R;
+import org.lanjerry.common.log.annotation.SysLog;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

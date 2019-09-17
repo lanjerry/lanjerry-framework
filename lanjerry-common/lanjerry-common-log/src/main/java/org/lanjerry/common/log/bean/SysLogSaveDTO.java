@@ -1,4 +1,4 @@
-package org.lanjerry.admin.dto.sys;
+package org.lanjerry.common.log.bean;
 
 import java.math.BigDecimal;
 

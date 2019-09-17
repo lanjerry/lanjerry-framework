@@ -14,10 +14,10 @@
     <name>lanjerry-admin</name>
 
     <dependencies>
-        <!-- common -->
+        <!-- log -->
         <dependency>
             <groupId>org.lanjerry</groupId>
-            <artifactId>lanjerry-common-core</artifactId>
+            <artifactId>lanjerry-common-log</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <!-- web -->

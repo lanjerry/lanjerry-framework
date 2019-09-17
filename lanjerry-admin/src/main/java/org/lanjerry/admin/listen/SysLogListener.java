@@ -1,10 +1,11 @@
 package org.lanjerry.admin.listen;
 
-import org.lanjerry.admin.dto.sys.SysLogSaveDTO;
-import org.lanjerry.admin.event.SysLogEvent;
 import org.lanjerry.admin.service.sys.SysLogService;
 import org.lanjerry.common.core.entity.sys.SysLog;
 import org.lanjerry.common.core.util.BeanCopyUtil;
+import org.lanjerry.common.log.annotation.EnableLog;
+import org.lanjerry.common.log.bean.SysLogSaveDTO;
+import org.lanjerry.common.log.event.SysLogEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.annotation.Async;
@@ -22,6 +23,7 @@ import lombok.extern.log4j.Log4j2;
  * @since 2019-09-04
  */
 @Log4j2
+@EnableLog
 @Component
 @AllArgsConstructor
 public class SysLogListener {

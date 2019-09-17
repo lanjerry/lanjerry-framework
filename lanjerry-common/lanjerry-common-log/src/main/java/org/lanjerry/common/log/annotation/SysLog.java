@@ -1,4 +1,4 @@
-package org.lanjerry.admin.annotation;
+package org.lanjerry.common.log.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
