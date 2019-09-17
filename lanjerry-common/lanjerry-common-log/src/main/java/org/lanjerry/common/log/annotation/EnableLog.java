@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Import;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Import(value = LogAutoConfiguration.class)
+@Import(LogAutoConfiguration.class)
 public @interface EnableLog {
 
 }

@@ -83,7 +83,6 @@ public class SysLogAspect {
     private SysLogSaveDTO setLog(JoinPoint joinPoint) {
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
         SysLogSaveDTO log = new SysLogSaveDTO();
-        log.setUserId(1);
 
         // 获取IP地址
         String ipAddress = ServletUtil.getClientIP(request);

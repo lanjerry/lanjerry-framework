@@ -1,5 +1,7 @@
 package org.lanjerry.admin.listen;
 
+import org.apache.shiro.SecurityUtils;
+import org.lanjerry.admin.config.shiro.JwtToken;
 import org.lanjerry.admin.service.sys.SysLogService;
 import org.lanjerry.common.core.entity.sys.SysLog;
 import org.lanjerry.common.core.util.BeanCopyUtil;
@@ -36,6 +38,8 @@ public class SysLogListener {
     public void saveSysLog(SysLogEvent event) {
         SysLogSaveDTO dto = (SysLogSaveDTO) event.getSource();
         SysLog sysLog = BeanCopyUtil.beanCopy(dto, SysLog.class);
+        JwtToken token = (JwtToken) SecurityUtils.getSubject().getPrincipal();
+        sysLog.setUserId(token != null ? token.getId() : 0);
         logService.save(sysLog);
         log.info("远程操作日志记录成功：{}", dto);
     }
