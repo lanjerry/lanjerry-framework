@@ -1,4 +1,4 @@
-package org.lanjerry.admin.config.shiro;
+package org.lanjerry.common.auth.shiro.config;
 
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.subject.SubjectContext;

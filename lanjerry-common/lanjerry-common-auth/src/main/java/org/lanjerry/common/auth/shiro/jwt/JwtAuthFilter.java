@@ -1,4 +1,4 @@
-package org.lanjerry.admin.config.shiro;
+package org.lanjerry.common.auth.shiro.jwt;
 
 import java.io.IOException;
 

@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.shiro.SecurityUtils;
-import org.lanjerry.admin.config.shiro.JwtToken;
+import org.lanjerry.common.auth.shiro.jwt.JwtToken;
 import org.springframework.stereotype.Component;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;

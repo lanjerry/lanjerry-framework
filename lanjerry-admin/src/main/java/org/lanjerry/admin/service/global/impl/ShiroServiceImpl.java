@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.lanjerry.admin.service.global.ShiroService;
 import org.lanjerry.admin.service.sys.SysPermissionService;
 import org.lanjerry.admin.service.sys.SysRolePermissionService;
 import org.lanjerry.admin.service.sys.SysRoleService;
 import org.lanjerry.admin.service.sys.SysUserRoleService;
 import org.lanjerry.admin.service.sys.SysUserService;
+import org.lanjerry.common.auth.shiro.service.ShiroService;
 import org.lanjerry.common.core.entity.sys.SysPermission;
 import org.lanjerry.common.core.entity.sys.SysRole;
 import org.lanjerry.common.core.entity.sys.SysRolePermission;

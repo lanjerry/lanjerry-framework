@@ -1,5 +1,6 @@
 package org.lanjerry.admin;
 
+import org.lanjerry.common.auth.shiro.annotation.EnableShiro;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,6 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author lanjerry
  * @since 2019-09-03
  */
+@EnableShiro
 @SpringBootApplication
 @MapperScan("org.lanjerry.admin.mapper")
 public class AdminApplication {

@@ -1,4 +1,4 @@
-package org.lanjerry.admin.service.global;
+package org.lanjerry.common.auth.shiro.service;
 
 import java.util.Set;
 

@@ -20,6 +20,12 @@
             <artifactId>lanjerry-common-log</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <!-- auth -->
+        <dependency>
+            <groupId>org.lanjerry</groupId>
+            <artifactId>lanjerry-common-auth</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
         <!-- web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -63,11 +69,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
-        </dependency>
-        <!--shiro-->
-        <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-spring</artifactId>
         </dependency>
         <!--swagger-bootstrap-->
         <dependency>

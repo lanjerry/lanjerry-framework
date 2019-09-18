@@ -1,4 +1,4 @@
-package org.lanjerry.admin.config.shiro;
+package org.lanjerry.common.auth.shiro.jwt;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -9,7 +9,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.lanjerry.admin.service.global.ShiroService;
+import org.lanjerry.common.auth.shiro.service.ShiroService;
 import org.lanjerry.common.core.constant.CommonConsts;
 import org.lanjerry.common.core.entity.sys.SysUser;
 import org.lanjerry.common.core.enums.REnum;

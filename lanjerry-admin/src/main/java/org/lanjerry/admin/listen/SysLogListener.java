@@ -1,8 +1,8 @@
 package org.lanjerry.admin.listen;
 
 import org.apache.shiro.SecurityUtils;
-import org.lanjerry.admin.config.shiro.JwtToken;
 import org.lanjerry.admin.service.sys.SysLogService;
+import org.lanjerry.common.auth.shiro.jwt.JwtToken;
 import org.lanjerry.common.core.entity.sys.SysLog;
 import org.lanjerry.common.core.util.BeanCopyUtil;
 import org.lanjerry.common.log.annotation.EnableLog;

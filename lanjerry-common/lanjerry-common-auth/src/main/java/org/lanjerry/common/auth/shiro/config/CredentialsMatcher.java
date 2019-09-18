@@ -1,9 +1,10 @@
-package org.lanjerry.admin.config.shiro;
+package org.lanjerry.common.auth.shiro.config;
 
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.DisabledAccountException;
 import org.apache.shiro.authc.credential.SimpleCredentialsMatcher;
+import org.lanjerry.common.auth.shiro.jwt.JwtToken;
 import org.lanjerry.common.core.util.JwtUtil;
 import org.lanjerry.common.core.util.Md5Util;
 

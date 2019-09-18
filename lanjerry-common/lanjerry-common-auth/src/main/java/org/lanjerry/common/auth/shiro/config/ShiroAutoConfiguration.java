@@ -1,4 +1,4 @@
-package org.lanjerry.admin.config.shiro;
+package org.lanjerry.common.auth.shiro.config;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -7,13 +7,13 @@ import javax.servlet.Filter;
 
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
-import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.lanjerry.common.auth.shiro.jwt.JwtAuthFilter;
+import org.lanjerry.common.auth.shiro.jwt.JwtRealm;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * <p>
@@ -23,14 +23,13 @@ import org.springframework.context.annotation.Configuration;
  * @author lanjerry
  * @since 2019-09-09
  */
-@Configuration
-public class ShiroConfig {
+public class ShiroAutoConfiguration {
 
     /**
      * 设置过滤器，将自定义的Filter加入
      */
     @Bean("shiroFilter")
-    public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
+    public ShiroFilterFactoryBean shiroFilter(DefaultWebSecurityManager securityManager) {
         ShiroFilterFactoryBean factoryBean = new ShiroFilterFactoryBean();
         factoryBean.setSecurityManager(securityManager);
 
@@ -64,10 +63,10 @@ public class ShiroConfig {
      *
      */
     @Bean
-    public SecurityManager securityManager() {
+    public DefaultWebSecurityManager securityManager(Realm realm) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         // 设置realm
-        securityManager.setRealm(jwtRealm());
+        securityManager.setRealm(realm);
         // 禁用session
         ((DefaultSessionStorageEvaluator) ((DefaultSubjectDAO) securityManager.getSubjectDAO())
                 .getSessionStorageEvaluator()).setSessionStorageEnabled(false);
@@ -89,9 +88,9 @@ public class ShiroConfig {
      * 开启shiro的注解
      */
     @Bean
-    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor() {
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(DefaultWebSecurityManager defaultWebSecurityManager) {
         AuthorizationAttributeSourceAdvisor advisor = new AuthorizationAttributeSourceAdvisor();
-        advisor.setSecurityManager(securityManager());
+        advisor.setSecurityManager(defaultWebSecurityManager);
         return advisor;
     }
 }
