@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+    org.lanjerry.common.redis.config.NbRedisAutoConfiguration

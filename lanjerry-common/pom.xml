@@ -15,6 +15,7 @@
         <module>lanjerry-common-core</module>
         <module>lanjerry-common-auth</module>
         <module>lanjerry-common-log</module>
+        <module>lanjerry-common-redis</module>
     </modules>
 
 </project>
