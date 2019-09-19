@@ -21,3 +21,14 @@ spring:
   aop:
     proxy-target-class: true
     auto: true
+  redis:
+    host: 192.168.1.100
+    port: 6667
+    password: 123456
+    timeout: 5000ms
+    lettuce:
+      pool:
+        min-idle: 1
+        max-active: 10
+        max-wait: -1ms
+        max-idle: 10

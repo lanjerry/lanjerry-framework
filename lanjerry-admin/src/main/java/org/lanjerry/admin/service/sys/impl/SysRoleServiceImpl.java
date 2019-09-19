@@ -1,6 +1,8 @@
 package org.lanjerry.admin.service.sys.impl;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.lanjerry.admin.dto.sys.SysRolePageDTO;
 import org.lanjerry.admin.dto.sys.SysRoleSaveOrUpdateDTO;
@@ -8,6 +10,8 @@ import org.lanjerry.admin.mapper.sys.SysRoleMapper;
 import org.lanjerry.admin.service.sys.SysPermissionService;
 import org.lanjerry.admin.service.sys.SysRolePermissionService;
 import org.lanjerry.admin.service.sys.SysRoleService;
+import org.lanjerry.admin.util.AdminConsts;
+import org.lanjerry.admin.util.RedisUtil;
 import org.lanjerry.admin.vo.sys.SysRolePageVO;
 import org.lanjerry.common.core.entity.sys.SysPermission;
 import org.lanjerry.common.core.entity.sys.SysRole;
@@ -108,5 +112,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                 this.rolePermissionService.save(rolePermission);
             });
         }
+
+        // 清空redis中的所有系统角色和权限数据
+        RedisUtil.remove(new ArrayList<>(Objects.requireNonNull(RedisUtil.keys(AdminConsts.REDIS_SYS_USER_ROLE.concat("*")))));
+        RedisUtil.remove(new ArrayList<>(Objects.requireNonNull(RedisUtil.keys(AdminConsts.REDIS_SYS_USER_PERMISSION.concat("*")))));
     }
 }

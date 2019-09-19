@@ -13,6 +13,7 @@ import org.lanjerry.admin.service.sys.SysRoleService;
 import org.lanjerry.admin.service.sys.SysUserRoleService;
 import org.lanjerry.admin.service.sys.SysUserService;
 import org.lanjerry.admin.util.AdminConsts;
+import org.lanjerry.admin.util.RedisUtil;
 import org.lanjerry.admin.vo.sys.SysUserPageVO;
 import org.lanjerry.common.auth.shiro.jwt.JwtToken;
 import org.lanjerry.common.core.entity.sys.SysRole;
@@ -156,5 +157,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 this.userRoleService.save(userRole);
             });
         }
+
+        // 清空redis中的系统角色和权限数据
+        RedisUtil.remove(AdminConsts.REDIS_SYS_USER_ROLE.concat(String.valueOf(userId)));
+        RedisUtil.remove(AdminConsts.REDIS_SYS_USER_PERMISSION.concat(String.valueOf(userId)));
     }
 }

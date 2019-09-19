@@ -2,12 +2,14 @@ package org.lanjerry.admin.service.sys.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.lanjerry.admin.dto.sys.SysPermissionSaveDTO;
 import org.lanjerry.admin.dto.sys.SysPermissionUpdateDTO;
 import org.lanjerry.admin.mapper.sys.SysPermissionMapper;
 import org.lanjerry.admin.service.sys.SysPermissionService;
 import org.lanjerry.admin.util.AdminConsts;
+import org.lanjerry.admin.util.RedisUtil;
 import org.lanjerry.admin.vo.sys.SysPermissionFindVO;
 import org.lanjerry.admin.vo.sys.SysPermissionTreeVO;
 import org.lanjerry.common.core.entity.sys.SysPermission;
@@ -61,6 +63,9 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         SysPermission permission = BeanCopyUtil.beanCopy(dto, SysPermission.class);
         permission.setId(id);
         this.updateById(permission);
+
+        // 清空redis中的所有系统权限数据
+        RedisUtil.remove(new ArrayList<>(Objects.requireNonNull(RedisUtil.keys(AdminConsts.REDIS_SYS_USER_PERMISSION.concat("*")))));
     }
 
     @Override
@@ -71,6 +76,9 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
 
         // 删除子权限
         this.remove(Wrappers.<SysPermission>lambdaQuery().eq(SysPermission::getParentId, id));
+
+        // 清空redis中的所有系统权限数据
+        RedisUtil.remove(new ArrayList<>(Objects.requireNonNull(RedisUtil.keys(AdminConsts.REDIS_SYS_USER_PERMISSION.concat("*")))));
     }
 
     /**
