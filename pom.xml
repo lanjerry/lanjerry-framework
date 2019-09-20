@@ -5,14 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.lanjerry</groupId>
-    <artifactId>lanjerry-parent</artifactId>
+    <artifactId>lanjerry-framework</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>lanjerry-parent</name>
+    <name>lanjerry-framework</name>
 
     <modules>
-        <module>../lanjerry-common</module>
-        <module>../lanjerry-admin</module>
+        <module>lanjerry-common</module>
+        <module>lanjerry-admin</module>
     </modules>
 
     <parent>
