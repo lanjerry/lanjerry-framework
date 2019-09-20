@@ -39,19 +39,19 @@ public class R<T> extends BaseEntity {
      */
     protected final long timestamps = System.currentTimeMillis();
 
-    public synchronized static R ok() {
+    public static R ok() {
         return restResult(REnum.SUCCESS, null);
     }
 
-    public synchronized static <T> R<T> ok(T data) {
+    public static <T> R<T> ok(T data) {
         return restResult(REnum.SUCCESS, data);
     }
 
-    public synchronized static R systemError(String message) {
+    public static R systemError(String message) {
         return restResult(REnum.SYSTEM_ERROR.val, message, null);
     }
 
-    public synchronized static R argError(String message) {
+    public static R argError(String message) {
         return restResult(REnum.ARG_ERROR.val, message, null);
     }
 
