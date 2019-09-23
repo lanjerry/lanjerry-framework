@@ -38,14 +38,14 @@ public class ApiException extends RuntimeException implements Serializable {
      */
     private Exception ex;
 
-    public synchronized static ApiException argError(String msg) {
+    public static ApiException argError(String msg) {
         return ApiException.builder()
                 .code(REnum.ARG_ERROR.val)
                 .msg(msg)
                 .build();
     }
 
-    public synchronized static ApiException systemError(String msg) {
+    public static ApiException systemError(String msg) {
         return ApiException.builder()
                 .code(REnum.SYSTEM_ERROR.val)
                 .msg(msg)
