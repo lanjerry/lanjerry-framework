@@ -15,7 +15,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <p>
@@ -25,7 +25,7 @@ import lombok.extern.log4j.Log4j2;
  * @author lanjerry
  * @since 2019-09-03
  */
-@Log4j2
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 

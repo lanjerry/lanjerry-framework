@@ -33,7 +33,6 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
-import lombok.extern.log4j.Log4j2;
 
 /**
  * <p>
@@ -43,9 +42,7 @@ import lombok.extern.log4j.Log4j2;
  * @author lanjerry
  * @since 2019-09-04
  */
-@Log4j2
 @Aspect
-//@Component
 @AllArgsConstructor
 public class SysLogAspect {
 

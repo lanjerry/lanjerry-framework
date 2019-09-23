@@ -6,7 +6,7 @@
 <configuration status="WARN" monitorInterval="30">
     <!--定义全局变量-->
     <Properties>
-        <Property name="LOG_HOME">/home/logs/monilemall</Property>
+        <Property name="LOG_HOME">/home/logs/admin</Property>
     </Properties>
     <!--先定义所有的appender-->
     <appenders>

@@ -18,7 +18,6 @@ import org.lanjerry.common.core.exception.ApiException;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
-import lombok.extern.log4j.Log4j2;
 
 /**
  * <p>
@@ -28,7 +27,6 @@ import lombok.extern.log4j.Log4j2;
  * @author lanjerry
  * @since 2019-09-09
  */
-@Log4j2
 public class JwtAuthFilter extends BasicHttpAuthenticationFilter {
 
     @Override

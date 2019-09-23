@@ -37,6 +37,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!-- mysql -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -51,11 +52,6 @@
                 <exclusion>
                     <groupId>org.apache.tomcat</groupId>
                     <artifactId>tomcat-jdbc</artifactId>
-                </exclusion>
-                <!-- 排除logging日志 -->
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-logging</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
