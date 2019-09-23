@@ -1,39 +1,80 @@
 # lanjerry-framework
 
-#### 介绍
-{**以下是码云平台说明，您可以替换此简介**
-码云是 OSCHINA 推出的基于 Git 的代码托管平台（同时支持 SVN）。专为开发者提供稳定、高效、安全的云端软件开发协作平台
-无论是个人、团队、或是企业，都能够用码云实现代码托管、项目管理、协作开发。企业项目请看 [https://gitee.com/enterprises](https://gitee.com/enterprises)}
+## 简介
+&emsp;基于 SpringBoot2、JWT和Shiro实现的前后端分离开发框架，接口遵循RESTful风格，文档使用swagger。
 
-#### 软件架构
-软件架构说明
+## 在线演示
 
+[https://xxxx(待完善)](https://xxxx)
 
-#### 安装教程
+- 账号：admin
+- 密码：admin
 
-1. xxxx
-2. xxxx
-3. xxxx
+## 特性
+1. 使用MyBatis-Plus作为业务层框架，代码优雅、简化开发、提高效率
+2. 使用Shiro+JWT作为sso，抛弃以往session
+3. 抽离日志模块，实现可插拔配置，使用EnableLog注解开启
+4. 抽离权限模块，实现可插拔配置，使用EnableShiro注解开启
 
-#### 使用说明
+>更多特性持续更新
 
-1. xxxx
-2. xxxx
-3. xxxx
+## 技术选型
 
-#### 参与贡献
+描述 | 框架 | 版本 
+:---|:---|:---
+核心框架 | Spring Boot | 2.1.7.RELEASE
+持久层框架 | MyBatis-Plus | 3.2.0
+连接池 | HikariCP | 3.2.0
+权限框架 | Shiro | 1.4.1
+身份认证 | JWT | 3.3.0
+数据校验 | HibernateValidator | 6.0.17.Final
+工具包| HuTool | 4.5.16
+接口文档 | Swagger | 2.9.2
+接口文档UI | SwaggerBootstrapUI | 1.9.3
+前端框架 | 待完善 | 1.1.0 
 
-1. Fork 本仓库
-2. 新建 Feat_xxx 分支
-3. 提交代码
-4. 新建 Pull Request
+## 导入项目
 
+**环境准备：**
+1. JDK1.8+
+2. MySQL5.6+
+3. Maven3.6+
 
-#### 码云特技
+**部署：**
+1. 克隆到本地：https://gitee.com/lanjerry/lanjerry-framework.git
+2. 使用 IDEA 选择 Open 导入项目；
+2. 导入数据库到MySQL中，sql文件位于根目录的sql文件夹里面；
+3. 确认application-dev.properties 配置是否正确；
+4. 启动项目，浏览器访问 [http://localhost:8088/](http://localhost:8088/) 
 
-1. 使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2. 码云官方博客 [blog.gitee.com](https://blog.gitee.com)
-3. 你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解码云上的优秀开源项目
-4. [GVP](https://gitee.com/gvp) 全称是码云最有价值开源项目，是码云综合评定出的优秀开源项目
-5. 码云官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6. 码云封面人物是一档用来展示码云会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+> 后端已经配置了允许跨域访问，无跨域问题。
+
+## 项目结构
+
+```
+|-lanjerry-framework
+|   |-pom.xml                                  // 管理jar包版本信息
+|   |-lanjerry-admin                           // admin模块
+|   |    |-config 
+|   |    |    |-global
+|   |    |    |    |-AsyncConfig.java          // 异步线程池配置类
+|   |    |    |    |-CorsConfig.java           // 跨域支持配置类
+|   |    |    |-mybatis
+|   |    |    |    |-MybatisPlusConfig.java    // Mybatis-Plus配置类
+|   |    |    |-redis
+|   |    |    |    |-RedisConfig.java          // Redis配置类
+|   |    |        
+|   |    |-controller                          // 控制层
+|   |    |-handler
+|   |    |    |-GlobalExceptionHandler.java    // 全局异常处理类
+|   |    |    |-GlobalExceptionHandler.java    // Mybatis-Plus自动填充处理类
+|   |    |-listen
+|   |    |   |-SysLogListener.java             // 异步监听系统日志事件
+|   |    |-dto                                 // 业务层数据传输
+|   |    |-vo                                  // 视图层数据传输
+|   |-lanjerry-common 
+|   |    |-lanjerry-common-auth                // 权限模块
+|   |    |-lanjerry-common-core                // 公共模块
+|   |    |-lanjerry-common-log                 // 日志模块
+|   |    |-lanjerry-common-redis               // redis模块
+```
