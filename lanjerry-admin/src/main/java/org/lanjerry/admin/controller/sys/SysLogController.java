@@ -4,7 +4,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.lanjerry.admin.dto.sys.SysLogPageDTO;
 import org.lanjerry.admin.service.sys.SysLogService;
 import org.lanjerry.admin.vo.sys.SysLogPageVO;
-import org.lanjerry.common.core.bean.R;
+import org.lanjerry.common.core.bean.ApiResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +36,7 @@ public class SysLogController {
     @PostMapping("/page")
     @RequiresPermissions("sys:log:page")
     @ApiOperation(value = "分页获取系统日志列表", position = 10)
-    public R<IPage<SysLogPageVO>> pageUsers(@RequestBody @ApiParam(value = "系统日志列表查询参数", required = true) SysLogPageDTO dto) {
-        return R.ok(logService.pageLogs(dto));
+    public ApiResult<IPage<SysLogPageVO>> pageUsers(@RequestBody @ApiParam(value = "系统日志列表查询参数", required = true) SysLogPageDTO dto) {
+        return ApiResult.success(logService.pageLogs(dto));
     }
 }

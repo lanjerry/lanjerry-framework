@@ -11,7 +11,7 @@ import lombok.AllArgsConstructor;
  * @since 2019-09-03
  */
 @AllArgsConstructor
-public enum REnum {
+public enum ApiResultCodeEnum {
     SUCCESS(200, "成功"),
     FAIL(201, "操作失败"),
     SYSTEM_ERROR(202, "系统异常"),

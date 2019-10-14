@@ -1,6 +1,6 @@
 package org.lanjerry.common.core.bean;
 
-import org.lanjerry.common.core.enums.REnum;
+import org.lanjerry.common.core.enums.ApiResultCodeEnum;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,7 +17,7 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-public class R<T> extends BaseEntity {
+public class ApiResult<T> extends BaseEntity {
 
     /**
      * 响应状态回执码
@@ -39,28 +39,28 @@ public class R<T> extends BaseEntity {
      */
     protected final long timestamps = System.currentTimeMillis();
 
-    public static R ok() {
-        return restResult(REnum.SUCCESS, null);
+    public static ApiResult success() {
+        return restResult(ApiResultCodeEnum.SUCCESS, null);
     }
 
-    public static <T> R<T> ok(T data) {
-        return restResult(REnum.SUCCESS, data);
+    public static <T> ApiResult<T> success(T data) {
+        return restResult(ApiResultCodeEnum.SUCCESS, data);
     }
 
-    public static R systemError(String message) {
-        return restResult(REnum.SYSTEM_ERROR.val, message, null);
+    public static ApiResult systemError(String message) {
+        return restResult(ApiResultCodeEnum.SYSTEM_ERROR.val, message, null);
     }
 
-    public static R argError(String message) {
-        return restResult(REnum.ARG_ERROR.val, message, null);
+    public static ApiResult argError(String message) {
+        return restResult(ApiResultCodeEnum.ARG_ERROR.val, message, null);
     }
 
-    public static <T> R<T> restResult(REnum rEnum, T data) {
+    public static <T> ApiResult<T> restResult(ApiResultCodeEnum rEnum, T data) {
         return restResult(rEnum.val, rEnum.desc, data);
     }
 
-    private static <T> R<T> restResult(long code, String msg, T data) {
-        R<T> apiResult = new R<>();
+    private static <T> ApiResult<T> restResult(long code, String msg, T data) {
+        ApiResult<T> apiResult = new ApiResult<>();
         apiResult.setCode(code);
         apiResult.setMsg(msg);
         apiResult.setData(data);

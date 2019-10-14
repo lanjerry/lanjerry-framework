@@ -12,8 +12,8 @@ import org.apache.shiro.authc.DisabledAccountException;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 import org.apache.shiro.web.util.WebUtils;
-import org.lanjerry.common.core.bean.R;
-import org.lanjerry.common.core.enums.REnum;
+import org.lanjerry.common.core.bean.ApiResult;
+import org.lanjerry.common.core.enums.ApiResultCodeEnum;
 import org.lanjerry.common.core.exception.ApiException;
 
 import cn.hutool.core.util.StrUtil;
@@ -33,7 +33,7 @@ public class JwtAuthFilter extends BasicHttpAuthenticationFilter {
     protected boolean isAccessAllowed(ServletRequest servletRequest, ServletResponse servletResponse, Object mappedValue) {
         HttpServletResponse response = WebUtils.toHttp(servletResponse);
         if (!isLoginAttempt(servletRequest, servletResponse)) {
-            writerResponse(response, REnum.NOT_SING_IN.val, "无身份认证权限标示");
+            writerResponse(response, ApiResultCodeEnum.NOT_SING_IN.val, "无身份认证权限标示");
             return false;
         }
         try {
@@ -51,7 +51,7 @@ public class JwtAuthFilter extends BasicHttpAuthenticationFilter {
         try {
             subject.login(token);
         } catch (DisabledAccountException e) {
-            throw ApiException.builder().code(REnum.NOT_SING_IN.val).msg(e.getMessage()).build();
+            throw ApiException.builder().code(ApiResultCodeEnum.NOT_SING_IN.val).msg(e.getMessage()).build();
         } catch (Exception e) {
             throw ApiException.systemError(e.getMessage());
         }
@@ -86,7 +86,7 @@ public class JwtAuthFilter extends BasicHttpAuthenticationFilter {
     private void writerResponse(HttpServletResponse response, long code, String msg) {
         response.setHeader("Content-Type", "application/json;charset=utf-8");
         try {
-            response.getWriter().write(JSONUtil.toJsonStr(new R().setCode(code).setMsg(msg)));
+            response.getWriter().write(JSONUtil.toJsonStr(new ApiResult().setCode(code).setMsg(msg)));
         } catch (IOException e) {
             e.printStackTrace();
         }

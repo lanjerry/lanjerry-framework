@@ -60,7 +60,6 @@ public class ShiroAutoConfiguration {
 
     /**
      * 安全管理器
-     *
      */
     @Bean
     public DefaultWebSecurityManager securityManager(Realm realm) {

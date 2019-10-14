@@ -12,7 +12,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.lanjerry.common.auth.shiro.service.ShiroService;
 import org.lanjerry.common.core.constant.CommonConsts;
 import org.lanjerry.common.core.entity.sys.SysUser;
-import org.lanjerry.common.core.enums.REnum;
+import org.lanjerry.common.core.enums.ApiResultCodeEnum;
 import org.lanjerry.common.core.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -58,7 +58,7 @@ public class JwtRealm extends AuthorizingRealm {
         String account = jwtToken.getAccount() != null ? jwtToken.getAccount() : JwtUtil.getAttribute(jwtToken.getToken(), "account");
         Object user = shiroService.getLoginByAccount(account);
         if (user == null) {
-            throw new DisabledAccountException(REnum.NOT_SING_IN.desc);
+            throw new DisabledAccountException(ApiResultCodeEnum.NOT_SING_IN.desc);
         }
 
         if (user instanceof SysUser) {

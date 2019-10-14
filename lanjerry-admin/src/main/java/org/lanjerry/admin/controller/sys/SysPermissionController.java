@@ -8,7 +8,7 @@ import org.lanjerry.admin.dto.sys.SysPermissionUpdateDTO;
 import org.lanjerry.admin.service.sys.SysPermissionService;
 import org.lanjerry.admin.vo.sys.SysPermissionFindVO;
 import org.lanjerry.admin.vo.sys.SysPermissionTreeVO;
-import org.lanjerry.common.core.bean.R;
+import org.lanjerry.common.core.bean.ApiResult;
 import org.lanjerry.common.log.annotation.SysLog;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,41 +44,41 @@ public class SysPermissionController {
     @GetMapping("/list")
     @RequiresPermissions("sys:permission:list")
     @ApiOperation(value = "获取系统权限列表", position = 10)
-    public R<List<SysPermissionFindVO>> listPermissions() {
-        return R.ok(permissionService.listPermissions());
+    public ApiResult<List<SysPermissionFindVO>> listPermissions() {
+        return ApiResult.success(permissionService.listPermissions());
     }
 
     @GetMapping("/tree")
     @ApiOperation(value = "获取树形结构系统权限列表", position = 20)
-    public R<List<SysPermissionTreeVO>> treePermissions() {
-        return R.ok(permissionService.treePermissions());
+    public ApiResult<List<SysPermissionTreeVO>> treePermissions() {
+        return ApiResult.success(permissionService.treePermissions());
     }
 
     @PostMapping
     @RequiresPermissions("sys:permission:save")
     @SysLog("新增系统权限")
     @ApiOperation(value = "新增系统权限", position = 30)
-    public R savePermission(@RequestBody @Validated @ApiParam(value = "系统权限新增参数", required = true) SysPermissionSaveDTO dto) {
+    public ApiResult savePermission(@RequestBody @Validated @ApiParam(value = "系统权限新增参数", required = true) SysPermissionSaveDTO dto) {
         this.permissionService.savePermission(dto);
-        return R.ok();
+        return ApiResult.success();
     }
 
     @PutMapping("/{id}")
     @RequiresPermissions("sys:permission:update")
     @SysLog("更新系统权限")
     @ApiOperation(value = "更新系统权限", position = 40)
-    public R updatePermission(@PathVariable("id") @ApiParam(value = "id", required = true) Integer id, @RequestBody @Validated @ApiParam(value = "系统权限更新参数", required = true) SysPermissionUpdateDTO dto) {
+    public ApiResult updatePermission(@PathVariable("id") @ApiParam(value = "id", required = true) Integer id, @RequestBody @Validated @ApiParam(value = "系统权限更新参数", required = true) SysPermissionUpdateDTO dto) {
         this.permissionService.updatePermission(id, dto);
-        return R.ok();
+        return ApiResult.success();
     }
 
     @DeleteMapping("/{id}")
     @RequiresPermissions("sys:permission:remove")
     @SysLog("删除系统权限")
     @ApiOperation(value = "删除系统权限", position = 50)
-    public R removePermission(@PathVariable("id") @ApiParam(value = "id", required = true) Integer id) {
+    public ApiResult removePermission(@PathVariable("id") @ApiParam(value = "id", required = true) Integer id) {
         this.permissionService.removePermission(id);
-        return R.ok();
+        return ApiResult.success();
     }
 }
 
