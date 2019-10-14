@@ -39,15 +39,16 @@ public class ApiException extends RuntimeException implements Serializable {
     private Exception ex;
 
     public static ApiException argError(String msg) {
-        return ApiException.builder()
-                .code(ApiResultCodeEnum.ARG_ERROR.val)
-                .msg(msg)
-                .build();
+        return restException(ApiResultCodeEnum.ARG_ERROR.val, msg);
     }
 
     public static ApiException systemError(String msg) {
+        return restException(ApiResultCodeEnum.SYSTEM_ERROR.val, msg);
+    }
+
+    private static ApiException restException(long code, String msg) {
         return ApiException.builder()
-                .code(ApiResultCodeEnum.SYSTEM_ERROR.val)
+                .code(code)
                 .msg(msg)
                 .build();
     }
