@@ -1,9 +1,12 @@
 package org.lanjerry.admin.handler;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 
 import org.apache.shiro.authz.UnauthorizedException;
 import org.lanjerry.common.core.bean.ApiResult;
@@ -50,12 +53,23 @@ public class GlobalExceptionHandler {
      * @since 2019/9/3 16:43
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ApiResult handleParamValidException(MethodArgumentNotValidException ex) {
-        BindingResult result = ex.getBindingResult();
+    public ApiResult handleParamValidException(Exception ex) {
         String msg = "参数验证失败";
-        if (result.hasErrors()) {
-            List<ObjectError> errors = result.getAllErrors();
-            msg = errors.get(0).getDefaultMessage();
+        if (ex instanceof MethodArgumentNotValidException) {
+            MethodArgumentNotValidException methodArgument = (MethodArgumentNotValidException) ex;
+            BindingResult result = methodArgument.getBindingResult();
+            if (result.hasErrors()) {
+                List<ObjectError> errors = result.getAllErrors();
+                msg = errors.get(0).getDefaultMessage();
+            }
+        }
+        if (ex instanceof ConstraintViolationException) {
+            ConstraintViolationException constraintViolationException = (ConstraintViolationException) ex;
+            List<String> msgList = new ArrayList<>();
+            for (ConstraintViolation<?> constraintViolation : constraintViolationException.getConstraintViolations()) {
+                msgList.add(constraintViolation.getMessage());
+            }
+            msg = msgList.get(0);
         }
         return ApiResult.argError(msg);
     }
