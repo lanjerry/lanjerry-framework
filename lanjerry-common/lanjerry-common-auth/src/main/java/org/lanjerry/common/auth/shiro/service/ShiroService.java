@@ -1,5 +1,6 @@
 package org.lanjerry.common.auth.shiro.service;
 
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -41,4 +42,14 @@ public interface ShiroService {
      * @return java.util.Set<java.lang.String>
      */
     Set<String> getPermissionsById(int id);
+
+    /**
+     * 获取过滤链
+     *
+     * @author lanjerry
+     * @since 2019/11/21 16:13
+     * @param
+     * @return
+     */
+    Map<String, String> filterChainDefinitions();
 }

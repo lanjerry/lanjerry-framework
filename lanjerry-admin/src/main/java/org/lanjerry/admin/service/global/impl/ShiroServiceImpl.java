@@ -1,7 +1,9 @@
 package org.lanjerry.admin.service.global.impl;
 
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -128,6 +130,26 @@ public class ShiroServiceImpl implements ShiroService {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        return result;
+    }
+
+    @Override
+    public Map<String, String> filterChainDefinitions() {
+        Map<String, String> result = new LinkedHashMap<>();
+        // swagger的拦截
+        result.put("/swagger-resources/**", "anon");
+        result.put("/v2/api-docs", "anon");
+        result.put("/v2/api-docs-ext", "anon");
+        result.put("/doc.html", "anon");
+        result.put("/webjars/**", "anon");
+
+        // 不需要验证的api
+        result.put("/sys/user/login", "anon");
+        result.put("/test/**/**", "anon");//测试
+        result.put("/upload/**/**", "anon");//上传
+
+        // 其他全部需要鉴权
+        result.put("/**", "authcToken"); // 默认进行用户鉴权
         return result;
     }
 }

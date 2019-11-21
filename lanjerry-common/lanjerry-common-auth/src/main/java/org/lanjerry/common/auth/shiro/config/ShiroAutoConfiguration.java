@@ -1,6 +1,5 @@
 package org.lanjerry.common.auth.shiro.config;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.servlet.Filter;
@@ -13,6 +12,8 @@ import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.lanjerry.common.auth.shiro.jwt.JwtAuthFilter;
 import org.lanjerry.common.auth.shiro.jwt.JwtRealm;
+import org.lanjerry.common.auth.shiro.service.ShiroService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 
 /**
@@ -24,6 +25,9 @@ import org.springframework.context.annotation.Bean;
  * @since 2019-09-09
  */
 public class ShiroAutoConfiguration {
+
+    @Autowired
+    private ShiroService shiroService;
 
     /**
      * 设置过滤器，将自定义的Filter加入
@@ -39,21 +43,7 @@ public class ShiroAutoConfiguration {
         factoryBean.setFilters(filterMap);
 
         // 拦截配置
-        Map<String, String> filterChainDefinitions = new LinkedHashMap<>();
-        // swagger的拦截
-        filterChainDefinitions.put("/swagger-resources/**", "anon");
-        filterChainDefinitions.put("/v2/api-docs", "anon");
-        filterChainDefinitions.put("/v2/api-docs-ext", "anon");
-        filterChainDefinitions.put("/doc.html", "anon");
-        filterChainDefinitions.put("/webjars/**", "anon");
-
-        // 不需要验证的api
-        filterChainDefinitions.put("/sys/user/login", "anon");
-        filterChainDefinitions.put("/test/**/**", "anon");//测试
-        filterChainDefinitions.put("/upload/**/**", "anon");//上传
-
-        // 其他全部需要鉴权
-        filterChainDefinitions.put("/**", "authcToken"); // 默认进行用户鉴权
+        Map<String, String> filterChainDefinitions = shiroService.filterChainDefinitions();
         factoryBean.setFilterChainDefinitionMap(filterChainDefinitions);
         return factoryBean;
     }
