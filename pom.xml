@@ -35,6 +35,7 @@
         <swagger2.version>2.9.2</swagger2.version>
         <swaggerBootstrapUI.version>1.9.3</swaggerBootstrapUI.version>
         <swagger2-models.version>1.5.21</swagger2-models.version>
+        <easy-captcha.version>1.6.2</easy-captcha.version>
     </properties>
 
     <dependencyManagement>
@@ -90,6 +91,12 @@
                 <groupId>io.swagger</groupId>
                 <artifactId>swagger-models</artifactId>
                 <version>${swagger2-models.version}</version>
+            </dependency>
+            <!-- 图形验证码 -->
+            <dependency>
+                <groupId>com.github.whvcse</groupId>
+                <artifactId>easy-captcha</artifactId>
+                <version>${easy-captcha.version}</version>
             </dependency>
             <!--lombok插件-->
             <dependency>

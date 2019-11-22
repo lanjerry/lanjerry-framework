@@ -39,4 +39,14 @@ public interface AdminConsts {
      * redis中系统用户权限数据过期时间15天
      */
     long REDIS_SYS_USER_PERMISSION_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 15;
+
+    /**
+     * 验证码 redis key
+     */
+    String CAPTCHA_CODE_KEY = "captcha_code:";
+
+    /**
+     * 验证码有效期3分钟（单位：秒）
+     */
+    long CAPTCHA_EXPIRATION = 180;
 }

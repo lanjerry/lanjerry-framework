@@ -3,10 +3,12 @@ package org.lanjerry.common.core.util;
 import java.math.BigDecimal;
 
 /**
+ * <p>
  * BigDecimal 工具类
+ * </p>
  *
  * @author lanjerry
- * @date 2018/8/25 16:21
+ * @since 2019-09-03
  */
 public class BigDecimalUtil {
 

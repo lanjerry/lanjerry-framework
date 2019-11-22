@@ -9,10 +9,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 /**
+ * <p>
  * 对象复制工具类
+ * </p>
  *
- * @author chenhu
- * @since 2018/8/1
+ * @author lanjerry
+ * @since 2019-09-03
  */
 public class BeanCopyUtil {
 
