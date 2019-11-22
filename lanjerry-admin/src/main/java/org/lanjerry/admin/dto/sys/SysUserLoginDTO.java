@@ -33,4 +33,18 @@ public class SysUserLoginDTO extends BaseEntity {
     @NotBlank(message = "密码不能为空")
     @ApiModelProperty(value = "密码", example = "123456", required = true, position = 20)
     private String password;
+
+    /**
+     * 验证码
+     */
+    @NotBlank(message = "验证码不能为空")
+    @ApiModelProperty(value = "验证码", example = "F7KTP", required = true, position = 30)
+    private String captchaCode;
+
+    /**
+     * 验证码key
+     */
+    @NotBlank(message = "验证码key不能为空")
+    @ApiModelProperty(value = "验证码key", example = "382545197952684034", required = true, position = 40)
+    private String captchaKey;
 }

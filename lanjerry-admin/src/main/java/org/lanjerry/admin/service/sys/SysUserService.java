@@ -3,6 +3,7 @@ package org.lanjerry.admin.service.sys;
 import org.lanjerry.admin.dto.sys.SysUserLoginDTO;
 import org.lanjerry.admin.dto.sys.SysUserPageDTO;
 import org.lanjerry.admin.dto.sys.SysUserSaveOrUpdateDTO;
+import org.lanjerry.admin.vo.sys.SysUserInfoVO;
 import org.lanjerry.admin.vo.sys.SysUserPageVO;
 import org.lanjerry.common.core.entity.sys.SysUser;
 import org.lanjerry.common.core.enums.UserStatusEnum;
@@ -86,4 +87,13 @@ public interface SysUserService extends IService<SysUser> {
      * @return java.lang.String
      */
     String login(SysUserLoginDTO dto);
+
+    /**
+     * 获取用户信息
+     *
+     * @author lanjerry
+     * @since 2019/11/22 17:42
+     * @return org.lanjerry.admin.vo.sys.SysUserInfoVO
+     */
+    SysUserInfoVO info();
 }

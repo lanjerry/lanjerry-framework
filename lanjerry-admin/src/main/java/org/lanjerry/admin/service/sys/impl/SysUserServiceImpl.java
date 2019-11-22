@@ -14,8 +14,10 @@ import org.lanjerry.admin.service.sys.SysUserRoleService;
 import org.lanjerry.admin.service.sys.SysUserService;
 import org.lanjerry.admin.util.AdminConsts;
 import org.lanjerry.admin.util.RedisUtil;
+import org.lanjerry.admin.vo.sys.SysUserInfoVO;
 import org.lanjerry.admin.vo.sys.SysUserPageVO;
 import org.lanjerry.common.auth.shiro.jwt.JwtToken;
+import org.lanjerry.common.auth.shiro.service.ShiroService;
 import org.lanjerry.common.core.entity.sys.SysRole;
 import org.lanjerry.common.core.entity.sys.SysUser;
 import org.lanjerry.common.core.entity.sys.SysUserRole;
@@ -24,6 +26,7 @@ import org.lanjerry.common.core.exception.ApiException;
 import org.lanjerry.common.core.util.ApiAssert;
 import org.lanjerry.common.core.util.BeanCopyUtil;
 import org.lanjerry.common.core.util.Md5Util;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +37,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
-import lombok.AllArgsConstructor;
 
 /**
  * <p>
@@ -45,12 +47,16 @@ import lombok.AllArgsConstructor;
  * @since 2019-09-03
  */
 @Service
-@AllArgsConstructor
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
 
-    private final SysRoleService roleService;
+    @Autowired
+    private SysRoleService roleService;
 
-    private final SysUserRoleService userRoleService;
+    @Autowired
+    private SysUserRoleService userRoleService;
+
+    @Autowired
+    private ShiroService shiroService;
 
     @Override
     public IPage<SysUserPageVO> pageUsers(SysUserPageDTO dto) {
@@ -124,6 +130,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public String login(SysUserLoginDTO dto) {
+        String captchaCode = RedisUtil.get(AdminConsts.CAPTCHA_CODE_KEY.concat(dto.getCaptchaKey()), true);
+        ApiAssert.isTrue(dto.getCaptchaCode().trim().toLowerCase().equals(captchaCode), "验证码错误或者已失效");
         Subject subject = SecurityUtils.getSubject();
         JwtToken token = JwtToken.builder().account(dto.getAccount()).password(dto.getPassword()).build();
         try {
@@ -134,6 +142,17 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             throw ApiException.systemError(e.getMessage());
         }
         return ((JwtToken) SecurityUtils.getSubject().getPrincipal()).getToken();
+    }
+
+    @Override
+    public SysUserInfoVO info() {
+        JwtToken token = (JwtToken) SecurityUtils.getSubject().getPrincipal();
+        SysUserInfoVO result = new SysUserInfoVO();
+        result.setAccount(token.getAccount());
+        result.setName(token.getName());
+        result.setRoles(shiroService.getRolesById(token.getId()));
+        result.setPermissions(shiroService.getPermissionsById(token.getId()));
+        return result;
     }
 
     /**

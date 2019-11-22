@@ -21,6 +21,7 @@ import org.lanjerry.common.core.entity.sys.SysRolePermission;
 import org.lanjerry.common.core.entity.sys.SysUser;
 import org.lanjerry.common.core.entity.sys.SysUserRole;
 import org.lanjerry.common.core.enums.PermissionTypeEnum;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -28,7 +29,6 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
-import lombok.AllArgsConstructor;
 
 /**
  * <p>
@@ -39,18 +39,22 @@ import lombok.AllArgsConstructor;
  * @since 2019-09-10
  */
 @Service
-@AllArgsConstructor
 public class ShiroServiceImpl implements ShiroService {
 
-    private final SysUserService userService;
+    @Autowired
+    private SysUserService userService;
 
-    private final SysUserRoleService userRoleService;
+    @Autowired
+    private SysUserRoleService userRoleService;
 
-    private final SysRoleService roleService;
+    @Autowired
+    private SysRoleService roleService;
 
-    private final SysRolePermissionService rolePermissionService;
+    @Autowired
+    private SysRolePermissionService rolePermissionService;
 
-    private final SysPermissionService permissionService;
+    @Autowired
+    private SysPermissionService permissionService;
 
     @Override
     public Object getLoginByAccount(String account) {

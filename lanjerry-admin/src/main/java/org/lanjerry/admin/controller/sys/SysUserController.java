@@ -5,12 +5,14 @@ import org.lanjerry.admin.dto.sys.SysUserLoginDTO;
 import org.lanjerry.admin.dto.sys.SysUserPageDTO;
 import org.lanjerry.admin.dto.sys.SysUserSaveOrUpdateDTO;
 import org.lanjerry.admin.service.sys.SysUserService;
+import org.lanjerry.admin.vo.sys.SysUserInfoVO;
 import org.lanjerry.admin.vo.sys.SysUserPageVO;
 import org.lanjerry.common.core.bean.ApiResult;
 import org.lanjerry.common.core.enums.UserStatusEnum;
 import org.lanjerry.common.log.annotation.SysLog;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -106,5 +108,11 @@ public class SysUserController {
     @ApiOperation(value = "系统用户登录", position = 80)
     public ApiResult login(@RequestBody @Validated @ApiParam(value = "系统用户登录参数", required = true) SysUserLoginDTO dto) {
         return ApiResult.success(userService.login(dto));
+    }
+
+    @GetMapping("/info")
+    @ApiOperation(value = "系统用户信息", position = 90)
+    public ApiResult<SysUserInfoVO> info() {
+        return ApiResult.success(userService.info());
     }
 }
