@@ -36,6 +36,8 @@
         <swaggerBootstrapUI.version>1.9.3</swaggerBootstrapUI.version>
         <swagger2-models.version>1.5.21</swagger2-models.version>
         <easy-captcha.version>1.6.2</easy-captcha.version>
+        <log4j.version>2.11.2</log4j.version>
+        <disruptor.version>3.4.2</disruptor.version>
     </properties>
 
     <dependencyManagement>
@@ -97,6 +99,18 @@
                 <groupId>com.github.whvcse</groupId>
                 <artifactId>easy-captcha</artifactId>
                 <version>${easy-captcha.version}</version>
+            </dependency>
+            <!-- 日志 -->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
+            <!-- 异步日志框架 -->
+            <dependency>
+                <groupId>com.lmax</groupId>
+                <artifactId>disruptor</artifactId>
+                <version>${disruptor.version}</version>
             </dependency>
             <!--lombok插件-->
             <dependency>

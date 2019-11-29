@@ -1,55 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<!--日志级别以及优先级排序: OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > ALL -->
-<!--Configuration后面的status，这个用于设置log4j2自身内部的信息输出，可以不设置，当设置成trace时，你会看到log4j2内部各种详细输出-->
-<!--monitorInterval：Log4j能够自动检测修改配置 文件和重新配置本身，设置间隔秒数-->
-<Configuration status="WARN" monitorInterval="30">
-    <!--定义全局变量-->
-    <Properties>
-        <Property name="LOG_HOME">/home/logs/admin-api</Property>
-        <Property name="ERROR_LOG_FILE_NAME">error</Property>
-        <Property name="INFO_LOG_FILE_NAME">info</Property>
-        <Property name="CONSOLE_LOG_PATTERN">[%clr{%d{yyyy-MM-dd HH:mm:ss.SSS}}{faint}] %clr{%5p} %clr{${sys:PID}}{magenta} %clr{---}{faint} %clr{[%15.15t]}{faint} %clr{%-40.40c{1.}}{cyan} %clr{:}{faint} %m%n%xwEx</Property>
-        <Property name="LOG_PATTERN">[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n</Property>
-    </Properties>
-    <!--先定义所有的appender-->
+<!--status，这个用于设置log4j2自身内部的信息输出，可以不设置，当设置成trace时，你会看到log4j2内部各种详细输出。-->
+<!--monitorInterval：Log4j2能够自动检测修改配置 文件和重新配置本身，设置间隔秒数。-->
+<Configuration status="off" monitorInterval="600">
+    <properties>
+        <!--通用变量-->
+        <property name="LOG_HOME" value="logs"/>
+        <property name="ERROR_LOG_FILE_NAME" value="error"/>
+        <property name="INFO_LOG_FILE_NAME" value="info"/>
+        <Property name="PID">????</Property>
+        <Property name="LOG_EXCEPTION_CONVERSION_WORD">%xwEx</Property>
+        <Property name="LOG_LEVEL_PATTERN">%5p</Property>
+        <Property name="LOG_DATEFORMAT_PATTERN">yyyy-MM-dd HH:mm:ss.SSS</Property>
+        <Property name="CONSOLE_LOG_PATTERN">%clr{${LOG_LEVEL_PATTERN}} %clr{%d{${LOG_DATEFORMAT_PATTERN}}}{faint} %clr{${sys:PID}}{magenta} %clr{-}{faint} [%style{%t}{bright,blue}] %clr{%-c{1.}}{cyan} %clr{(%F:%L)}{faint} %clr{-}{faint} %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}</Property>
+        <Property name="LOG_PATTERN">${LOG_LEVEL_PATTERN} %d{${LOG_DATEFORMAT_PATTERN}} ${sys:PID} -&#45;&#45; [%t] %-c{1.} %F:%L - %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}</Property>
+    </properties>
     <Appenders>
-        <!--这个输出控制台的配置-->
-        <Console name="Console" target="SYSTEM_OUT">
+        <!--console-->
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
+            <Filters>
+                <ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
             <!--输出日志的格式-->
             <PatternLayout pattern="${CONSOLE_LOG_PATTERN}"/>
         </Console>
-        <!-- 这个会打印出所有的info及以下级别的信息，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档-->
-        <RollingFile name="RollingFileInfo" fileName="${LOG_HOME}/${INFO_LOG_FILE_NAME}.log"
-                     filePattern="${LOG_HOME}/${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log">
-            <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
-            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
-            <PatternLayout pattern="${LOG_PATTERN}"/>
+        <RollingRandomAccessFile name="ERROR_LOG"
+                                 fileName="${LOG_HOME}/${ERROR_LOG_FILE_NAME}.log"
+                                 filePattern="${LOG_HOME}/${ERROR_LOG_FILE_NAME}.log.%d{yyyy-MM-dd}.%i.gz">
+            <PatternLayout
+                    pattern="${LOG_PATTERN}"/>
+            <Filters>
+                <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
             <Policies>
                 <TimeBasedTriggeringPolicy/>
-                <SizeBasedTriggeringPolicy size="100 MB"/>
+                <SizeBasedTriggeringPolicy size="128MB"/>
             </Policies>
-        </RollingFile>
-        <RollingFile name="RollingFileError" fileName="${LOG_HOME}/${ERROR_LOG_FILE_NAME}.log"
-                     filePattern="${LOG_HOME}/${date:yyyy-MM}/error-%d{yyyy-MM-dd}-%i.log">
-            <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
-            <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
-            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <DefaultRolloverStrategy max="30"/>
+
+        </RollingRandomAccessFile>
+        <RollingRandomAccessFile name="INFO_LOG"
+                                 fileName="${LOG_HOME}/${INFO_LOG_FILE_NAME}.log"
+                                 filePattern="${LOG_HOME}/${INFO_LOG_FILE_NAME}.log.%d{yyyy-MM-dd}.%i.gz">
+            <PatternLayout
+                    pattern="${LOG_PATTERN}"/>
+            <Filters>
+                <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
             <Policies>
                 <TimeBasedTriggeringPolicy/>
-                <SizeBasedTriggeringPolicy size="100 MB"/>
+                <SizeBasedTriggeringPolicy size="128MB"/>
             </Policies>
-        </RollingFile>
+            <DefaultRolloverStrategy max="30"/>
+        </RollingRandomAccessFile>
+        <Rewrite name="REWRITE">
+            <AppenderRef ref="INFO_LOG"/>
+            <ConsoleLogPolicy/>
+        </Rewrite>
     </Appenders>
-    <!--然后定义logger，只有定义了logger并引入的appender，appender才会生效-->
     <Loggers>
-        <!--过滤掉spring和mybatis的一些无用的DEBUG信息-->
-        <Logger name="org.springframework" level="INFO"/>
-        <Logger name="org.mybatis" level="INFO"/>
-        <Root level="all">
-            <appender-ref ref="Console"/>
-            <appender-ref ref="RollingFileInfo"/>
-            <appender-ref ref="RollingFileError"/>
-        </Root>
+        <!--AsyncLogger-->
+        <AsyncLogger name="org.lanjerry" level="INFO" includeLocation="true"/>
+        <AsyncLogger name="org.lanjerry.framework.p6spy" level="DEBUG" includeLocation="true"/>
+        <AsyncLogger name="com.baomidou.mybatisplus.core.metadata.TableInfoHelper" level="ERROR" includeLocation="true"/>
+        <!--AsyncRoot-->
+        <AsyncRoot level="warn" includeLocation="true">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="REWRITE"/>
+            <appender-ref ref="ERROR_LOG"/>
+        </AsyncRoot>
     </Loggers>
 </Configuration>
