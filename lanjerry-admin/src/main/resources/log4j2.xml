@@ -61,7 +61,7 @@
     <Loggers>
         <!--AsyncLogger-->
         <AsyncLogger name="org.lanjerry" level="INFO" includeLocation="true"/>
-        <AsyncLogger name="org.lanjerry.framework.p6spy" level="DEBUG" includeLocation="true"/>
+        <AsyncLogger name="org.lanjerry.common.log.p6spy" level="DEBUG" includeLocation="true"/>
         <AsyncLogger name="com.baomidou.mybatisplus.core.metadata.TableInfoHelper" level="ERROR" includeLocation="true"/>
         <!--AsyncRoot-->
         <AsyncRoot level="warn" includeLocation="true">

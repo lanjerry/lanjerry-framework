@@ -84,11 +84,6 @@
             <groupId>com.github.whvcse</groupId>
             <artifactId>easy-captcha</artifactId>
         </dependency>
-        <!-- 异步日志框架 -->
-        <dependency>
-            <groupId>com.lmax</groupId>
-            <artifactId>disruptor</artifactId>
-        </dependency>
         <!--lombok插件-->
         <dependency>
             <groupId>org.projectlombok</groupId>

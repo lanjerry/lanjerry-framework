@@ -1,10 +1,10 @@
 #spring配置
 spring:
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/lanjerry?useUnicode=yes&characterEncoding=UTF8&useSSL=false&serverTimezone=CTT&allowMultiQueries=true
+    url: jdbc:p6spy:mysql://127.0.0.1:3306/lanjerry?useUnicode=yes&characterEncoding=UTF8&useSSL=false&serverTimezone=CTT&allowMultiQueries=true
     username: root
     password: 123456
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
     hikari:
       # 最小空闲连接数量
       minimum-idle: 5
