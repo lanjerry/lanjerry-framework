@@ -26,7 +26,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
  * @since 2019-12-02
  */
 @Configuration
-public class DateformatConfig {
+public class DateFormatConfig {
 
     /**
      * Date格式化字符串
