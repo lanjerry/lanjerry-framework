@@ -8,8 +8,6 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 30MB
-#  jackson:
-#    default-property-inclusion: non_null
 
 # server配置
 server:
