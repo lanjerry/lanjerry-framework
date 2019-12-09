@@ -21,3 +21,7 @@ spring:
   aop:
     proxy-target-class: true
     auto: true
+
+#swagger配置
+swagger:
+  enable: false

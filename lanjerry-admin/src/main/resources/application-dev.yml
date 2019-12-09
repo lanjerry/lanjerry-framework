@@ -32,3 +32,7 @@ spring:
         max-active: 10
         max-wait: -1ms
         max-idle: 10
+
+#swagger配置
+swagger:
+  enable: true
