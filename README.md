@@ -23,15 +23,16 @@
 描述 | 框架 | 版本 
 :---|:---|:---
 核心框架 | Spring Boot | 2.1.7.RELEASE
-持久层框架 | MyBatis-Plus | 3.2.0
+持久层框架 | MyBatis-Plus | 3.3.0
 连接池 | HikariCP | 3.2.0
+SQL分析打印 | P6spy | 3.8.5
 权限框架 | Shiro | 1.4.1
 身份认证 | JWT | 3.3.0
 数据校验 | HibernateValidator | 6.0.17.Final
 工具包| HuTool | 4.5.16
 接口文档 | Swagger | 2.9.2
 接口文档UI | SwaggerBootstrapUI | 1.9.3
-前端框架 | 待完善 | 1.1.0 
+前端框架 | 待完善 | 1.0.0 
 
 ## 导入项目
 
