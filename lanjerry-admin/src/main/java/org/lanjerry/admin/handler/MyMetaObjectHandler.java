@@ -22,19 +22,17 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
 
     @Override
     public void insertFill(MetaObject metaObject) {
-        System.out.println("新增方法实体填充");
         JwtToken token = (JwtToken) SecurityUtils.getSubject().getPrincipal();
         if (token != null) {
-            this.setFieldValByName("creatorId", token.getId(), metaObject);
-            this.setFieldValByName("creatorName", token.getName(), metaObject);
+            this.strictInsertFill(metaObject, "creatorId", Integer.class, token.getId());
+            this.strictInsertFill(metaObject, "creatorName", String.class, token.getName());
         }
-        this.setFieldValByName("createdTime", LocalDateTime.now(), metaObject);
-        this.setFieldValByName("deleteFlag", false, metaObject);
+        this.strictInsertFill(metaObject, "createdTime", LocalDateTime.class, LocalDateTime.now());
+        this.strictInsertFill(metaObject, "deleteFlag", Boolean.class, false);
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
-        System.out.println("更新方法实体填充");
-        this.setFieldValByName("updatedTime", LocalDateTime.now(), metaObject);
+        this.strictUpdateFill(metaObject, "updatedTime", LocalDateTime.class, LocalDateTime.now());
     }
 }

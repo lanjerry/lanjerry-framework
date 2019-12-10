@@ -24,7 +24,6 @@ import lombok.experimental.Accessors;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Accessors(chain = true)
 @TableName("sys_user_role")
 public class SysUserRole extends BaseEntity {
 

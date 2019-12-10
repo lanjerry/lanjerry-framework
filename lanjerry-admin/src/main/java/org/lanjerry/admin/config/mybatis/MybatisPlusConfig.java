@@ -1,5 +1,6 @@
 package org.lanjerry.admin.config.mybatis;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,6 +15,7 @@ import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
  * @since 2019-09-03
  */
 @Configuration
+@MapperScan("org.lanjerry.admin.mapper")
 public class MybatisPlusConfig {
 
     /**
