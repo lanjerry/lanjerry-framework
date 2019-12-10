@@ -16,6 +16,7 @@ import org.lanjerry.admin.util.AdminConsts;
 import org.lanjerry.admin.util.RedisUtil;
 import org.lanjerry.admin.vo.sys.SysUserInfoVO;
 import org.lanjerry.admin.vo.sys.SysUserPageVO;
+import org.lanjerry.admin.vo.sys.SysUserRouterVO;
 import org.lanjerry.common.auth.shiro.jwt.JwtToken;
 import org.lanjerry.common.auth.shiro.service.ShiroService;
 import org.lanjerry.common.core.entity.sys.SysRole;
@@ -152,6 +153,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         result.setName(token.getName());
         result.setRoles(shiroService.getRolesById(token.getId()));
         result.setPermissions(shiroService.getPermissionsById(token.getId()));
+        return result;
+    }
+
+    @Override
+    public SysUserRouterVO router() {
+        JwtToken token = (JwtToken) SecurityUtils.getSubject().getPrincipal();
+        SysUserRouterVO result = new SysUserRouterVO();
         return result;
     }
 

@@ -5,6 +5,7 @@ import org.lanjerry.admin.dto.sys.SysUserPageDTO;
 import org.lanjerry.admin.dto.sys.SysUserSaveOrUpdateDTO;
 import org.lanjerry.admin.vo.sys.SysUserInfoVO;
 import org.lanjerry.admin.vo.sys.SysUserPageVO;
+import org.lanjerry.admin.vo.sys.SysUserRouterVO;
 import org.lanjerry.common.core.entity.sys.SysUser;
 import org.lanjerry.common.core.enums.UserStatusEnum;
 
@@ -89,11 +90,20 @@ public interface SysUserService extends IService<SysUser> {
     String login(SysUserLoginDTO dto);
 
     /**
-     * 获取用户信息
+     * 获取系统用户信息
      *
      * @author lanjerry
      * @since 2019/11/22 17:42
      * @return org.lanjerry.admin.vo.sys.SysUserInfoVO
      */
     SysUserInfoVO info();
+
+    /**
+     * 获取系统用户路由
+     *
+     * @author lanjerry
+     * @since 2019/12/10 16:37
+     * @return org.lanjerry.admin.vo.sys.SysUserRouterVO
+     */
+    SysUserRouterVO router();
 }

@@ -7,6 +7,7 @@ import org.lanjerry.admin.dto.sys.SysUserSaveOrUpdateDTO;
 import org.lanjerry.admin.service.sys.SysUserService;
 import org.lanjerry.admin.vo.sys.SysUserInfoVO;
 import org.lanjerry.admin.vo.sys.SysUserPageVO;
+import org.lanjerry.admin.vo.sys.SysUserRouterVO;
 import org.lanjerry.common.core.bean.ApiResult;
 import org.lanjerry.common.core.enums.UserStatusEnum;
 import org.lanjerry.common.log.annotation.SysLog;
@@ -114,5 +115,11 @@ public class SysUserController {
     @ApiOperation(value = "系统用户信息", position = 90)
     public ApiResult<SysUserInfoVO> info() {
         return ApiResult.success(userService.info());
+    }
+
+    @GetMapping("/router")
+    @ApiOperation(value = "系统用户路由", position = 100)
+    public ApiResult<SysUserRouterVO> router() {
+        return ApiResult.success(userService.router());
     }
 }
