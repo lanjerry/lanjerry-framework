@@ -65,4 +65,7 @@ public interface SysPermissionService extends IService<SysPermission> {
      * @param id id
      */
     void removePermission(int id);
+
+
+    List<SysPermissionFindVO> listPermissions(List<SysPermission> permissions, Integer parentId);
 }

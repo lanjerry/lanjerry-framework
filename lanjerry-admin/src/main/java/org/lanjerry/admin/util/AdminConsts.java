@@ -26,9 +26,9 @@ public interface AdminConsts {
     String REDIS_SYS_USER_ROLE = "sys_user_role:";
 
     /**
-     * redis中系统用户角色数据过期时间15天
+     * redis中系统用户角色数据过期时间15天（单位：秒）
      */
-    long REDIS_SYS_USER_ROLE_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 15;
+    long REDIS_SYS_USER_ROLE_EXPIRE_TIME = 60 * 60 * 24 * 15;
 
     /**
      * redis中系统用户权限数据
@@ -36,17 +36,17 @@ public interface AdminConsts {
     String REDIS_SYS_USER_PERMISSION = "sys_user_permission:";
 
     /**
-     * redis中系统用户权限数据过期时间15天
+     * redis中系统用户权限数据过期时间15天（单位：秒）
      */
-    long REDIS_SYS_USER_PERMISSION_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 15;
+    long REDIS_SYS_USER_PERMISSION_EXPIRE_TIME = 60 * 60 * 24 * 15;
 
     /**
      * 验证码 redis key
      */
-    String CAPTCHA_CODE_KEY = "captcha_code:";
+    String CAPTCHA_CODE_KEY = "admin_captcha_code:";
 
     /**
      * 验证码有效期3分钟（单位：秒）
      */
-    long CAPTCHA_EXPIRATION = 180;
+    long CAPTCHA_EXPIRATION = 60 * 3;
 }

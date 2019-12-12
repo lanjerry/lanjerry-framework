@@ -1,5 +1,7 @@
 package org.lanjerry.admin.service.sys;
 
+import java.util.List;
+
 import org.lanjerry.admin.dto.sys.SysUserLoginDTO;
 import org.lanjerry.admin.dto.sys.SysUserPageDTO;
 import org.lanjerry.admin.dto.sys.SysUserSaveOrUpdateDTO;
@@ -105,5 +107,5 @@ public interface SysUserService extends IService<SysUser> {
      * @since 2019/12/10 16:37
      * @return org.lanjerry.admin.vo.sys.SysUserRouterVO
      */
-    SysUserRouterVO router();
+    List<SysUserRouterVO> router();
 }

@@ -90,7 +90,8 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
      * @param parentId 父类id
      * @return java.util.List<org.lanjerry.admin.vo.sys.SysPermissionFindVO>
      */
-    private List<SysPermissionFindVO> listPermissions(List<SysPermission> permissions, Integer parentId) {
+    @Override
+    public List<SysPermissionFindVO> listPermissions(List<SysPermission> permissions, Integer parentId) {
         List<SysPermissionFindVO> result = new ArrayList<>();
         permissions.forEach(permission -> {
             if (parentId.equals(permission.getParentId())) {

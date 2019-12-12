@@ -1,6 +1,10 @@
 package org.lanjerry.admin.vo.sys;
 
+import java.util.List;
+
 import org.lanjerry.common.core.bean.BaseEntity;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,6 +19,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class SysUserRouterVO extends BaseEntity {
 
     /**
@@ -26,11 +31,6 @@ public class SysUserRouterVO extends BaseEntity {
      * 路由地址
      */
     private String path;
-
-    /**
-     * 是否隐藏路由，当设置 true 的时候该路由不会再侧边栏出现
-     */
-    private String hidden;
 
     /**
      * 重定向地址，当设置 noRedirect 的时候该路由在面包屑导航中不可被点击
@@ -51,4 +51,9 @@ public class SysUserRouterVO extends BaseEntity {
      * 路由显示信息
      */
     private SysUserRouterMetaVO meta;
+
+    /**
+     * 子路由
+     */
+    private List<SysUserRouterVO> children;
 }

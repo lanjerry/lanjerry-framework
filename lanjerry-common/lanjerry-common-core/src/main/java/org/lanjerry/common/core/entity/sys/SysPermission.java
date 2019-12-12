@@ -45,14 +45,19 @@ public class SysPermission extends BaseEntity {
     private Integer parentId;
 
     /**
-     * 类型 1.菜单 2.功能
+     * 类型 1.菜单 2.按钮
      */
     private PermissionTypeEnum type;
 
     /**
-     * 视图地址
+     * 路由地址
      */
-    private String viewAddress;
+    private String path;
+
+    /**
+     * 组件路径
+     */
+    private String component;
 
     /**
      * 权限标识
@@ -68,6 +73,16 @@ public class SysPermission extends BaseEntity {
      * 排序
      */
     private Integer sort;
+
+    /**
+     * 是否隐藏 0.否 1.是
+     */
+    private Boolean hiddenFlag;
+
+    /**
+     * 是否外链 0.否 1.是
+     */
+    private Boolean frameFlag;
 
     /**
      * 是否删除 0.否 1.是

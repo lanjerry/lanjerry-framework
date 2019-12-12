@@ -1,5 +1,7 @@
 package org.lanjerry.admin.controller.sys;
 
+import java.util.List;
+
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.lanjerry.admin.dto.sys.SysUserLoginDTO;
 import org.lanjerry.admin.dto.sys.SysUserPageDTO;
@@ -44,10 +46,10 @@ public class SysUserController {
 
     private final SysUserService userService;
 
-    @PostMapping("/page")
+    @GetMapping("/page")
     @RequiresPermissions("sys:user:page")
     @ApiOperation(value = "分页获取系统用户列表", position = 10)
-    public ApiResult<IPage<SysUserPageVO>> pageUsers(@RequestBody @ApiParam(value = "系统用户列表查询参数", required = true) SysUserPageDTO dto) {
+    public ApiResult<IPage<SysUserPageVO>> pageUsers(@ApiParam(value = "系统用户列表查询参数", required = true) SysUserPageDTO dto) {
         return ApiResult.success(userService.pageUsers(dto));
     }
 
@@ -119,7 +121,7 @@ public class SysUserController {
 
     @GetMapping("/router")
     @ApiOperation(value = "系统用户路由", position = 100)
-    public ApiResult<SysUserRouterVO> router() {
+    public ApiResult<List<SysUserRouterVO>> router() {
         return ApiResult.success(userService.router());
     }
 }

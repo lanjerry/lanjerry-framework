@@ -28,20 +28,18 @@ public interface ShiroService {
      *
      * @author lanjerry
      * @since 2019/9/16 17:38
-     * @param id id
      * @return java.util.Set<java.lang.String>
      */
-    Set<String> getRolesById(int id);
+    Set<String> getRoles();
 
     /**
      * 根据id获取权限信息
      *
      * @author lanjerry
      * @since 2019/9/16 17:38
-     * @param id id
      * @return java.util.Set<java.lang.String>
      */
-    Set<String> getPermissionsById(int id);
+    Set<String> getPermissions();
 
     /**
      * 获取过滤链

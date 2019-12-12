@@ -10,7 +10,6 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.lanjerry.common.auth.shiro.service.ShiroService;
-import org.lanjerry.common.core.constant.CommonConsts;
 import org.lanjerry.common.core.entity.sys.SysUser;
 import org.lanjerry.common.core.enums.ApiResultCodeEnum;
 import org.lanjerry.common.core.util.JwtUtil;
@@ -37,18 +36,11 @@ public class JwtRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         System.out.println("reallm 鉴权");
-        JwtToken jwtToken = (JwtToken) principalCollection.getPrimaryPrincipal();
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-        if (CommonConsts.DEFAULT_ADMIN_ROLE.equals(jwtToken.getAccount())) {
-            // admin账号默认拥有所有权限
-            authorizationInfo.addRole(CommonConsts.DEFAULT_ADMIN_ROLE);
-            authorizationInfo.addStringPermission(CommonConsts.DEFAULT_ADMIN_PERMISSION);
-        } else {
-            // 设置角色
-            authorizationInfo.setRoles(shiroService.getRolesById(jwtToken.getId()));
-            // 设置权限
-            authorizationInfo.setStringPermissions(shiroService.getPermissionsById(jwtToken.getId()));
-        }
+        // 设置角色
+        authorizationInfo.setRoles(shiroService.getRoles());
+        // 设置权限
+        authorizationInfo.setStringPermissions(shiroService.getPermissions());
         return authorizationInfo;
     }
 

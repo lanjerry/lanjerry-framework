@@ -1,6 +1,9 @@
 package org.lanjerry.admin.service.sys.impl;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.DisabledAccountException;
@@ -9,19 +12,25 @@ import org.lanjerry.admin.dto.sys.SysUserLoginDTO;
 import org.lanjerry.admin.dto.sys.SysUserPageDTO;
 import org.lanjerry.admin.dto.sys.SysUserSaveOrUpdateDTO;
 import org.lanjerry.admin.mapper.sys.SysUserMapper;
+import org.lanjerry.admin.service.sys.SysPermissionService;
 import org.lanjerry.admin.service.sys.SysRoleService;
 import org.lanjerry.admin.service.sys.SysUserRoleService;
 import org.lanjerry.admin.service.sys.SysUserService;
 import org.lanjerry.admin.util.AdminConsts;
 import org.lanjerry.admin.util.RedisUtil;
+import org.lanjerry.admin.vo.sys.SysPermissionFindVO;
 import org.lanjerry.admin.vo.sys.SysUserInfoVO;
 import org.lanjerry.admin.vo.sys.SysUserPageVO;
+import org.lanjerry.admin.vo.sys.SysUserRouterMetaVO;
 import org.lanjerry.admin.vo.sys.SysUserRouterVO;
 import org.lanjerry.common.auth.shiro.jwt.JwtToken;
 import org.lanjerry.common.auth.shiro.service.ShiroService;
+import org.lanjerry.common.core.constant.CommonConsts;
+import org.lanjerry.common.core.entity.sys.SysPermission;
 import org.lanjerry.common.core.entity.sys.SysRole;
 import org.lanjerry.common.core.entity.sys.SysUser;
 import org.lanjerry.common.core.entity.sys.SysUserRole;
+import org.lanjerry.common.core.enums.PermissionTypeEnum;
 import org.lanjerry.common.core.enums.UserStatusEnum;
 import org.lanjerry.common.core.exception.ApiException;
 import org.lanjerry.common.core.util.ApiAssert;
@@ -57,6 +66,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     private SysUserRoleService userRoleService;
 
     @Autowired
+    private SysPermissionService permissionService;
+
+    @Autowired
     private ShiroService shiroService;
 
     @Override
@@ -65,6 +77,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 .eq(dto.getId() != null, SysUser::getId, dto.getId())
                 .like(StrUtil.isNotBlank(dto.getAccount()), SysUser::getAccount, dto.getAccount())
                 .like(StrUtil.isNotBlank(dto.getName()), SysUser::getName, dto.getName())
+                .eq(dto.getStatus() != null, SysUser::getStatus, dto.getStatus())
                 .page(new Page<>(dto.getPageNum(), dto.getPageSize()));
         IPage<SysUserPageVO> result = BeanCopyUtil.pageCopy(page, SysUser.class, SysUserPageVO.class);
         return result;
@@ -151,15 +164,45 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         SysUserInfoVO result = new SysUserInfoVO();
         result.setAccount(token.getAccount());
         result.setName(token.getName());
-        result.setRoles(shiroService.getRolesById(token.getId()));
-        result.setPermissions(shiroService.getPermissionsById(token.getId()));
+        result.setRoles(shiroService.getRoles());
+        result.setPermissions(shiroService.getPermissions());
         return result;
     }
 
     @Override
-    public SysUserRouterVO router() {
+    public List<SysUserRouterVO> router() {
+        List<SysUserRouterVO> result = new ArrayList<>();
         JwtToken token = (JwtToken) SecurityUtils.getSubject().getPrincipal();
-        SysUserRouterVO result = new SysUserRouterVO();
+        Set<String> userPermissions = new HashSet<>();
+        if (!CommonConsts.DEFAULT_ADMIN_ROLE.equals(token.getAccount())) {
+            userPermissions = shiroService.getPermissions();
+        }
+        List<SysPermission> permissions = permissionService.lambdaQuery()
+                .orderByAsc(SysPermission::getSort)
+                .eq(SysPermission::getType, PermissionTypeEnum.MENU)
+                .eq(SysPermission::getHiddenFlag, false)
+                .in(CollectionUtil.isNotEmpty(userPermissions), SysPermission::getPermission, userPermissions)
+                .list();
+        List<SysPermissionFindVO> treePermissions = permissionService.listPermissions(permissions, AdminConsts.SYS_PERMISSION_PARENT_ID);
+        result = this.buildRouters(treePermissions);
+        return result;
+    }
+
+    private List<SysUserRouterVO> buildRouters(List<SysPermissionFindVO> treePermissions) {
+        List<SysUserRouterVO> result = new ArrayList<>();
+        treePermissions.forEach(p -> {
+            SysUserRouterVO router = new SysUserRouterVO();
+            router.setName(StrUtil.upperFirst(p.getPath()));
+            router.setPath(AdminConsts.SYS_PERMISSION_PARENT_ID.equals(p.getParentId()) && !p.getFrameFlag() ? "/".concat(p.getPath()) : p.getPath());
+            router.setComponent(StrUtil.isNotBlank(p.getComponent()) ? p.getComponent() : "Layout");
+            router.setMeta(SysUserRouterMetaVO.builder().title(p.getName()).icon(p.getIcon()).build());
+            if (PermissionTypeEnum.MENU.equals(p.getType()) && CollectionUtil.isNotEmpty(p.getChildrens())) {
+                router.setAlwaysShow(true);
+                router.setRedirect("noRedirect");
+                router.setChildren(this.buildRouters(p.getChildrens()));
+            }
+            result.add(router);
+        });
         return result;
     }
 

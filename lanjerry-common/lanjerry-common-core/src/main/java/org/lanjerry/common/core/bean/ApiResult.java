@@ -2,6 +2,8 @@ package org.lanjerry.common.core.bean;
 
 import org.lanjerry.common.core.enums.ApiResultCodeEnum;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -17,6 +19,7 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class ApiResult<T> extends BaseEntity {
 
     /**

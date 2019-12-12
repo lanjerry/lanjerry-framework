@@ -47,44 +47,62 @@ public class SysPermissionFindVO extends BaseEntity {
     private PermissionTypeEnum type;
 
     /**
-     * 视图地址
+     * 路由地址
      */
-    @ApiModelProperty(value = "视图地址", example = "index", position = 50)
-    private String viewAddress;
+    @ApiModelProperty(value = "路由地址",example = "user", position = 50)
+    private String path;
+
+    /**
+     * 组件路径
+     */
+    @ApiModelProperty(value = "组件路径",example = "sys/user/index", position = 60)
+    private String component;
 
     /**
      * 权限标识
      */
-    @ApiModelProperty(value = "权限标识", example = "/index", position = 60)
+    @ApiModelProperty(value = "权限标识", example = "sys:user:page", position = 70)
     private String permission;
 
     /**
      * 图标
      */
-    @ApiModelProperty(value = "图标", example = "icon-home", position = 70)
+    @ApiModelProperty(value = "图标", example = "icon-home", position = 80)
     private String icon;
 
     /**
      * 排序
      */
-    @ApiModelProperty(value = "排序", example = "1", position = 80)
+    @ApiModelProperty(value = "排序", example = "1", position = 90)
     private Integer sort;
+
+    /**
+     * 是否隐藏 0.否 1.是
+     */
+    @ApiModelProperty(value = "是否隐藏 0.否 1.是", example = "false", position = 100)
+    private Boolean hiddenFlag;
+
+    /**
+     * 是否外链 0.否 1.是
+     */
+    @ApiModelProperty(value = "是否外链 0.否 1.是", example = "false", position = 110)
+    private Boolean frameFlag;
 
     /**
      * 创建人
      */
-    @ApiModelProperty(value = "创建人", example = "管理员", position = 90)
+    @ApiModelProperty(value = "创建人", example = "管理员", position = 120)
     private String creatorName;
 
     /**
      * 创建时间
      */
-    @ApiModelProperty(value = "创建时间", example = "2018-11-22T15:57:53", position = 100)
+    @ApiModelProperty(value = "创建时间", example = "2018-11-22T15:57:53", position = 130)
     private LocalDateTime createdTime;
 
     /**
      * 子权限列表
      */
-    @ApiModelProperty(value = "子权限列表", position = 110)
+    @ApiModelProperty(value = "子权限列表", position = 140)
     private List<SysPermissionFindVO> childrens;
 }

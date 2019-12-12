@@ -2,6 +2,7 @@ package org.lanjerry.admin.vo.sys;
 
 import org.lanjerry.common.core.bean.BaseEntity;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -14,6 +15,7 @@ import lombok.EqualsAndHashCode;
  * @since 2019-12-10
  */
 @Data
+@Builder
 @EqualsAndHashCode(callSuper = true)
 public class SysUserRouterMetaVO extends BaseEntity {
 
