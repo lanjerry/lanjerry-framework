@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.apache.shiro.SecurityUtils;
 import org.lanjerry.admin.service.sys.SysPermissionService;
 import org.lanjerry.admin.service.sys.SysRolePermissionService;
 import org.lanjerry.admin.service.sys.SysRoleService;
@@ -15,9 +14,7 @@ import org.lanjerry.admin.service.sys.SysUserRoleService;
 import org.lanjerry.admin.service.sys.SysUserService;
 import org.lanjerry.admin.util.AdminConsts;
 import org.lanjerry.admin.util.RedisUtil;
-import org.lanjerry.common.auth.shiro.jwt.JwtToken;
 import org.lanjerry.common.auth.shiro.service.ShiroService;
-import org.lanjerry.common.core.constant.CommonConsts;
 import org.lanjerry.common.core.entity.sys.SysPermission;
 import org.lanjerry.common.core.entity.sys.SysRole;
 import org.lanjerry.common.core.entity.sys.SysRolePermission;
@@ -68,20 +65,14 @@ public class ShiroServiceImpl implements ShiroService {
     }
 
     @Override
-    public Set<String> getRoles() {
+    public Set<String> getRolesById(int id) {
         Set<String> result = new HashSet<>();
-        JwtToken token = (JwtToken) SecurityUtils.getSubject().getPrincipal();
-        if (token == null || token.getId() == 0 || StrUtil.isBlank(token.getAccount())) {
-            return result;
-        }
-        // admin账号默认拥有所有角色
-        if (CommonConsts.DEFAULT_ADMIN_ROLE.equals(token.getAccount())) {
-            result.add(CommonConsts.DEFAULT_ADMIN_ROLE);
+        if (id == 0) {
             return result;
         }
         // 从redis中获取数据
         try {
-            String jsonRole = RedisUtil.get(AdminConsts.REDIS_SYS_USER_ROLE.concat(String.valueOf(token.getId())));
+            String jsonRole = RedisUtil.get(AdminConsts.REDIS_SYS_USER_ROLE.concat(String.valueOf(id)));
             if (StrUtil.isNotBlank(jsonRole)) {
                 result = new HashSet<>(JSONUtil.toList(JSONUtil.parseArray(jsonRole), String.class));
                 return result;
@@ -90,7 +81,7 @@ public class ShiroServiceImpl implements ShiroService {
             ex.printStackTrace();
         }
         // 从数据库中获取数据
-        List<SysUserRole> userRoles = userRoleService.lambdaQuery().select(SysUserRole::getRoleId).eq(SysUserRole::getUserId, token.getId()).list();
+        List<SysUserRole> userRoles = userRoleService.lambdaQuery().select(SysUserRole::getRoleId).eq(SysUserRole::getUserId, id).list();
         if (CollUtil.isNotEmpty(userRoles)) {
             // 获取角色
             List<Integer> roleIds = userRoles.stream().map(SysUserRole::getRoleId).distinct().collect(Collectors.toList());
@@ -100,7 +91,7 @@ public class ShiroServiceImpl implements ShiroService {
 
         // 把数据存储到redis中，过期时间为15天
         try {
-            RedisUtil.setFromString(AdminConsts.REDIS_SYS_USER_ROLE.concat(String.valueOf(token.getId())), JSONUtil.toJsonStr(result), AdminConsts.REDIS_SYS_USER_ROLE_EXPIRE_TIME);
+            RedisUtil.setFromString(AdminConsts.REDIS_SYS_USER_ROLE.concat(String.valueOf(id)), JSONUtil.toJsonStr(result), AdminConsts.REDIS_SYS_USER_ROLE_EXPIRE_TIME);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -108,20 +99,14 @@ public class ShiroServiceImpl implements ShiroService {
     }
 
     @Override
-    public Set<String> getPermissions() {
+    public Set<String> getPermissionsById(int id) {
         Set<String> result = new HashSet<>();
-        JwtToken token = (JwtToken) SecurityUtils.getSubject().getPrincipal();
-        if (token == null || token.getId() == 0 || StrUtil.isBlank(token.getAccount())) {
-            return result;
-        }
-        // admin账号默认拥有所有权限
-        if (CommonConsts.DEFAULT_ADMIN_ROLE.equals(token.getAccount())) {
-            result.add(CommonConsts.DEFAULT_ADMIN_PERMISSION);
+        if (id == 0) {
             return result;
         }
         // 从redis中获取数据
         try {
-            String jsonPermission = RedisUtil.get(AdminConsts.REDIS_SYS_USER_PERMISSION.concat(String.valueOf(token.getId())));
+            String jsonPermission = RedisUtil.get(AdminConsts.REDIS_SYS_USER_PERMISSION.concat(String.valueOf(id)));
             if (StrUtil.isNotBlank(jsonPermission)) {
                 result = new HashSet<>(JSONUtil.toList(JSONUtil.parseArray(jsonPermission), String.class));
                 return result;
@@ -130,7 +115,7 @@ public class ShiroServiceImpl implements ShiroService {
             ex.printStackTrace();
         }
         // 从数据库中获取数据
-        List<SysUserRole> userRoles = userRoleService.lambdaQuery().select(SysUserRole::getRoleId).eq(SysUserRole::getUserId, token.getId()).list();
+        List<SysUserRole> userRoles = userRoleService.lambdaQuery().select(SysUserRole::getRoleId).eq(SysUserRole::getUserId, id).list();
         if (CollUtil.isNotEmpty(userRoles)) {
             // 获取角色权限
             List<Integer> roleIds = userRoles.stream().map(SysUserRole::getRoleId).distinct().collect(Collectors.toList());
@@ -145,7 +130,7 @@ public class ShiroServiceImpl implements ShiroService {
 
         // 把数据存储到redis中，过期时间为15天
         try {
-            RedisUtil.setFromString(AdminConsts.REDIS_SYS_USER_PERMISSION.concat(String.valueOf(token.getId())), JSONUtil.toJsonStr(result), AdminConsts.REDIS_SYS_USER_PERMISSION_EXPIRE_TIME);
+            RedisUtil.setFromString(AdminConsts.REDIS_SYS_USER_PERMISSION.concat(String.valueOf(id)), JSONUtil.toJsonStr(result), AdminConsts.REDIS_SYS_USER_PERMISSION_EXPIRE_TIME);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

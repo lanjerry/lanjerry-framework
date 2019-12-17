@@ -4,12 +4,15 @@ import java.util.List;
 
 import org.lanjerry.admin.dto.sys.SysUserLoginDTO;
 import org.lanjerry.admin.dto.sys.SysUserPageDTO;
-import org.lanjerry.admin.dto.sys.SysUserSaveOrUpdateDTO;
+import org.lanjerry.admin.dto.sys.SysUserResetPasswordDTO;
+import org.lanjerry.admin.dto.sys.SysUserSaveDTO;
+import org.lanjerry.admin.dto.sys.SysUserUpdateDTO;
+import org.lanjerry.admin.vo.sys.SysUserBaseVO;
 import org.lanjerry.admin.vo.sys.SysUserInfoVO;
 import org.lanjerry.admin.vo.sys.SysUserPageVO;
 import org.lanjerry.admin.vo.sys.SysUserRouterVO;
 import org.lanjerry.common.core.entity.sys.SysUser;
-import org.lanjerry.common.core.enums.UserStatusEnum;
+import org.lanjerry.common.core.enums.sys.SysUserStatusEnum;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -41,7 +44,7 @@ public interface SysUserService extends IService<SysUser> {
      * @since 2019/9/5 11:53
      * @param dto 系统用户新增参数
      */
-    void saveUser(SysUserSaveOrUpdateDTO dto);
+    void saveUser(SysUserSaveDTO dto);
 
     /**
      * 更新系统用户
@@ -51,16 +54,16 @@ public interface SysUserService extends IService<SysUser> {
      * @param id id
      * @param dto 系统用户更新参数
      */
-    void updateUser(int id, SysUserSaveOrUpdateDTO dto);
+    void updateUser(int id, SysUserUpdateDTO dto);
 
     /**
      * 删除系统用户
      *
      * @author lanjerry
      * @since 2019/9/5 11:53
-     * @param id id
+     * @param ids id集
      */
-    void removeUser(int id);
+    void removeUser(Integer[] ids);
 
     /**
      * 锁定或者解锁系统用户
@@ -70,16 +73,16 @@ public interface SysUserService extends IService<SysUser> {
      * @param id id
      * @param statusEnum 系统用户状态枚举
      */
-    void statusChange(int id, UserStatusEnum statusEnum);
+    void changeStatus(int id, SysUserStatusEnum statusEnum);
 
     /**
      * 重置系统用户密码
      *
      * @author lanjerry
      * @since 2019/9/5 11:53
-     * @param id id
+     * @param dto 系统用户重置密码参数
      */
-    void resetPassword(int id);
+    void resetPassword(SysUserResetPasswordDTO dto);
 
     /**
      * 系统用户登录
@@ -92,13 +95,23 @@ public interface SysUserService extends IService<SysUser> {
     String login(SysUserLoginDTO dto);
 
     /**
-     * 获取系统用户信息
+     * 根据id查询系统用户信息
+     *
+     * @author lanjerry
+     * @since 2019/12/17 10:59
+     * @param id id
+     * @return org.lanjerry.admin.vo.sys.SysUserInfoVO
+     */
+    SysUserInfoVO getInfoById(int id);
+
+    /**
+     * 查询系统用户信息
      *
      * @author lanjerry
      * @since 2019/11/22 17:42
      * @return org.lanjerry.admin.vo.sys.SysUserInfoVO
      */
-    SysUserInfoVO info();
+    SysUserBaseVO info();
 
     /**
      * 获取系统用户路由

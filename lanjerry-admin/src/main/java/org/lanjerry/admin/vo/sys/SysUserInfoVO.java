@@ -3,6 +3,8 @@ package org.lanjerry.admin.vo.sys;
 import java.util.Set;
 
 import org.lanjerry.common.core.bean.BaseEntity;
+import org.lanjerry.common.core.enums.sys.SysUserSexEnum;
+import org.lanjerry.common.core.enums.sys.SysUserStatusEnum;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,16 +22,6 @@ import lombok.EqualsAndHashCode;
 public class SysUserInfoVO extends BaseEntity {
 
     /**
-     * 权限集
-     */
-    private Set<String> permissions;
-
-    /**
-     * 角色集
-     */
-    private Set<String> roles;
-
-    /**
      * 帐号
      */
     private String account;
@@ -38,4 +30,29 @@ public class SysUserInfoVO extends BaseEntity {
      * 昵称
      */
     private String name;
+
+    /**
+     * 性别 1.男 2.女 3.未知
+     */
+    private SysUserSexEnum sex;
+
+    /**
+     * 邮箱
+     */
+    private String email;
+
+    /**
+     * 手机号码
+     */
+    private String phone;
+
+    /**
+     * 状态 1.正常 2.禁用
+     */
+    private SysUserStatusEnum status;
+
+    /**
+     * 角色id集
+     */
+    private Set<Integer> roleIds;
 }

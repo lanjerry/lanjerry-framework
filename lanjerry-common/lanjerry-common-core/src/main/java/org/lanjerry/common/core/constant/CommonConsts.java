@@ -39,9 +39,14 @@ public interface CommonConsts {
     String DEFAULT_SALT = "lanjerry";
 
     /**
+     * 默认管理员账号
+     */
+    String DEFAULT_ADMIN_ACCOUNT = "admin";
+
+    /**
      * 默认管理员角色
      */
-    String DEFAULT_ADMIN_ROLE = "admin";
+    String DEFAULT_ADMIN_ROLE = "管理员";
 
     /**
      * 默认管理员权限

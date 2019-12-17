@@ -1,14 +1,18 @@
 package org.lanjerry.admin.controller.sys;
 
+import java.util.List;
+
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.lanjerry.admin.dto.sys.SysRolePageDTO;
 import org.lanjerry.admin.dto.sys.SysRoleSaveOrUpdateDTO;
 import org.lanjerry.admin.service.sys.SysRoleService;
 import org.lanjerry.admin.vo.sys.SysRolePageVO;
 import org.lanjerry.common.core.bean.ApiResult;
+import org.lanjerry.common.core.entity.sys.SysRole;
 import org.lanjerry.common.log.annotation.SysLog;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -39,11 +43,17 @@ public class SysRoleController {
 
     private final SysRoleService roleService;
 
-    @PostMapping("/page")
+    @GetMapping("/page")
     @RequiresPermissions("sys:role:page")
     @ApiOperation(value = "分页获取系统角色列表", position = 10)
-    public ApiResult<IPage<SysRolePageVO>> pageUsers(@RequestBody @ApiParam(value = "系统角色列表查询参数", required = true) SysRolePageDTO dto) {
+    public ApiResult<IPage<SysRolePageVO>> pageRoles(@ApiParam(value = "系统角色列表查询参数", required = true) SysRolePageDTO dto) {
         return ApiResult.success(roleService.pageRoles(dto));
+    }
+
+    @GetMapping("/list")
+    @ApiOperation(value = "获取系统角色列表", position = 10)
+    public ApiResult<List<SysRole>> listRoles() {
+        return ApiResult.success(roleService.list());
     }
 
     @PostMapping

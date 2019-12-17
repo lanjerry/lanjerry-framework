@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.DisabledAccountException;
 import org.apache.shiro.subject.Subject;
 import org.lanjerry.admin.dto.sys.SysUserLoginDTO;
 import org.lanjerry.admin.dto.sys.SysUserPageDTO;
-import org.lanjerry.admin.dto.sys.SysUserSaveOrUpdateDTO;
+import org.lanjerry.admin.dto.sys.SysUserResetPasswordDTO;
+import org.lanjerry.admin.dto.sys.SysUserSaveDTO;
+import org.lanjerry.admin.dto.sys.SysUserUpdateDTO;
 import org.lanjerry.admin.mapper.sys.SysUserMapper;
 import org.lanjerry.admin.service.sys.SysPermissionService;
 import org.lanjerry.admin.service.sys.SysRoleService;
@@ -19,6 +22,7 @@ import org.lanjerry.admin.service.sys.SysUserService;
 import org.lanjerry.admin.util.AdminConsts;
 import org.lanjerry.admin.util.RedisUtil;
 import org.lanjerry.admin.vo.sys.SysPermissionFindVO;
+import org.lanjerry.admin.vo.sys.SysUserBaseVO;
 import org.lanjerry.admin.vo.sys.SysUserInfoVO;
 import org.lanjerry.admin.vo.sys.SysUserPageVO;
 import org.lanjerry.admin.vo.sys.SysUserRouterMetaVO;
@@ -31,7 +35,7 @@ import org.lanjerry.common.core.entity.sys.SysRole;
 import org.lanjerry.common.core.entity.sys.SysUser;
 import org.lanjerry.common.core.entity.sys.SysUserRole;
 import org.lanjerry.common.core.enums.PermissionTypeEnum;
-import org.lanjerry.common.core.enums.UserStatusEnum;
+import org.lanjerry.common.core.enums.sys.SysUserStatusEnum;
 import org.lanjerry.common.core.exception.ApiException;
 import org.lanjerry.common.core.util.ApiAssert;
 import org.lanjerry.common.core.util.BeanCopyUtil;
@@ -80,18 +84,21 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 .eq(dto.getStatus() != null, SysUser::getStatus, dto.getStatus())
                 .page(new Page<>(dto.getPageNum(), dto.getPageSize()));
         IPage<SysUserPageVO> result = BeanCopyUtil.pageCopy(page, SysUser.class, SysUserPageVO.class);
+        result.getRecords().forEach(r -> {
+            r.setRoles(shiroService.getRolesById(r.getId()));
+        });
         return result;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void saveUser(SysUserSaveOrUpdateDTO dto) {
+    public void saveUser(SysUserSaveDTO dto) {
         ApiAssert.isTrue(this.count(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getAccount, dto.getAccount())) == 0, String.format("账号：%s已存在", dto.getAccount()));
         SysUser user = BeanCopyUtil.beanCopy(dto, SysUser.class);
         this.save(user);
 
         // 设置密码
-        user.setPassword(Md5Util.encode(AdminConsts.SYS_USER_DEFAULT_PASSWORD, String.valueOf(user.getId())));
+        user.setPassword(Md5Util.encode(dto.getPassword(), String.valueOf(user.getId())));
         this.updateById(user);
 
         // 新增用户角色
@@ -100,7 +107,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updateUser(int id, SysUserSaveOrUpdateDTO dto) {
+    public void updateUser(int id, SysUserUpdateDTO dto) {
         SysUser oriUser = this.getById(id);
         ApiAssert.notNull(oriUser, String.format("id：%s不存在", id));
         SysUser user = BeanCopyUtil.beanCopy(dto, SysUser.class);
@@ -113,17 +120,20 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void removeUser(int id) {
-        SysUser oriUser = this.getById(id);
-        ApiAssert.notNull(oriUser, String.format("id：%s不存在", id));
-        this.removeById(id);
+    public void removeUser(Integer[] ids) {
+        for (Integer id : ids) {
+            ApiAssert.isTrue(id != 1, "id为1的账号不允许删除");
+            SysUser oriUser = this.getById(id);
+            ApiAssert.notNull(oriUser, String.format("id：%s不存在", id));
+            this.removeById(id);
 
-        // 删除用户角色
-        this.updateUserRole(id, null);
+            // 删除用户角色
+            this.updateUserRole(id, null);
+        }
     }
 
     @Override
-    public void statusChange(int id, UserStatusEnum statusEnum) {
+    public void changeStatus(int id, SysUserStatusEnum statusEnum) {
         SysUser oriUser = this.getById(id);
         ApiAssert.notNull(oriUser, String.format("id：%s不存在", id));
         SysUser user = new SysUser();
@@ -133,12 +143,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public void resetPassword(int id) {
-        SysUser oriUser = this.getById(id);
-        ApiAssert.notNull(oriUser, String.format("id：%s不存在", id));
+    public void resetPassword(SysUserResetPasswordDTO dto) {
+        SysUser oriUser = this.getById(dto.getId());
+        ApiAssert.notNull(oriUser, String.format("id：%s不存在", dto.getId()));
         SysUser user = new SysUser();
-        user.setPassword(Md5Util.encode(AdminConsts.SYS_USER_DEFAULT_PASSWORD, String.valueOf(id)));
-        user.setId(id);
+        user.setPassword(Md5Util.encode(dto.getPassword(), String.valueOf(dto.getId())));
+        user.setId(dto.getId());
         this.updateById(user);
     }
 
@@ -159,13 +169,34 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public SysUserInfoVO info() {
+    public SysUserInfoVO getInfoById(int id) {
+        SysUser oriUser = this.getById(id);
+        ApiAssert.notNull(oriUser, String.format("id：%s不存在", id));
+        SysUserInfoVO result = BeanCopyUtil.beanCopy(oriUser, SysUserInfoVO.class);
+        // 设置角色id集
+        List<SysUserRole> userRoles = userRoleService.lambdaQuery().select(SysUserRole::getRoleId).eq(SysUserRole::getUserId, id).list();
+        result.setRoleIds(new HashSet(userRoles.stream().map(SysUserRole::getRoleId).distinct().collect(Collectors.toList())));
+        return result;
+    }
+
+    @Override
+    public SysUserBaseVO info() {
         JwtToken token = (JwtToken) SecurityUtils.getSubject().getPrincipal();
-        SysUserInfoVO result = new SysUserInfoVO();
-        result.setAccount(token.getAccount());
-        result.setName(token.getName());
-        result.setRoles(shiroService.getRoles());
-        result.setPermissions(shiroService.getPermissions());
+        SysUser oriUser = this.getById(token.getId());
+        ApiAssert.notNull(oriUser, String.format("id：%s不存在", token.getId()));
+        SysUserBaseVO result = BeanCopyUtil.beanCopy(oriUser, SysUserBaseVO.class);
+        // 设置角色和权限
+        Set<String> roles = new HashSet<>();
+        Set<String> permissions = new HashSet<>();
+        if (CommonConsts.DEFAULT_ADMIN_ACCOUNT.equals(token.getAccount())) {
+            roles.add(CommonConsts.DEFAULT_ADMIN_ROLE);
+            permissions.add(CommonConsts.DEFAULT_ADMIN_PERMISSION);
+        } else {
+            roles = shiroService.getRolesById(token.getId());
+            permissions = shiroService.getPermissionsById(token.getId());
+        }
+        result.setRoles(roles);
+        result.setPermissions(permissions);
         return result;
     }
 
@@ -174,8 +205,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         List<SysUserRouterVO> result = new ArrayList<>();
         JwtToken token = (JwtToken) SecurityUtils.getSubject().getPrincipal();
         Set<String> userPermissions = new HashSet<>();
-        if (!CommonConsts.DEFAULT_ADMIN_ROLE.equals(token.getAccount())) {
-            userPermissions = shiroService.getPermissions();
+        if (!CommonConsts.DEFAULT_ADMIN_ACCOUNT.equals(token.getAccount())) {
+            userPermissions = shiroService.getPermissionsById(token.getId());
         }
         List<SysPermission> permissions = permissionService.lambdaQuery()
                 .orderByAsc(SysPermission::getSort)

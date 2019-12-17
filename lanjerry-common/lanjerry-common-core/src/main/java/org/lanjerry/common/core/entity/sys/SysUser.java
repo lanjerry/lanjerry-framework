@@ -3,7 +3,8 @@ package org.lanjerry.common.core.entity.sys;
 import java.time.LocalDateTime;
 
 import org.lanjerry.common.core.bean.BaseEntity;
-import org.lanjerry.common.core.enums.UserStatusEnum;
+import org.lanjerry.common.core.enums.sys.SysUserSexEnum;
+import org.lanjerry.common.core.enums.sys.SysUserStatusEnum;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -50,9 +51,39 @@ public class SysUser extends BaseEntity {
     private String name;
 
     /**
+     * 性别 1.男 2.女 3.未知
+     */
+    private SysUserSexEnum sex;
+
+    /**
+     * 邮箱
+     */
+    private String email;
+
+    /**
+     * 手机号码
+     */
+    private String phone;
+
+    /**
+     * 头像地址
+     */
+    private String avatar;
+
+    /**
      * 状态 1.正常 2.禁用
      */
-    private UserStatusEnum status;
+    private SysUserStatusEnum status;
+
+    /**
+     * 最后登陆ip
+     */
+    private String loginIp;
+
+    /**
+     * 最后登陆时间
+     */
+    private LocalDateTime loginTime;
 
     /**
      * 是否删除 0.否 1.是

@@ -30,7 +30,7 @@ public interface ShiroService {
      * @since 2019/9/16 17:38
      * @return java.util.Set<java.lang.String>
      */
-    Set<String> getRoles();
+    Set<String> getRolesById(int id);
 
     /**
      * 根据id获取权限信息
@@ -39,7 +39,7 @@ public interface ShiroService {
      * @since 2019/9/16 17:38
      * @return java.util.Set<java.lang.String>
      */
-    Set<String> getPermissions();
+    Set<String> getPermissionsById(int id);
 
     /**
      * 获取过滤链

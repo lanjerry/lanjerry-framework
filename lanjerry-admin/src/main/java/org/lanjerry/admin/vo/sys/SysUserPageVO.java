@@ -1,9 +1,10 @@
 package org.lanjerry.admin.vo.sys;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import org.lanjerry.common.core.bean.BaseEntity;
-import org.lanjerry.common.core.enums.UserStatusEnum;
+import org.lanjerry.common.core.enums.sys.SysUserStatusEnum;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -43,17 +44,23 @@ public class SysUserPageVO extends BaseEntity {
      * 状态 1.正常 2.禁用
      */
     @ApiModelProperty(value = "状态 1.正常 2.禁用", position = 40)
-    private UserStatusEnum status;
+    private SysUserStatusEnum status;
+
+    /**
+     * 角色集
+     */
+    @ApiModelProperty(value = "状态 1.正常 2.禁用", position = 50)
+    private Set<String> roles;
 
     /**
      * 创建人
      */
-    @ApiModelProperty(value = "创建人", example = "管理员", position = 50)
+    @ApiModelProperty(value = "创建人", example = "管理员", position = 60)
     private String creatorName;
 
     /**
      * 创建时间
      */
-    @ApiModelProperty(value = "创建时间", example = "2018-11-22T15:57:53", position = 60)
+    @ApiModelProperty(value = "创建时间", example = "2018-11-22T15:57:53", position = 70)
     private LocalDateTime createdTime;
 }

@@ -5,13 +5,16 @@ import java.util.List;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.lanjerry.admin.dto.sys.SysUserLoginDTO;
 import org.lanjerry.admin.dto.sys.SysUserPageDTO;
-import org.lanjerry.admin.dto.sys.SysUserSaveOrUpdateDTO;
+import org.lanjerry.admin.dto.sys.SysUserResetPasswordDTO;
+import org.lanjerry.admin.dto.sys.SysUserSaveDTO;
+import org.lanjerry.admin.dto.sys.SysUserUpdateDTO;
 import org.lanjerry.admin.service.sys.SysUserService;
+import org.lanjerry.admin.vo.sys.SysUserBaseVO;
 import org.lanjerry.admin.vo.sys.SysUserInfoVO;
 import org.lanjerry.admin.vo.sys.SysUserPageVO;
 import org.lanjerry.admin.vo.sys.SysUserRouterVO;
 import org.lanjerry.common.core.bean.ApiResult;
-import org.lanjerry.common.core.enums.UserStatusEnum;
+import org.lanjerry.common.core.enums.sys.SysUserStatusEnum;
 import org.lanjerry.common.log.annotation.SysLog;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -57,7 +60,7 @@ public class SysUserController {
     @RequiresPermissions("sys:user:save")
     @SysLog("新增系统用户")
     @ApiOperation(value = "新增系统用户", position = 20)
-    public ApiResult saveUser(@RequestBody @Validated @ApiParam(value = "系统用户新增参数", required = true) SysUserSaveOrUpdateDTO dto) {
+    public ApiResult saveUser(@RequestBody @Validated @ApiParam(value = "系统用户新增参数", required = true) SysUserSaveDTO dto) {
         userService.saveUser(dto);
         return ApiResult.success();
     }
@@ -66,44 +69,44 @@ public class SysUserController {
     @RequiresPermissions("sys:user:update")
     @SysLog("更新系统用户")
     @ApiOperation(value = "更新系统用户", position = 30)
-    public ApiResult updateUser(@PathVariable("id") @ApiParam(value = "id", required = true) Integer id, @RequestBody @Validated @ApiParam(value = "系统用户更新参数", required = true) SysUserSaveOrUpdateDTO dto) {
+    public ApiResult updateUser(@PathVariable("id") @ApiParam(value = "id", required = true) Integer id, @RequestBody @Validated @ApiParam(value = "系统用户更新参数", required = true) SysUserUpdateDTO dto) {
         userService.updateUser(id, dto);
         return ApiResult.success();
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{ids}")
     @RequiresPermissions("sys:user:remove")
     @SysLog("删除系统用户")
     @ApiOperation(value = "删除系统用户", position = 40)
-    public ApiResult removeUser(@PathVariable("id") @ApiParam(value = "id", required = true) Integer id) {
-        userService.removeUser(id);
+    public ApiResult removeUser(@PathVariable("ids") @ApiParam(value = "ids", required = true) Integer[] ids) {
+        userService.removeUser(ids);
         return ApiResult.success();
     }
 
-    @PostMapping("/lock/{id}")
+    @PutMapping("/lock/{id}")
     @RequiresPermissions("sys:user:lock")
     @SysLog("锁定系统用户")
     @ApiOperation(value = "锁定系统用户", position = 50)
     public ApiResult lock(@PathVariable("id") @ApiParam(value = "id", required = true) Integer id) {
-        userService.statusChange(id, UserStatusEnum.LOCKING);
+        userService.changeStatus(id, SysUserStatusEnum.LOCKING);
         return ApiResult.success();
     }
 
-    @PostMapping("/unlock/{id}")
+    @PutMapping("/unlock/{id}")
     @RequiresPermissions("sys:user:unlock")
     @SysLog("解锁系统用户")
     @ApiOperation(value = "解锁系统用户", position = 60)
     public ApiResult unlock(@PathVariable("id") @ApiParam(value = "id", required = true) Integer id) {
-        userService.statusChange(id, UserStatusEnum.NORMAL);
+        userService.changeStatus(id, SysUserStatusEnum.NORMAL);
         return ApiResult.success();
     }
 
-    @PostMapping("/resetPassword/{id}")
+    @PutMapping("/resetPassword")
     @RequiresPermissions("sys:user:resetPassword")
     @SysLog("重置系统用户密码")
     @ApiOperation(value = "重置系统用户密码", position = 70)
-    public ApiResult resetPassword(@PathVariable("id") @ApiParam(value = "id", required = true) Integer id) {
-        userService.resetPassword(id);
+    public ApiResult resetPassword(@RequestBody @Validated @ApiParam(value = "系统用户重置密码参数", required = true) SysUserResetPasswordDTO dto) {
+        userService.resetPassword(dto);
         return ApiResult.success();
     }
 
@@ -113,9 +116,15 @@ public class SysUserController {
         return ApiResult.success(userService.login(dto));
     }
 
+    @GetMapping("/{id}")
+    @ApiOperation(value = "根据id查询用户信息", position = 90)
+    public ApiResult<SysUserInfoVO> getInfoById(@PathVariable("id") @ApiParam(value = "id", required = true) Integer id) {
+        return ApiResult.success(userService.getInfoById(id));
+    }
+
     @GetMapping("/info")
-    @ApiOperation(value = "系统用户信息", position = 90)
-    public ApiResult<SysUserInfoVO> info() {
+    @ApiOperation(value = "查询用户信息", position = 90)
+    public ApiResult<SysUserBaseVO> info() {
         return ApiResult.success(userService.info());
     }
 
