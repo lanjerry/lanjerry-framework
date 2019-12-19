@@ -22,15 +22,15 @@ import lombok.EqualsAndHashCode;
 public class SysLogPageVO extends BaseEntity {
 
     /**
-     * 日志id
+     * 日志编号
      */
-    @ApiModelProperty(value = "id", example = "1", position = 10)
+    @ApiModelProperty(value = "日志编号", example = "1", position = 10)
     private Integer id;
 
     /**
-     * 用户id
+     * 用户编号
      */
-    @ApiModelProperty(value = "用户id", example = "1", position = 20)
+    @ApiModelProperty(value = "用户编号", example = "1", position = 20)
     private Integer userId;
 
     /**

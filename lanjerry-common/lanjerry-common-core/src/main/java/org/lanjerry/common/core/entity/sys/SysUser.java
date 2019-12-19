@@ -30,7 +30,7 @@ import lombok.EqualsAndHashCode;
 public class SysUser extends BaseEntity {
 
     /**
-     * 系统用户id
+     * 用户编号
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;

@@ -85,8 +85,8 @@ public class ShiroServiceImpl implements ShiroService {
         if (CollUtil.isNotEmpty(userRoles)) {
             // 获取角色
             List<Integer> roleIds = userRoles.stream().map(SysUserRole::getRoleId).distinct().collect(Collectors.toList());
-            List<SysRole> roles = roleService.lambdaQuery().select(SysRole::getName).in(SysRole::getId, roleIds).list();
-            result = new HashSet(roles.stream().map(SysRole::getName).distinct().collect(Collectors.toList()));
+            List<SysRole> roles = roleService.lambdaQuery().select(SysRole::getPermissionTag).in(SysRole::getId, roleIds).list();
+            result = new HashSet(roles.stream().map(SysRole::getPermissionTag).distinct().collect(Collectors.toList()));
         }
 
         // 把数据存储到redis中，过期时间为15天

@@ -29,13 +29,13 @@ import lombok.EqualsAndHashCode;
 public class SysPermission extends BaseEntity {
 
     /**
-     * 权限id
+     * 权限编号
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
-     * 名称
+     * 权限名称
      */
     private String name;
 

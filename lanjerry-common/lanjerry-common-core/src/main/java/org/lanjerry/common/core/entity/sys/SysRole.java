@@ -28,15 +28,20 @@ import lombok.EqualsAndHashCode;
 public class SysRole extends BaseEntity {
 
     /**
-     * 角色id
+     * 角色编号
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
-     * 名称
+     * 角色名称
      */
     private String name;
+
+    /**
+     * 权限标识
+     */
+    private String permissionTag;
 
     /**
      * 是否删除 0.否 1.是

@@ -46,7 +46,7 @@ public interface CommonConsts {
     /**
      * 默认管理员角色
      */
-    String DEFAULT_ADMIN_ROLE = "管理员";
+    String DEFAULT_ADMIN_ROLE = "admin";
 
     /**
      * 默认管理员权限

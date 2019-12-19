@@ -23,9 +23,9 @@ import lombok.EqualsAndHashCode;
 public class SysUserPageVO extends BaseEntity {
 
     /**
-     * 系统用户id
+     * 用户编号
      */
-    @ApiModelProperty(value = "id", example = "1", position = 10)
+    @ApiModelProperty(value = "用户编号", example = "1", position = 10)
     private Integer id;
 
     /**

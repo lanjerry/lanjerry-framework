@@ -30,15 +30,6 @@ public interface SysPermissionService extends IService<SysPermission> {
     List<SysPermissionFindVO> listPermissions();
 
     /**
-     * 获取树形结构系统权限列表
-     *
-     * @author lanjerry
-     * @since 2019/9/5 14:56
-     * @return java.util.List<org.lanjerry.admin.vo.sys.SysPermissionTreeVO>
-     */
-    List<SysPermissionTreeVO> treePermissions();
-
-    /**
      * 新增系统权限
      *
      * @author lanjerry
@@ -52,7 +43,7 @@ public interface SysPermissionService extends IService<SysPermission> {
      *
      * @author lanjerry
      * @since 2019/9/5 14:56
-     * @param id id
+     * @param id 权限编号
      * @param dto 系统权限更新参数
      */
     void updatePermission(int id, SysPermissionUpdateDTO dto);
@@ -62,10 +53,27 @@ public interface SysPermissionService extends IService<SysPermission> {
      *
      * @author lanjerry
      * @since 2019/9/5 14:56
-     * @param id id
+     * @param id 权限编号
      */
     void removePermission(int id);
 
-
+    /**
+     * 递归处理权限列表，重组成树形结构
+     * 
+     * @author lanjerry
+     * @since 2019/12/18 13:57
+     * @param permissions 权限列表
+     * @param parentId 父级id
+     * @return java.util.List<org.lanjerry.admin.vo.sys.SysPermissionFindVO>
+     */
     List<SysPermissionFindVO> listPermissions(List<SysPermission> permissions, Integer parentId);
+
+    /**
+     * 获取树形结构系统权限列表
+     *
+     * @author lanjerry
+     * @since 2019/9/5 14:56
+     * @return java.util.List<org.lanjerry.admin.vo.sys.SysPermissionTreeVO>
+     */
+    List<SysPermissionTreeVO> treePermissions();
 }

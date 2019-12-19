@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.lanjerry.common.core.bean.BaseEntity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,35 +20,24 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class SysPermissionTreeVO extends BaseEntity {
 
     /**
-     * 权限id
+     * 权限编号
      */
-    @ApiModelProperty(value = "id", example = "1", position = 10)
+    @ApiModelProperty(value = "权限编号", example = "1", position = 10)
     private Integer id;
 
     /**
-     * 名称
+     * 权限名称
      */
-    @ApiModelProperty(value = "名称", example = "首页", required = true, position = 20)
-    private String name;
+    @ApiModelProperty(value = "权限名称", example = "首页", required = true, position = 20)
+    private String label;
 
     /**
-     * 父类id，当值等于0时，代表的是一级的菜单
+     * 子权限列表
      */
-    @ApiModelProperty(value = "父类id，当值等于0时，代表的是一级的菜单", example = "0", position = 30)
-    private Integer parentId;
-
-    /**
-     * 菜单列表
-     */
-    @ApiModelProperty(value = "菜单列表", position = 40)
-    private List<SysPermissionTreeVO> menus;
-
-    /**
-     * 按钮列表
-     */
-    @ApiModelProperty(value = "按钮列表", position = 50)
-    private List<SysPermissionTreeVO> auths;
+    @ApiModelProperty(value = "按钮列表", position = 30)
+    private List<SysPermissionTreeVO> children;
 }

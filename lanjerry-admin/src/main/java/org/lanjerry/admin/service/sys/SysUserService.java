@@ -51,7 +51,7 @@ public interface SysUserService extends IService<SysUser> {
      *
      * @author lanjerry
      * @since 2019/9/5 11:53
-     * @param id id
+     * @param id 用户编号
      * @param dto 系统用户更新参数
      */
     void updateUser(int id, SysUserUpdateDTO dto);
@@ -61,7 +61,7 @@ public interface SysUserService extends IService<SysUser> {
      *
      * @author lanjerry
      * @since 2019/9/5 11:53
-     * @param ids id集
+     * @param ids 用户编号集
      */
     void removeUser(Integer[] ids);
 
@@ -70,7 +70,7 @@ public interface SysUserService extends IService<SysUser> {
      *
      * @author lanjerry
      * @since 2019/9/5 11:53
-     * @param id id
+     * @param id 用户编号
      * @param statusEnum 系统用户状态枚举
      */
     void changeStatus(int id, SysUserStatusEnum statusEnum);
@@ -99,7 +99,7 @@ public interface SysUserService extends IService<SysUser> {
      *
      * @author lanjerry
      * @since 2019/12/17 10:59
-     * @param id id
+     * @param id 用户编号
      * @return org.lanjerry.admin.vo.sys.SysUserInfoVO
      */
     SysUserInfoVO getInfoById(int id);

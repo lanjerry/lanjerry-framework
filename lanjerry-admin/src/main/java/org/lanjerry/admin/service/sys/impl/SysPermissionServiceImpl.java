@@ -39,12 +39,6 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     }
 
     @Override
-    public List<SysPermissionTreeVO> treePermissions() {
-        List<SysPermission> listPermissions = this.lambdaQuery().list();
-        return this.treePermissions(listPermissions, AdminConsts.SYS_PERMISSION_PARENT_ID);
-    }
-
-    @Override
     public void savePermission(SysPermissionSaveDTO dto) {
         if (PermissionTypeEnum.MENU.equals(dto.getType())) {
             ApiAssert.isTrue(this.count(Wrappers.<SysPermission>lambdaQuery().eq(SysPermission::getName, dto.getName())) == 0, String.format("名称：%s已存在", dto.getName()));
@@ -81,33 +75,33 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         RedisUtil.remove(new ArrayList<>(Objects.requireNonNull(RedisUtil.keys(AdminConsts.REDIS_SYS_USER_PERMISSION.concat("*")))));
     }
 
-    /**
-     * 递归获取系统权限列表
-     *
-     * @author lanjerry
-     * @since 2019/9/5 16:52
-     * @param permissions 系统权限列表
-     * @param parentId 父类id
-     * @return java.util.List<org.lanjerry.admin.vo.sys.SysPermissionFindVO>
-     */
     @Override
     public List<SysPermissionFindVO> listPermissions(List<SysPermission> permissions, Integer parentId) {
         List<SysPermissionFindVO> result = new ArrayList<>();
         permissions.forEach(permission -> {
             if (parentId.equals(permission.getParentId())) {
                 SysPermissionFindVO permissionVO = BeanCopyUtil.beanCopy(permission, SysPermissionFindVO.class);
-                permissionVO.setChildrens(this.listPermissions(permissions, permission.getId()));
+                permissionVO.setChildren(this.listPermissions(permissions, permission.getId()));
                 result.add(permissionVO);
             }
         });
         return result;
     }
 
+    @Override
+    public List<SysPermissionTreeVO> treePermissions() {
+        List<SysPermission> permissions = this.lambdaQuery()
+                .orderByAsc(SysPermission::getSort)
+                .eq(SysPermission::getHiddenFlag, false)
+                .list();
+        return this.treePermissions(permissions, AdminConsts.SYS_PERMISSION_PARENT_ID);
+    }
+
     /**
      * 递归获取树形结构系统权限列表
      *
      * @author lanjerry
-     * @since 2019/9/5 16:55
+     * @since 2019/12/18 14:35
      * @param permissions 系统权限列表
      * @param parentId 父类id
      * @return java.util.List<org.lanjerry.admin.vo.sys.SysPermissionTreeVO>
@@ -116,14 +110,10 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         List<SysPermissionTreeVO> result = new ArrayList<>();
         permissions.forEach(permission -> {
             if (parentId.equals(permission.getParentId())) {
-                SysPermissionTreeVO permissionVO = BeanCopyUtil.beanCopy(permission, SysPermissionTreeVO.class);
-                if (AdminConsts.SYS_PERMISSION_PARENT_ID.equals(permissionVO.getParentId())) {
-                    permissionVO.setMenus(this.treePermissions(permissions, permission.getId()));
-                    permissionVO.setAuths(null);
-                } else {
-                    permissionVO.setAuths(this.treePermissions(permissions, permission.getId()));
-                    permissionVO.setMenus(null);
-                }
+                SysPermissionTreeVO permissionVO = new SysPermissionTreeVO();
+                permissionVO.setId(permission.getId());
+                permissionVO.setLabel(permission.getName());
+                permissionVO.setChildren(this.treePermissions(permissions, permission.getId()));
                 result.add(permissionVO);
             }
         });

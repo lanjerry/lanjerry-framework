@@ -23,15 +23,15 @@ import lombok.EqualsAndHashCode;
 public class SysPermissionFindVO extends BaseEntity {
 
     /**
-     * 权限id
+     * 权限编号
      */
-    @ApiModelProperty(value = "id", example = "1", position = 10)
+    @ApiModelProperty(value = "权限编号", example = "1", position = 10)
     private Integer id;
 
     /**
-     * 名称
+     * 权限名称
      */
-    @ApiModelProperty(value = "名称", example = "首页", required = true, position = 20)
+    @ApiModelProperty(value = "权限名称", example = "首页", required = true, position = 20)
     private String name;
 
     /**
@@ -104,5 +104,5 @@ public class SysPermissionFindVO extends BaseEntity {
      * 子权限列表
      */
     @ApiModelProperty(value = "子权限列表", position = 140)
-    private List<SysPermissionFindVO> childrens;
+    private List<SysPermissionFindVO> children;
 }

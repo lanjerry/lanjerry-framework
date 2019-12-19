@@ -28,13 +28,13 @@ import lombok.EqualsAndHashCode;
 public class SysLog extends BaseEntity {
 
     /**
-     * 日志id
+     * 日志编号
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
-     * 用户id
+     * 用户编号
      */
     private Integer userId;
 

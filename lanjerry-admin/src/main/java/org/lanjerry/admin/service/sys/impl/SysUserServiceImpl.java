@@ -49,6 +49,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 
@@ -85,7 +86,14 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 .page(new Page<>(dto.getPageNum(), dto.getPageSize()));
         IPage<SysUserPageVO> result = BeanCopyUtil.pageCopy(page, SysUser.class, SysUserPageVO.class);
         result.getRecords().forEach(r -> {
-            r.setRoles(shiroService.getRolesById(r.getId()));
+            // 设置角色名称
+            List<SysUserRole> userRoles = userRoleService.lambdaQuery().select(SysUserRole::getRoleId).eq(SysUserRole::getUserId, r.getId()).list();
+            if (CollUtil.isNotEmpty(userRoles)) {
+                // 获取角色
+                List<Integer> roleIds = userRoles.stream().map(SysUserRole::getRoleId).distinct().collect(Collectors.toList());
+                List<SysRole> roles = roleService.lambdaQuery().select(SysRole::getName).in(SysRole::getId, roleIds).list();
+                r.setRoles(new HashSet(roles.stream().map(SysRole::getName).distinct().collect(Collectors.toList())));
+            }
         });
         return result;
     }
@@ -109,7 +117,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Transactional(rollbackFor = Exception.class)
     public void updateUser(int id, SysUserUpdateDTO dto) {
         SysUser oriUser = this.getById(id);
-        ApiAssert.notNull(oriUser, String.format("id：%s不存在", id));
+        ApiAssert.notNull(oriUser, String.format("用户编号：%s不存在", id));
         SysUser user = BeanCopyUtil.beanCopy(dto, SysUser.class);
         user.setId(id);
         this.updateById(user);
@@ -122,9 +130,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Transactional(rollbackFor = Exception.class)
     public void removeUser(Integer[] ids) {
         for (Integer id : ids) {
-            ApiAssert.isTrue(id != 1, "id为1的账号不允许删除");
+            ApiAssert.isTrue(id != 1, "管理员的账号不允许删除");
             SysUser oriUser = this.getById(id);
-            ApiAssert.notNull(oriUser, String.format("id：%s不存在", id));
+            ApiAssert.notNull(oriUser, String.format("用户编号：%s不存在", id));
             this.removeById(id);
 
             // 删除用户角色
@@ -135,7 +143,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public void changeStatus(int id, SysUserStatusEnum statusEnum) {
         SysUser oriUser = this.getById(id);
-        ApiAssert.notNull(oriUser, String.format("id：%s不存在", id));
+        ApiAssert.notNull(oriUser, String.format("用户编号：%s不存在", id));
         SysUser user = new SysUser();
         user.setStatus(statusEnum);
         user.setId(id);
@@ -145,7 +153,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public void resetPassword(SysUserResetPasswordDTO dto) {
         SysUser oriUser = this.getById(dto.getId());
-        ApiAssert.notNull(oriUser, String.format("id：%s不存在", dto.getId()));
+        ApiAssert.notNull(oriUser, String.format("用户编号：%s不存在", dto.getId()));
         SysUser user = new SysUser();
         user.setPassword(Md5Util.encode(dto.getPassword(), String.valueOf(dto.getId())));
         user.setId(dto.getId());
@@ -171,7 +179,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public SysUserInfoVO getInfoById(int id) {
         SysUser oriUser = this.getById(id);
-        ApiAssert.notNull(oriUser, String.format("id：%s不存在", id));
+        ApiAssert.notNull(oriUser, String.format("用户编号：%s不存在", id));
         SysUserInfoVO result = BeanCopyUtil.beanCopy(oriUser, SysUserInfoVO.class);
         // 设置角色id集
         List<SysUserRole> userRoles = userRoleService.lambdaQuery().select(SysUserRole::getRoleId).eq(SysUserRole::getUserId, id).list();
@@ -183,7 +191,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public SysUserBaseVO info() {
         JwtToken token = (JwtToken) SecurityUtils.getSubject().getPrincipal();
         SysUser oriUser = this.getById(token.getId());
-        ApiAssert.notNull(oriUser, String.format("id：%s不存在", token.getId()));
+        ApiAssert.notNull(oriUser, String.format("用户编号：%s不存在", token.getId()));
         SysUserBaseVO result = BeanCopyUtil.beanCopy(oriUser, SysUserBaseVO.class);
         // 设置角色和权限
         Set<String> roles = new HashSet<>();
@@ -227,10 +235,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             router.setPath(AdminConsts.SYS_PERMISSION_PARENT_ID.equals(p.getParentId()) && !p.getFrameFlag() ? "/".concat(p.getPath()) : p.getPath());
             router.setComponent(StrUtil.isNotBlank(p.getComponent()) ? p.getComponent() : "Layout");
             router.setMeta(SysUserRouterMetaVO.builder().title(p.getName()).icon(p.getIcon()).build());
-            if (PermissionTypeEnum.MENU.equals(p.getType()) && CollectionUtil.isNotEmpty(p.getChildrens())) {
+            if (PermissionTypeEnum.MENU.equals(p.getType()) && CollectionUtil.isNotEmpty(p.getChildren())) {
                 router.setAlwaysShow(true);
                 router.setRedirect("noRedirect");
-                router.setChildren(this.buildRouters(p.getChildrens()));
+                router.setChildren(this.buildRouters(p.getChildren()));
             }
             result.add(router);
         });

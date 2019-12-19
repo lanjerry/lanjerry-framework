@@ -21,9 +21,9 @@ import lombok.EqualsAndHashCode;
 public class SysPermissionUpdateDTO extends BaseEntity {
 
     /**
-     * 名称
+     * 权限名称
      */
-    @NotBlank(message = "名称不能为空")
+    @NotBlank(message = "权限名称不能为空")
     @ApiModelProperty(value = "名称", example = "首页", required = true, position = 10)
     private String name;
 

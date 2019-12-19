@@ -20,26 +20,26 @@ import lombok.EqualsAndHashCode;
 public class SysUserPageDTO extends SplitPage {
 
     /**
-     * 系统用户id
+     * 用户编号
      */
-    @ApiModelProperty(value = "id", example = "1", position = 10)
+    @ApiModelProperty(value = "用户编号", example = "1", position = 10)
     private Integer id;
 
     /**
      * 帐号
      */
-    @ApiModelProperty(value = "帐号", example = "admin", position = 10)
+    @ApiModelProperty(value = "帐号", example = "admin", position = 20)
     private String account;
 
     /**
      * 昵称
      */
-    @ApiModelProperty(value = "昵称", example = "管理员", position = 20)
+    @ApiModelProperty(value = "昵称", example = "管理员", position = 30)
     private String name;
 
     /**
      * 状态 1.正常 2.禁用
      */
-    @ApiModelProperty(value = "状态 1.正常（NORMAL） 2.禁用（LOCKING）", example = "NORMAL", position = 30)
+    @ApiModelProperty(value = "状态 1.正常（NORMAL） 2.禁用（LOCKING）", example = "NORMAL", position = 40)
     private SysUserStatusEnum status;
 }

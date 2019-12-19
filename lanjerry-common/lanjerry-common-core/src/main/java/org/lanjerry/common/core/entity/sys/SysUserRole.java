@@ -12,7 +12,6 @@ import com.baomidou.mybatisplus.annotation.TableName;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
 
 /**
  * <p>
@@ -28,7 +27,7 @@ import lombok.experimental.Accessors;
 public class SysUserRole extends BaseEntity {
 
     /**
-     * 主键id
+     * 编号
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;

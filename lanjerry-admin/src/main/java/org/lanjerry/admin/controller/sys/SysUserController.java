@@ -69,7 +69,7 @@ public class SysUserController {
     @RequiresPermissions("sys:user:update")
     @SysLog("更新系统用户")
     @ApiOperation(value = "更新系统用户", position = 30)
-    public ApiResult updateUser(@PathVariable("id") @ApiParam(value = "id", required = true) Integer id, @RequestBody @Validated @ApiParam(value = "系统用户更新参数", required = true) SysUserUpdateDTO dto) {
+    public ApiResult updateUser(@PathVariable("id") @ApiParam(value = "用户编号", required = true) Integer id, @RequestBody @Validated @ApiParam(value = "系统用户更新参数", required = true) SysUserUpdateDTO dto) {
         userService.updateUser(id, dto);
         return ApiResult.success();
     }
@@ -78,7 +78,7 @@ public class SysUserController {
     @RequiresPermissions("sys:user:remove")
     @SysLog("删除系统用户")
     @ApiOperation(value = "删除系统用户", position = 40)
-    public ApiResult removeUser(@PathVariable("ids") @ApiParam(value = "ids", required = true) Integer[] ids) {
+    public ApiResult removeUser(@PathVariable("ids") @ApiParam(value = "用户编号数组", required = true) Integer[] ids) {
         userService.removeUser(ids);
         return ApiResult.success();
     }
@@ -87,7 +87,7 @@ public class SysUserController {
     @RequiresPermissions("sys:user:lock")
     @SysLog("锁定系统用户")
     @ApiOperation(value = "锁定系统用户", position = 50)
-    public ApiResult lock(@PathVariable("id") @ApiParam(value = "id", required = true) Integer id) {
+    public ApiResult lock(@PathVariable("id") @ApiParam(value = "用户编号", required = true) Integer id) {
         userService.changeStatus(id, SysUserStatusEnum.LOCKING);
         return ApiResult.success();
     }
@@ -96,7 +96,7 @@ public class SysUserController {
     @RequiresPermissions("sys:user:unlock")
     @SysLog("解锁系统用户")
     @ApiOperation(value = "解锁系统用户", position = 60)
-    public ApiResult unlock(@PathVariable("id") @ApiParam(value = "id", required = true) Integer id) {
+    public ApiResult unlock(@PathVariable("id") @ApiParam(value = "用户编号", required = true) Integer id) {
         userService.changeStatus(id, SysUserStatusEnum.NORMAL);
         return ApiResult.success();
     }
@@ -117,19 +117,19 @@ public class SysUserController {
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "根据id查询用户信息", position = 90)
-    public ApiResult<SysUserInfoVO> getInfoById(@PathVariable("id") @ApiParam(value = "id", required = true) Integer id) {
+    @ApiOperation(value = "根据用户编号查询用户信息", position = 90)
+    public ApiResult<SysUserInfoVO> getInfoById(@PathVariable("id") @ApiParam(value = "用户编号", required = true) Integer id) {
         return ApiResult.success(userService.getInfoById(id));
     }
 
     @GetMapping("/info")
-    @ApiOperation(value = "查询用户信息", position = 90)
+    @ApiOperation(value = "查询用户信息", position = 100)
     public ApiResult<SysUserBaseVO> info() {
         return ApiResult.success(userService.info());
     }
 
     @GetMapping("/router")
-    @ApiOperation(value = "系统用户路由", position = 100)
+    @ApiOperation(value = "系统用户路由", position = 110)
     public ApiResult<List<SysUserRouterVO>> router() {
         return ApiResult.success(userService.router());
     }

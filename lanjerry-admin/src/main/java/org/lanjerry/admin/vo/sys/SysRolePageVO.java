@@ -21,26 +21,32 @@ import lombok.EqualsAndHashCode;
 public class SysRolePageVO extends BaseEntity {
 
     /**
-     * 角色id
+     * 角色编号
      */
-    @ApiModelProperty(value = "id", example = "1", position = 10)
+    @ApiModelProperty(value = "角色编号", example = "1", position = 10)
     private Integer id;
 
     /**
-     * 名称
+     * 角色名称
      */
-    @ApiModelProperty(value = "名称", example = "销售", position = 20)
+    @ApiModelProperty(value = "角色名称", example = "销售", position = 20)
     private String name;
+
+    /**
+     * 权限标识
+     */
+    @ApiModelProperty(value = "权限标识", example = "admin", position = 30)
+    private String permissionTag;
 
     /**
      * 创建人
      */
-    @ApiModelProperty(value = "创建人", example = "管理员", position = 30)
+    @ApiModelProperty(value = "创建人", example = "管理员", position = 40)
     private String creatorName;
 
     /**
      * 创建时间
      */
-    @ApiModelProperty(value = "创建时间", example = "2018-11-22T15:57:53", position = 40)
+    @ApiModelProperty(value = "创建时间", example = "2018-11-22T15:57:53", position = 50)
     private LocalDateTime createdTime;
 }

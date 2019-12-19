@@ -48,12 +48,6 @@ public class SysPermissionController {
         return ApiResult.success(permissionService.listPermissions());
     }
 
-    @GetMapping("/tree")
-    @ApiOperation(value = "获取树形结构系统权限列表", position = 20)
-    public ApiResult<List<SysPermissionTreeVO>> treePermissions() {
-        return ApiResult.success(permissionService.treePermissions());
-    }
-
     @PostMapping
     @RequiresPermissions("sys:permission:save")
     @SysLog("新增系统权限")
@@ -79,6 +73,12 @@ public class SysPermissionController {
     public ApiResult removePermission(@PathVariable("id") @ApiParam(value = "id", required = true) Integer id) {
         this.permissionService.removePermission(id);
         return ApiResult.success();
+    }
+
+    @GetMapping("/tree")
+    @ApiOperation(value = "获取树形结构系统权限列表", position = 20)
+    public ApiResult<List<SysPermissionTreeVO>> treePermissions() {
+        return ApiResult.success(permissionService.treePermissions());
     }
 }
 

@@ -22,10 +22,10 @@ import lombok.EqualsAndHashCode;
 public class SysUserResetPasswordDTO extends BaseEntity {
 
     /**
-     * 帐号
+     * 用户编号
      */
-    @NotNull(message = "id不能为空")
-    @ApiModelProperty(value = "id", example = "1", required = true, position = 10)
+    @NotNull(message = "用户编号不能为空")
+    @ApiModelProperty(value = "用户编号", example = "1", required = true, position = 10)
     private Integer id;
 
     /**

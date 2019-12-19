@@ -23,24 +23,24 @@ import lombok.EqualsAndHashCode;
 public class SysPermissionSaveDTO extends BaseEntity {
 
     /**
-     * 名称
+     * 权限名称
      */
-    @NotBlank(message = "名称不能为空")
-    @ApiModelProperty(value = "名称", example = "首页", required = true, position = 10)
+    @NotBlank(message = "权限名称不能为空")
+    @ApiModelProperty(value = "权限名称", example = "首页", required = true, position = 10)
     private String name;
 
     /**
      * 父类id，当值等于0时，代表的是一级的菜单
      */
     @NotNull(message = "父类id不能为空")
-    @ApiModelProperty(value = "父类id，当值等于0时，代表的是一级的菜单", example = "0", position = 20)
+    @ApiModelProperty(value = "父类id，当值等于0时，代表的是一级的菜单", example = "0", required = true, position = 20)
     private Integer parentId;
 
     /**
      * 类型 1.菜单 2.功能
      */
     @NotNull(message = "类型不能为空")
-    @ApiModelProperty(value = "类型 1.菜单（MENU） 2.功能（AUTH）",example = "MENU", position = 30)
+    @ApiModelProperty(value = "类型 1.菜单（MENU） 2.功能（AUTH）", example = "MENU", required = true, position = 30)
     private PermissionTypeEnum type;
 
     /**
