@@ -16,6 +16,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.lanjerry.common.core.constant.CommonConsts;
 import org.lanjerry.common.core.constant.JsonConsts;
+import org.lanjerry.common.core.enums.sys.SysLogStatusEnum;
 import org.lanjerry.common.core.exception.ApiException;
 import org.lanjerry.common.core.util.BigDecimalUtil;
 import org.lanjerry.common.log.annotation.SysLog;
@@ -62,6 +63,7 @@ public class SysLogAspect {
 
         // 异步保存系统日志
         SysLogSaveDTO log = setLog(joinPoint);
+        log.setStatus(SysLogStatusEnum.SUCCESS);
         log.setExecutionTime(BigDecimalUtil.div(new BigDecimal(endTime - startTime), new BigDecimal("1000"), 2));
         publisher.publishEvent(new SysLogEvent(log));
 
@@ -73,6 +75,7 @@ public class SysLogAspect {
     public void afterThrowing(JoinPoint joinPoint, Throwable ex) {
         // 异步保存系统日志
         SysLogSaveDTO log = setLog(joinPoint);
+        log.setStatus(SysLogStatusEnum.FAIL);
         log.setExceptionMsg(ex instanceof ApiException ? ((ApiException) ex).getMsg() : ex.getMessage());
         publisher.publishEvent(new SysLogEvent(log));
     }
@@ -87,7 +90,7 @@ public class SysLogAspect {
 
         log.setAjaxFlag(ajax(request));
         log.setRequestUri(URLUtil.getPath(request.getRequestURI()));
-        log.setHttpMethod(request.getMethod());
+        log.setRequestMethod(request.getMethod());
         log.setClassMethod(joinPoint.getSignature().getDeclaringTypeName()
                 + "." + joinPoint.getSignature().getName() + "()");
         log.setActionName(getMethodSysLogsAnnotationValue(joinPoint));

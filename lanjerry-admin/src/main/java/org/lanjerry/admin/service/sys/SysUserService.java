@@ -38,6 +38,16 @@ public interface SysUserService extends IService<SysUser> {
     IPage<SysUserPageVO> pageUsers(SysUserPageDTO dto);
 
     /**
+     * 根据id查询系统用户信息
+     *
+     * @author lanjerry
+     * @since 2019/12/17 10:59
+     * @param id 用户编号
+     * @return org.lanjerry.admin.vo.sys.SysUserInfoVO
+     */
+    SysUserInfoVO getInfoById(int id);
+
+    /**
      * 新增系统用户
      *
      * @author lanjerry
@@ -63,7 +73,7 @@ public interface SysUserService extends IService<SysUser> {
      * @since 2019/9/5 11:53
      * @param ids 用户编号集
      */
-    void removeUser(Integer[] ids);
+    void removeUsers(Integer[] ids);
 
     /**
      * 锁定或者解锁系统用户
@@ -93,16 +103,6 @@ public interface SysUserService extends IService<SysUser> {
      * @return java.lang.String
      */
     String login(SysUserLoginDTO dto);
-
-    /**
-     * 根据id查询系统用户信息
-     *
-     * @author lanjerry
-     * @since 2019/12/17 10:59
-     * @param id 用户编号
-     * @return org.lanjerry.admin.vo.sys.SysUserInfoVO
-     */
-    SysUserInfoVO getInfoById(int id);
 
     /**
      * 查询系统用户信息

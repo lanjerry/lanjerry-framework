@@ -20,7 +20,7 @@ import org.lanjerry.common.core.entity.sys.SysRole;
 import org.lanjerry.common.core.entity.sys.SysRolePermission;
 import org.lanjerry.common.core.entity.sys.SysUser;
 import org.lanjerry.common.core.entity.sys.SysUserRole;
-import org.lanjerry.common.core.enums.PermissionTypeEnum;
+import org.lanjerry.common.core.enums.sys.SysPermissionTypeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -123,7 +123,7 @@ public class ShiroServiceImpl implements ShiroService {
             if (CollUtil.isNotEmpty(rolePermissions)) {
                 // 获取权限标识
                 List<Integer> permissionIds = rolePermissions.stream().map(SysRolePermission::getPermissionId).distinct().collect(Collectors.toList());
-                List<SysPermission> permissions = permissionService.lambdaQuery().select(SysPermission::getPermission).eq(SysPermission::getType, PermissionTypeEnum.AUTH).in(SysPermission::getId, permissionIds).list();
+                List<SysPermission> permissions = permissionService.lambdaQuery().select(SysPermission::getPermission).eq(SysPermission::getType, SysPermissionTypeEnum.BUTTON).in(SysPermission::getId, permissionIds).list();
                 result = new HashSet(permissions.stream().map(SysPermission::getPermission).distinct().collect(Collectors.toList()));
             }
         }

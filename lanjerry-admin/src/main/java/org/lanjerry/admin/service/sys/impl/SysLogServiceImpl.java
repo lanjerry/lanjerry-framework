@@ -1,8 +1,11 @@
 package org.lanjerry.admin.service.sys.impl;
 
+import java.util.Arrays;
+
 import org.lanjerry.admin.dto.sys.SysLogPageDTO;
 import org.lanjerry.admin.mapper.sys.SysLogMapper;
 import org.lanjerry.admin.service.sys.SysLogService;
+import org.lanjerry.admin.vo.sys.SysLogInfoVO;
 import org.lanjerry.admin.vo.sys.SysLogPageVO;
 import org.lanjerry.common.core.entity.sys.SysLog;
 import org.lanjerry.common.core.util.BeanCopyUtil;
@@ -28,12 +31,22 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
     @Override
     public IPage<SysLogPageVO> pageLogs(SysLogPageDTO dto) {
         IPage<SysLog> page = this.lambdaQuery().orderByDesc(SysLog::getId)
-                .eq(dto.getUserId() != null, SysLog::getUserId, dto.getUserId())
+                .like(StrUtil.isNotBlank(dto.getUserAccount()), SysLog::getUserAccount, dto.getUserAccount())
                 .like(StrUtil.isNotBlank(dto.getIpAddress()), SysLog::getIpAddress, dto.getIpAddress())
                 .like(StrUtil.isNotBlank(dto.getRequestUri()), SysLog::getRequestUri, dto.getRequestUri())
                 .like(StrUtil.isNotBlank(dto.getActionName()), SysLog::getActionName, dto.getActionName())
                 .page(new Page<>(dto.getPageNum(), dto.getPageSize()));
         IPage<SysLogPageVO> result = BeanCopyUtil.pageCopy(page, SysLog.class, SysLogPageVO.class);
         return result;
+    }
+
+    @Override
+    public SysLogInfoVO getInfoById(int id) {
+        return BeanCopyUtil.beanCopy(this.getById(id), SysLogInfoVO.class);
+    }
+
+    @Override
+    public void removeLogs(Integer[] ids) {
+        this.removeByIds(Arrays.asList(ids));
     }
 }

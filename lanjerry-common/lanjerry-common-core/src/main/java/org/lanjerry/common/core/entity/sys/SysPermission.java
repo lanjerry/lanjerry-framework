@@ -3,7 +3,8 @@ package org.lanjerry.common.core.entity.sys;
 import java.time.LocalDateTime;
 
 import org.lanjerry.common.core.bean.BaseEntity;
-import org.lanjerry.common.core.enums.PermissionTypeEnum;
+import org.lanjerry.common.core.enums.sys.SysPermissionTypeEnum;
+import org.lanjerry.common.core.enums.sys.SysPermissionStatusEnum;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -47,7 +48,7 @@ public class SysPermission extends BaseEntity {
     /**
      * 类型 1.菜单 2.按钮
      */
-    private PermissionTypeEnum type;
+    private SysPermissionTypeEnum type;
 
     /**
      * 路由地址
@@ -75,9 +76,9 @@ public class SysPermission extends BaseEntity {
     private Integer sort;
 
     /**
-     * 是否隐藏 0.否 1.是
+     * 状态 1.显示 2.隐藏
      */
-    private Boolean hiddenFlag;
+    private SysPermissionStatusEnum status;
 
     /**
      * 是否外链 0.否 1.是

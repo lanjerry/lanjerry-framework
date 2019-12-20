@@ -3,9 +3,12 @@ package org.lanjerry.admin.controller.sys;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.lanjerry.admin.dto.sys.SysLogPageDTO;
 import org.lanjerry.admin.service.sys.SysLogService;
+import org.lanjerry.admin.vo.sys.SysLogInfoVO;
 import org.lanjerry.admin.vo.sys.SysLogPageVO;
 import org.lanjerry.common.core.bean.ApiResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,7 +38,21 @@ public class SysLogController {
     @GetMapping("/page")
     @RequiresPermissions("sys:log:page")
     @ApiOperation(value = "分页获取系统日志列表", position = 10)
-    public ApiResult<IPage<SysLogPageVO>> pageUsers(@ApiParam(value = "系统日志列表查询参数", required = true) SysLogPageDTO dto) {
+    public ApiResult<IPage<SysLogPageVO>> pageLogs(@ApiParam(value = "系统日志列表查询参数", required = true) SysLogPageDTO dto) {
         return ApiResult.success(logService.pageLogs(dto));
+    }
+
+    @GetMapping("/{id}")
+    @ApiOperation(value = "根据日志编号查询日志信息", position = 20)
+    public ApiResult<SysLogInfoVO> getInfoById(@PathVariable("id") @ApiParam(value = "日志编号", required = true) Integer id) {
+        return ApiResult.success(logService.getInfoById(id));
+    }
+
+    @DeleteMapping("/{id}")
+    @RequiresPermissions("sys:log:remove")
+    @ApiOperation(value = "删除系统日志", position = 20)
+    public ApiResult removeLogs(@PathVariable("id") @ApiParam(value = "日志编号", required = true) Integer[] ids) {
+        logService.removeLogs(ids);
+        return ApiResult.success();
     }
 }

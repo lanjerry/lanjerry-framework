@@ -3,10 +3,10 @@ package org.lanjerry.admin.controller.sys;
 import java.util.List;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.lanjerry.admin.dto.sys.SysPermissionSaveDTO;
-import org.lanjerry.admin.dto.sys.SysPermissionUpdateDTO;
+import org.lanjerry.admin.dto.sys.SysPermissionSaveOrUpdateDTO;
 import org.lanjerry.admin.service.sys.SysPermissionService;
 import org.lanjerry.admin.vo.sys.SysPermissionFindVO;
+import org.lanjerry.admin.vo.sys.SysPermissionInfoVO;
 import org.lanjerry.admin.vo.sys.SysPermissionTreeVO;
 import org.lanjerry.common.core.bean.ApiResult;
 import org.lanjerry.common.log.annotation.SysLog;
@@ -48,11 +48,17 @@ public class SysPermissionController {
         return ApiResult.success(permissionService.listPermissions());
     }
 
+    @GetMapping("/{id}")
+    @ApiOperation(value = "根据权限编号查询权限信息", position = 20)
+    public ApiResult<SysPermissionInfoVO> getInfoById(@PathVariable("id") @ApiParam(value = "权限编号", required = true) Integer id) {
+        return ApiResult.success(permissionService.getInfoById(id));
+    }
+
     @PostMapping
     @RequiresPermissions("sys:permission:save")
     @SysLog("新增系统权限")
     @ApiOperation(value = "新增系统权限", position = 30)
-    public ApiResult savePermission(@RequestBody @Validated @ApiParam(value = "系统权限新增参数", required = true) SysPermissionSaveDTO dto) {
+    public ApiResult savePermission(@RequestBody @Validated @ApiParam(value = "系统权限新增参数", required = true) SysPermissionSaveOrUpdateDTO dto) {
         this.permissionService.savePermission(dto);
         return ApiResult.success();
     }
@@ -61,7 +67,7 @@ public class SysPermissionController {
     @RequiresPermissions("sys:permission:update")
     @SysLog("更新系统权限")
     @ApiOperation(value = "更新系统权限", position = 40)
-    public ApiResult updatePermission(@PathVariable("id") @ApiParam(value = "id", required = true) Integer id, @RequestBody @Validated @ApiParam(value = "系统权限更新参数", required = true) SysPermissionUpdateDTO dto) {
+    public ApiResult updatePermission(@PathVariable("id") @ApiParam(value = "id", required = true) Integer id, @RequestBody @Validated @ApiParam(value = "系统权限更新参数", required = true) SysPermissionSaveOrUpdateDTO dto) {
         this.permissionService.updatePermission(id, dto);
         return ApiResult.success();
     }
@@ -76,7 +82,7 @@ public class SysPermissionController {
     }
 
     @GetMapping("/tree")
-    @ApiOperation(value = "获取树形结构系统权限列表", position = 20)
+    @ApiOperation(value = "获取树形结构系统权限列表", position = 60)
     public ApiResult<List<SysPermissionTreeVO>> treePermissions() {
         return ApiResult.success(permissionService.treePermissions());
     }

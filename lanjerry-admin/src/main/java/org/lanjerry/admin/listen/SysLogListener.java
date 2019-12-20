@@ -39,7 +39,10 @@ public class SysLogListener {
         SysLogSaveDTO dto = (SysLogSaveDTO) event.getSource();
         SysLog sysLog = BeanCopyUtil.beanCopy(dto, SysLog.class);
         JwtToken token = (JwtToken) SecurityUtils.getSubject().getPrincipal();
-        sysLog.setUserId(token != null ? token.getId() : 0);
+        if (token != null) {
+            sysLog.setUserId(token.getId());
+            sysLog.setUserAccount(token.getAccount());
+        }
         logService.save(sysLog);
         log.info("远程操作日志记录成功：{}", dto);
     }

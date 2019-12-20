@@ -56,10 +56,16 @@ public class SysUserController {
         return ApiResult.success(userService.pageUsers(dto));
     }
 
+    @GetMapping("/{id}")
+    @ApiOperation(value = "根据用户编号查询用户信息", position = 20)
+    public ApiResult<SysUserInfoVO> getInfoById(@PathVariable("id") @ApiParam(value = "用户编号", required = true) Integer id) {
+        return ApiResult.success(userService.getInfoById(id));
+    }
+
     @PostMapping
     @RequiresPermissions("sys:user:save")
     @SysLog("新增系统用户")
-    @ApiOperation(value = "新增系统用户", position = 20)
+    @ApiOperation(value = "新增系统用户", position = 30)
     public ApiResult saveUser(@RequestBody @Validated @ApiParam(value = "系统用户新增参数", required = true) SysUserSaveDTO dto) {
         userService.saveUser(dto);
         return ApiResult.success();
@@ -68,7 +74,7 @@ public class SysUserController {
     @PutMapping("/{id}")
     @RequiresPermissions("sys:user:update")
     @SysLog("更新系统用户")
-    @ApiOperation(value = "更新系统用户", position = 30)
+    @ApiOperation(value = "更新系统用户", position = 40)
     public ApiResult updateUser(@PathVariable("id") @ApiParam(value = "用户编号", required = true) Integer id, @RequestBody @Validated @ApiParam(value = "系统用户更新参数", required = true) SysUserUpdateDTO dto) {
         userService.updateUser(id, dto);
         return ApiResult.success();
@@ -77,16 +83,16 @@ public class SysUserController {
     @DeleteMapping("/{ids}")
     @RequiresPermissions("sys:user:remove")
     @SysLog("删除系统用户")
-    @ApiOperation(value = "删除系统用户", position = 40)
-    public ApiResult removeUser(@PathVariable("ids") @ApiParam(value = "用户编号数组", required = true) Integer[] ids) {
-        userService.removeUser(ids);
+    @ApiOperation(value = "删除系统用户", position = 50)
+    public ApiResult removeUsers(@PathVariable("ids") @ApiParam(value = "用户编号数组", required = true) Integer[] ids) {
+        userService.removeUsers(ids);
         return ApiResult.success();
     }
 
     @PutMapping("/lock/{id}")
     @RequiresPermissions("sys:user:lock")
     @SysLog("锁定系统用户")
-    @ApiOperation(value = "锁定系统用户", position = 50)
+    @ApiOperation(value = "锁定系统用户", position = 60)
     public ApiResult lock(@PathVariable("id") @ApiParam(value = "用户编号", required = true) Integer id) {
         userService.changeStatus(id, SysUserStatusEnum.LOCKING);
         return ApiResult.success();
@@ -95,7 +101,7 @@ public class SysUserController {
     @PutMapping("/unlock/{id}")
     @RequiresPermissions("sys:user:unlock")
     @SysLog("解锁系统用户")
-    @ApiOperation(value = "解锁系统用户", position = 60)
+    @ApiOperation(value = "解锁系统用户", position = 70)
     public ApiResult unlock(@PathVariable("id") @ApiParam(value = "用户编号", required = true) Integer id) {
         userService.changeStatus(id, SysUserStatusEnum.NORMAL);
         return ApiResult.success();
@@ -104,22 +110,16 @@ public class SysUserController {
     @PutMapping("/resetPassword")
     @RequiresPermissions("sys:user:resetPassword")
     @SysLog("重置系统用户密码")
-    @ApiOperation(value = "重置系统用户密码", position = 70)
+    @ApiOperation(value = "重置系统用户密码", position = 80)
     public ApiResult resetPassword(@RequestBody @Validated @ApiParam(value = "系统用户重置密码参数", required = true) SysUserResetPasswordDTO dto) {
         userService.resetPassword(dto);
         return ApiResult.success();
     }
 
     @PostMapping("/login")
-    @ApiOperation(value = "系统用户登录", position = 80)
+    @ApiOperation(value = "系统用户登录", position = 90)
     public ApiResult login(@RequestBody @Validated @ApiParam(value = "系统用户登录参数", required = true) SysUserLoginDTO dto) {
         return ApiResult.success(userService.login(dto));
-    }
-
-    @GetMapping("/{id}")
-    @ApiOperation(value = "根据用户编号查询用户信息", position = 90)
-    public ApiResult<SysUserInfoVO> getInfoById(@PathVariable("id") @ApiParam(value = "用户编号", required = true) Integer id) {
-        return ApiResult.success(userService.getInfoById(id));
     }
 
     @GetMapping("/info")

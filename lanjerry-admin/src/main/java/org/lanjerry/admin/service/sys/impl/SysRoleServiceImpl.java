@@ -19,7 +19,7 @@ import org.lanjerry.admin.vo.sys.SysUserRoleVO;
 import org.lanjerry.common.core.entity.sys.SysPermission;
 import org.lanjerry.common.core.entity.sys.SysRole;
 import org.lanjerry.common.core.entity.sys.SysRolePermission;
-import org.lanjerry.common.core.enums.PermissionTypeEnum;
+import org.lanjerry.common.core.enums.sys.SysPermissionTypeEnum;
 import org.lanjerry.common.core.util.ApiAssert;
 import org.lanjerry.common.core.util.BeanCopyUtil;
 import org.springframework.stereotype.Service;
@@ -89,7 +89,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void removeRole(Integer[] ids) {
+    public void removeRoles(Integer[] ids) {
         for (Integer id : ids) {
             SysRole oriRole = this.getById(id);
             ApiAssert.notNull(oriRole, String.format("id：%s不存在", id));
@@ -116,7 +116,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         List<SysRolePermission> rolePermissions = rolePermissionService.lambdaQuery().select(SysRolePermission::getPermissionId).eq(SysRolePermission::getRoleId, id).list();
         List<Integer> permissionIds = rolePermissions.stream().map(SysRolePermission::getPermissionId).distinct().collect(Collectors.toList());
         if (CollUtil.isNotEmpty(permissionIds)) {
-            List<SysPermission> permissions = permissionService.lambdaQuery().select(SysPermission::getId).eq(SysPermission::getType, PermissionTypeEnum.AUTH).in(SysPermission::getId, permissionIds).list();
+            List<SysPermission> permissions = permissionService.lambdaQuery().select(SysPermission::getId).eq(SysPermission::getType, SysPermissionTypeEnum.BUTTON).in(SysPermission::getId, permissionIds).list();
             result = permissions.stream().map(SysPermission::getId).distinct().collect(Collectors.toList());
         }
         return result;

@@ -4,19 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import org.lanjerry.admin.dto.sys.SysPermissionSaveDTO;
-import org.lanjerry.admin.dto.sys.SysPermissionUpdateDTO;
+import org.lanjerry.admin.dto.sys.SysPermissionSaveOrUpdateDTO;
 import org.lanjerry.admin.mapper.sys.SysPermissionMapper;
 import org.lanjerry.admin.service.sys.SysPermissionService;
+import org.lanjerry.admin.service.sys.SysRolePermissionService;
 import org.lanjerry.admin.util.AdminConsts;
 import org.lanjerry.admin.util.RedisUtil;
 import org.lanjerry.admin.vo.sys.SysPermissionFindVO;
+import org.lanjerry.admin.vo.sys.SysPermissionInfoVO;
 import org.lanjerry.admin.vo.sys.SysPermissionTreeVO;
 import org.lanjerry.common.core.entity.sys.SysPermission;
-import org.lanjerry.common.core.enums.PermissionTypeEnum;
+import org.lanjerry.common.core.entity.sys.SysRolePermission;
+import org.lanjerry.common.core.enums.sys.SysPermissionStatusEnum;
+import org.lanjerry.common.core.enums.sys.SysPermissionTypeEnum;
 import org.lanjerry.common.core.util.ApiAssert;
 import org.lanjerry.common.core.util.BeanCopyUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -32,6 +37,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 @Service
 public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysPermission> implements SysPermissionService {
 
+    @Autowired
+    private SysRolePermissionService rolePermissionService;
+
     @Override
     public List<SysPermissionFindVO> listPermissions() {
         List<SysPermission> listPermissions = this.lambdaQuery().orderByAsc(SysPermission::getType).orderByAsc(SysPermission::getSort).list();
@@ -39,8 +47,8 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     }
 
     @Override
-    public void savePermission(SysPermissionSaveDTO dto) {
-        if (PermissionTypeEnum.MENU.equals(dto.getType())) {
+    public void savePermission(SysPermissionSaveOrUpdateDTO dto) {
+        if (SysPermissionTypeEnum.MENU.equals(dto.getType())) {
             ApiAssert.isTrue(this.count(Wrappers.<SysPermission>lambdaQuery().eq(SysPermission::getName, dto.getName())) == 0, String.format("名称：%s已存在", dto.getName()));
         }
         SysPermission permission = BeanCopyUtil.beanCopy(dto, SysPermission.class);
@@ -48,10 +56,10 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     }
 
     @Override
-    public void updatePermission(int id, SysPermissionUpdateDTO dto) {
+    public void updatePermission(int id, SysPermissionSaveOrUpdateDTO dto) {
         SysPermission oriPermission = this.getById(id);
         ApiAssert.notNull(oriPermission, String.format("id：%s不存在", id));
-        if (PermissionTypeEnum.MENU.equals(oriPermission.getType())) {
+        if (SysPermissionTypeEnum.MENU.equals(oriPermission.getType())) {
             ApiAssert.isTrue(this.count(Wrappers.<SysPermission>lambdaQuery().eq(SysPermission::getName, dto.getName()).ne(SysPermission::getId, id)) == 0, String.format("名称：%s已存在", dto.getName()));
         }
         SysPermission permission = BeanCopyUtil.beanCopy(dto, SysPermission.class);
@@ -63,13 +71,14 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void removePermission(int id) {
         SysPermission oriPermission = this.getById(id);
-        ApiAssert.notNull(oriPermission, String.format("id：%s不存在", id));
-        this.removeById(id);
+        ApiAssert.notNull(oriPermission, String.format("权限编号：%s不存在", id));
+        ApiAssert.isTrue(this.count(Wrappers.<SysPermission>lambdaQuery().eq(SysPermission::getParentId, id))==0,String.format("权限：%s存在子菜单，不允许删除", oriPermission.getName()));
+        ApiAssert.isTrue(rolePermissionService.count(Wrappers.<SysRolePermission>lambdaQuery().eq(SysRolePermission::getPermissionId, id))==0,String.format("权限：%s存在已分配，不允许删除", oriPermission.getName()));
 
-        // 删除子权限
-        this.remove(Wrappers.<SysPermission>lambdaQuery().eq(SysPermission::getParentId, id));
+        this.removeById(id);
 
         // 清空redis中的所有系统权限数据
         RedisUtil.remove(new ArrayList<>(Objects.requireNonNull(RedisUtil.keys(AdminConsts.REDIS_SYS_USER_PERMISSION.concat("*")))));
@@ -89,10 +98,17 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     }
 
     @Override
+    public SysPermissionInfoVO getInfoById(int id) {
+        SysPermission oriPermission = this.getById(id);
+        ApiAssert.notNull(oriPermission, String.format("权限编号：%s不存在", id));
+        return BeanCopyUtil.beanCopy(oriPermission, SysPermissionInfoVO.class);
+    }
+
+    @Override
     public List<SysPermissionTreeVO> treePermissions() {
         List<SysPermission> permissions = this.lambdaQuery()
                 .orderByAsc(SysPermission::getSort)
-                .eq(SysPermission::getHiddenFlag, false)
+                .eq(SysPermission::getStatus, SysPermissionStatusEnum.SHOW)
                 .list();
         return this.treePermissions(permissions, AdminConsts.SYS_PERMISSION_PARENT_ID);
     }

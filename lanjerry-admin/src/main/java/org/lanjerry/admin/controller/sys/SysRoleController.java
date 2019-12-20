@@ -51,10 +51,16 @@ public class SysRoleController {
         return ApiResult.success(roleService.pageRoles(dto));
     }
 
+    @GetMapping("/{id}")
+    @ApiOperation(value = "根据角色编号查询角色信息", position = 20)
+    public ApiResult<SysRoleInfoVO> getInfoById(@PathVariable("id") @ApiParam(value = "角色编号", required = true) Integer id) {
+        return ApiResult.success(roleService.getInfoById(id));
+    }
+
     @PostMapping
     @RequiresPermissions("sys:role:save")
     @SysLog("新增系统角色")
-    @ApiOperation(value = "新增系统角色", position = 20)
+    @ApiOperation(value = "新增系统角色", position = 30)
     public ApiResult saveRole(@RequestBody @Validated @ApiParam(value = "系统角色新增参数", required = true) SysRoleSaveOrUpdateDTO dto) {
         roleService.saveRole(dto);
         return ApiResult.success();
@@ -63,7 +69,7 @@ public class SysRoleController {
     @PutMapping("/{id}")
     @RequiresPermissions("sys:role:update")
     @SysLog("更新系统角色")
-    @ApiOperation(value = "更新系统角色", position = 30)
+    @ApiOperation(value = "更新系统角色", position = 40)
     public ApiResult updateRole(@PathVariable("id") @ApiParam(value = "角色编号", required = true) Integer id, @RequestBody @Validated @ApiParam(value = "系统角色更新参数", required = true) SysRoleSaveOrUpdateDTO dto) {
         roleService.updateRole(id, dto);
         return ApiResult.success();
@@ -72,26 +78,20 @@ public class SysRoleController {
     @DeleteMapping("/{id}")
     @RequiresPermissions("sys:role:remove")
     @SysLog("删除系统角色")
-    @ApiOperation(value = "删除系统角色", position = 40)
-    public ApiResult removeRole(@PathVariable("id") @ApiParam(value = "角色编号", required = true) Integer[] ids) {
-        roleService.removeRole(ids);
+    @ApiOperation(value = "删除系统角色", position = 50)
+    public ApiResult removeRoles(@PathVariable("id") @ApiParam(value = "角色编号", required = true) Integer[] ids) {
+        roleService.removeRoles(ids);
         return ApiResult.success();
     }
 
-    @GetMapping("/{id}")
-    @ApiOperation(value = "根据角色编号查询角色信息", position = 90)
-    public ApiResult<SysRoleInfoVO> getInfoById(@PathVariable("id") @ApiParam(value = "角色编号", required = true) Integer id) {
-        return ApiResult.success(roleService.getInfoById(id));
-    }
-
     @GetMapping("/permissionIds/{id}")
-    @ApiOperation(value = "根据角色编号查询角色信息", position = 90)
+    @ApiOperation(value = "根据角色编号查询角色的权限编号集", position = 60)
     public ApiResult<List<Integer>> test(@PathVariable("id") @ApiParam(value = "角色编号", required = true) Integer id) {
         return ApiResult.success(roleService.getPermissionIds(id));
     }
 
     @GetMapping("/list")
-    @ApiOperation(value = "获取系统角色列表", position = 50)
+    @ApiOperation(value = "获取系统角色列表", position = 70)
     public ApiResult<List<SysUserRoleVO>> listRoles() {
         return ApiResult.success(roleService.listRoles());
     }

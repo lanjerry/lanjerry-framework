@@ -38,6 +38,6 @@ public class SysPermissionTreeVO extends BaseEntity {
     /**
      * 子权限列表
      */
-    @ApiModelProperty(value = "按钮列表", position = 30)
+    @ApiModelProperty(value = "子权限列表", position = 30)
     private List<SysPermissionTreeVO> children;
 }

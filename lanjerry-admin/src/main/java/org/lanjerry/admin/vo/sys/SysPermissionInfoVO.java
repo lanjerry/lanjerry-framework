@@ -1,8 +1,5 @@
 package org.lanjerry.admin.vo.sys;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
 import org.lanjerry.common.core.bean.BaseEntity;
 import org.lanjerry.common.core.enums.sys.SysPermissionStatusEnum;
 import org.lanjerry.common.core.enums.sys.SysPermissionTypeEnum;
@@ -13,21 +10,15 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 系统权限列表查询VO
+ * 系统权限信息VO
  * </p>
  *
  * @author lanjerry
- * @since 2019-09-05
+ * @since 2019-12-19
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class SysPermissionFindVO extends BaseEntity {
-
-    /**
-     * 权限编号
-     */
-    @ApiModelProperty(value = "权限编号", example = "1", position = 10)
-    private Integer id;
+public class SysPermissionInfoVO extends BaseEntity {
 
     /**
      * 权限名称
@@ -88,22 +79,4 @@ public class SysPermissionFindVO extends BaseEntity {
      */
     @ApiModelProperty(value = "是否外链 0.否 1.是", example = "false", position = 110)
     private Boolean frameFlag;
-
-    /**
-     * 创建人
-     */
-    @ApiModelProperty(value = "创建人", example = "管理员", position = 120)
-    private String creatorName;
-
-    /**
-     * 创建时间
-     */
-    @ApiModelProperty(value = "创建时间", example = "2018-11-22T15:57:53", position = 130)
-    private LocalDateTime createdTime;
-
-    /**
-     * 子权限列表
-     */
-    @ApiModelProperty(value = "子权限列表", position = 140)
-    private List<SysPermissionFindVO> children;
 }

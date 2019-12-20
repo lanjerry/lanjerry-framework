@@ -2,9 +2,9 @@ package org.lanjerry.admin.service.sys;
 
 import java.util.List;
 
-import org.lanjerry.admin.dto.sys.SysPermissionSaveDTO;
-import org.lanjerry.admin.dto.sys.SysPermissionUpdateDTO;
+import org.lanjerry.admin.dto.sys.SysPermissionSaveOrUpdateDTO;
 import org.lanjerry.admin.vo.sys.SysPermissionFindVO;
+import org.lanjerry.admin.vo.sys.SysPermissionInfoVO;
 import org.lanjerry.admin.vo.sys.SysPermissionTreeVO;
 import org.lanjerry.common.core.entity.sys.SysPermission;
 
@@ -30,13 +30,23 @@ public interface SysPermissionService extends IService<SysPermission> {
     List<SysPermissionFindVO> listPermissions();
 
     /**
+     * 根据权限编号查询系统权限信息
+     *
+     * @author lanjerry
+     * @since 2019/12/19 17:44
+     * @param id 权限编号
+     * @return org.lanjerry.admin.vo.sys.SysPermissionInfoVO
+     */
+    SysPermissionInfoVO getInfoById(int id);
+
+    /**
      * 新增系统权限
      *
      * @author lanjerry
      * @since 2019/9/5 14:56
      * @param dto 系统权限新增参数
      */
-    void savePermission(SysPermissionSaveDTO dto);
+    void savePermission(SysPermissionSaveOrUpdateDTO dto);
 
     /**
      * 更新系统权限
@@ -46,7 +56,7 @@ public interface SysPermissionService extends IService<SysPermission> {
      * @param id 权限编号
      * @param dto 系统权限更新参数
      */
-    void updatePermission(int id, SysPermissionUpdateDTO dto);
+    void updatePermission(int id, SysPermissionSaveOrUpdateDTO dto);
 
     /**
      * 删除系统权限

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import org.lanjerry.common.core.bean.BaseEntity;
+import org.lanjerry.common.core.enums.sys.SysLogStatusEnum;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -39,6 +40,11 @@ public class SysLog extends BaseEntity {
     private Integer userId;
 
     /**
+     * 用户账号
+     */
+    private String userAccount;
+
+    /**
      * ip地址
      */
     private String ipAddress;
@@ -59,12 +65,12 @@ public class SysLog extends BaseEntity {
     private String requestParams;
 
     /**
-     * http方法
+     * 请求方式
      */
-    private String httpMethod;
+    private String requestMethod;
 
     /**
-     * 调用类的方法
+     * 操作方法
      */
     private String classMethod;
 
@@ -72,6 +78,11 @@ public class SysLog extends BaseEntity {
      * 动作名称
      */
     private String actionName;
+
+    /**
+     * 状态 1.成功 2.失败
+     */
+    private SysLogStatusEnum status;
 
     /**
      * 执行时间（秒）

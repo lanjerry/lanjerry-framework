@@ -33,6 +33,16 @@ public interface SysRoleService extends IService<SysRole> {
     IPage<SysRolePageVO> pageRoles(SysRolePageDTO dto);
 
     /**
+     * 根据角色编号查询系统角色信息
+     *
+     * @author lanjerry
+     * @since 2019/12/19 9:34
+     * @param id 角色编号
+     * @return org.lanjerry.admin.vo.sys.SysRoleInfoVO
+     */
+    SysRoleInfoVO getInfoById(int id);
+
+    /**
      * 新增系统角色
      *
      * @author lanjerry
@@ -58,17 +68,7 @@ public interface SysRoleService extends IService<SysRole> {
      * @since 2019/9/5 11:55
      * @param ids 角色编号集
      */
-    void removeRole(Integer[] ids);
-
-    /**
-     * 根据角色编号查询系统角色信息
-     *
-     * @author lanjerry
-     * @since 2019/12/19 9:34
-     * @param id 角色编号
-     * @return org.lanjerry.admin.vo.sys.SysRoleInfoVO
-     */
-    SysRoleInfoVO getInfoById(int id);
+    void removeRoles(Integer[] ids);
 
     /**
      * 根据角色编号查询系统角色的权限编号集

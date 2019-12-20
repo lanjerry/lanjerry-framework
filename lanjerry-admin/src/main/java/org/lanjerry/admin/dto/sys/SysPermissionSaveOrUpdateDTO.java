@@ -4,7 +4,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.lanjerry.common.core.bean.BaseEntity;
-import org.lanjerry.common.core.enums.PermissionTypeEnum;
+import org.lanjerry.common.core.enums.sys.SysPermissionStatusEnum;
+import org.lanjerry.common.core.enums.sys.SysPermissionTypeEnum;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -20,7 +21,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class SysPermissionSaveDTO extends BaseEntity {
+public class SysPermissionSaveOrUpdateDTO extends BaseEntity {
 
     /**
      * 权限名称
@@ -37,17 +38,21 @@ public class SysPermissionSaveDTO extends BaseEntity {
     private Integer parentId;
 
     /**
-     * 类型 1.菜单 2.功能
+     * 类型 1.菜单 2.按钮
      */
     @NotNull(message = "类型不能为空")
-    @ApiModelProperty(value = "类型 1.菜单（MENU） 2.功能（AUTH）", example = "MENU", required = true, position = 30)
-    private PermissionTypeEnum type;
+    @ApiModelProperty(value = "类型 1.菜单（MENU） 2.按钮（BUTTON）", example = "MENU", required = true, position = 30)
+    private SysPermissionTypeEnum type;
 
     /**
-     * 视图地址
+     * 路由地址
      */
-    @ApiModelProperty(value = "视图地址", example = "index", position = 40)
-    private String viewAddress;
+    private String path;
+
+    /**
+     * 组件路径
+     */
+    private String component;
 
     /**
      * 权限标识
@@ -64,6 +69,19 @@ public class SysPermissionSaveDTO extends BaseEntity {
     /**
      * 排序
      */
+    @NotNull(message = "排序不能为空")
     @ApiModelProperty(value = "排序", example = "1", position = 70)
     private Integer sort;
+
+    /**
+     * 状态 1.显示 2.隐藏
+     */
+    @NotNull(message = "状态不能为空")
+    private SysPermissionStatusEnum status;
+
+    /**
+     * 是否外链 0.否 1.是
+     */
+    @NotNull(message = "是否外链不能为空")
+    private Boolean frameFlag;
 }

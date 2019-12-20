@@ -34,7 +34,8 @@ import org.lanjerry.common.core.entity.sys.SysPermission;
 import org.lanjerry.common.core.entity.sys.SysRole;
 import org.lanjerry.common.core.entity.sys.SysUser;
 import org.lanjerry.common.core.entity.sys.SysUserRole;
-import org.lanjerry.common.core.enums.PermissionTypeEnum;
+import org.lanjerry.common.core.enums.sys.SysPermissionStatusEnum;
+import org.lanjerry.common.core.enums.sys.SysPermissionTypeEnum;
 import org.lanjerry.common.core.enums.sys.SysUserStatusEnum;
 import org.lanjerry.common.core.exception.ApiException;
 import org.lanjerry.common.core.util.ApiAssert;
@@ -128,7 +129,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void removeUser(Integer[] ids) {
+    public void removeUsers(Integer[] ids) {
         for (Integer id : ids) {
             ApiAssert.isTrue(id != 1, "管理员的账号不允许删除");
             SysUser oriUser = this.getById(id);
@@ -218,8 +219,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         }
         List<SysPermission> permissions = permissionService.lambdaQuery()
                 .orderByAsc(SysPermission::getSort)
-                .eq(SysPermission::getType, PermissionTypeEnum.MENU)
-                .eq(SysPermission::getHiddenFlag, false)
+                .eq(SysPermission::getType, SysPermissionTypeEnum.MENU)
+                .eq(SysPermission::getStatus, SysPermissionStatusEnum.SHOW)
                 .in(CollectionUtil.isNotEmpty(userPermissions), SysPermission::getPermission, userPermissions)
                 .list();
         List<SysPermissionFindVO> treePermissions = permissionService.listPermissions(permissions, AdminConsts.SYS_PERMISSION_PARENT_ID);
@@ -235,7 +236,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             router.setPath(AdminConsts.SYS_PERMISSION_PARENT_ID.equals(p.getParentId()) && !p.getFrameFlag() ? "/".concat(p.getPath()) : p.getPath());
             router.setComponent(StrUtil.isNotBlank(p.getComponent()) ? p.getComponent() : "Layout");
             router.setMeta(SysUserRouterMetaVO.builder().title(p.getName()).icon(p.getIcon()).build());
-            if (PermissionTypeEnum.MENU.equals(p.getType()) && CollectionUtil.isNotEmpty(p.getChildren())) {
+            if (SysPermissionTypeEnum.MENU.equals(p.getType()) && CollectionUtil.isNotEmpty(p.getChildren())) {
                 router.setAlwaysShow(true);
                 router.setRedirect("noRedirect");
                 router.setChildren(this.buildRouters(p.getChildren()));

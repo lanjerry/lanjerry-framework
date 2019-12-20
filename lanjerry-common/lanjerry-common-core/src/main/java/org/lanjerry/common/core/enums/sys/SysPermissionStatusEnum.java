@@ -1,4 +1,4 @@
-package org.lanjerry.common.core.enums;
+package org.lanjerry.common.core.enums.sys;
 
 import java.io.Serializable;
 
@@ -7,21 +7,21 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * <p>
- * 权限类型枚举
+ * 系统权限状态枚举
  * </p>
  *
  * @author lanjerry
  * @since 2019-09-03
  */
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public enum PermissionTypeEnum implements IEnum {
-    MENU(1, "菜单"),
-    AUTH(2, "功能");
+public enum SysPermissionStatusEnum implements IEnum {
+    SHOW(1, "正常"),
+    HIDE(2, "隐藏");
 
     private final Integer value;
     private final String desc;
 
-    PermissionTypeEnum(final Integer value, final String desc) {
+    SysPermissionStatusEnum(final Integer value, final String desc) {
         this.value = value;
         this.desc = desc;
     }

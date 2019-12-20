@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import org.lanjerry.common.core.bean.BaseEntity;
+import org.lanjerry.common.core.enums.sys.SysLogStatusEnum;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -28,10 +29,10 @@ public class SysLogPageVO extends BaseEntity {
     private Integer id;
 
     /**
-     * 用户编号
+     * 用户账号
      */
-    @ApiModelProperty(value = "用户编号", example = "1", position = 20)
-    private Integer userId;
+    @ApiModelProperty(value = "用户账号", example = "1", position = 20)
+    private String userAccount;
 
     /**
      * ip地址
@@ -40,33 +41,21 @@ public class SysLogPageVO extends BaseEntity {
     private String ipAddress;
 
     /**
-     * 是否异步请求 0.否 1.是
-     */
-    @ApiModelProperty(value = "是否异步请求", example = "true", position = 40)
-    private Boolean ajaxFlag;
-
-    /**
      * 请求uri
      */
     @ApiModelProperty(value = "请求uri", example = "/sys/user", position = 50)
     private String requestUri;
 
     /**
-     * 请求参数
+     * 请求方式
      */
-    @ApiModelProperty(value = "请求参数", example = "[{\"roles\":\"1,2,3\",\"name\":\"管理员\",\"account\":\"admin\"}]", position = 60)
-    private String requestParams;
+    @ApiModelProperty(value = "请求方式", example = "POST", position = 70)
+    private String requestMethod;
 
     /**
-     * http方法
+     * 操作方法
      */
-    @ApiModelProperty(value = "http方法", example = "POST", position = 70)
-    private String httpMethod;
-
-    /**
-     * 调用类的方法
-     */
-    @ApiModelProperty(value = "调用类的方法", example = "org.lanjerry.admin.controller.sys.UserController.saveUser()", position = 80)
+    @ApiModelProperty(value = "操作方法", example = "org.lanjerry.admin.controller.sys.UserController.saveUser()", position = 80)
     private String classMethod;
 
     /**
@@ -76,16 +65,15 @@ public class SysLogPageVO extends BaseEntity {
     private String actionName;
 
     /**
+     * 状态 1.成功 2.失败
+     */
+    private SysLogStatusEnum status;
+
+    /**
      * 执行时间（秒）
      */
     @ApiModelProperty(value = "执行时间（秒）", example = "11.09", position = 100)
     private BigDecimal executionTime;
-
-    /**
-     * 异常信息
-     */
-    @ApiModelProperty(value = "异常信息", example = "账号：admin已存在", position = 110)
-    private String exceptionMsg;
 
     /**
      * 创建时间
