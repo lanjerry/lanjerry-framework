@@ -19,7 +19,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface SysLogService extends IService<SysLog> {
 
     /**
-     * 分页获取系统日志列表
+     * 分页查询系统日志列表
      *
      * @author lanjerry
      * @since 2019/9/5 16:59

@@ -31,53 +31,54 @@ public class SysLogPageVO extends BaseEntity {
     /**
      * 用户账号
      */
-    @ApiModelProperty(value = "用户账号", example = "1", position = 20)
+    @ApiModelProperty(value = "用户账号", example = "admin", position = 20)
     private String userAccount;
 
     /**
      * ip地址
      */
-    @ApiModelProperty(value = "ip地址", example = "127.0.0.1", position = 30)
+    @ApiModelProperty(value = "IP地址", example = "127.0.0.1", position = 30)
     private String ipAddress;
 
     /**
      * 请求uri
      */
-    @ApiModelProperty(value = "请求uri", example = "/sys/user", position = 50)
+    @ApiModelProperty(value = "请求地址", example = "/sys/user", position = 40)
     private String requestUri;
 
     /**
      * 请求方式
      */
-    @ApiModelProperty(value = "请求方式", example = "POST", position = 70)
+    @ApiModelProperty(value = "请求方式", example = "POST", position = 50)
     private String requestMethod;
 
     /**
      * 操作方法
      */
-    @ApiModelProperty(value = "操作方法", example = "org.lanjerry.admin.controller.sys.UserController.saveUser()", position = 80)
+    @ApiModelProperty(value = "操作方法", example = "org.lanjerry.admin.controller.sys.UserController.saveUser()", position = 60)
     private String classMethod;
 
     /**
      * 动作名称
      */
-    @ApiModelProperty(value = "动作名称", example = "新增系统用户", position = 90)
+    @ApiModelProperty(value = "动作名称", example = "新增系统用户", position = 70)
     private String actionName;
 
     /**
      * 状态 1.成功 2.失败
      */
+    @ApiModelProperty(value = "状态 1.成功 2.失败", position = 80)
     private SysLogStatusEnum status;
 
     /**
      * 执行时间（秒）
      */
-    @ApiModelProperty(value = "执行时间（秒）", example = "11.09", position = 100)
+    @ApiModelProperty(value = "执行时间（秒）", example = "11.09", position = 90)
     private BigDecimal executionTime;
 
     /**
      * 创建时间
      */
-    @ApiModelProperty(value = "创建时间", example = "2018-11-22T15:57:53", position = 120)
+    @ApiModelProperty(value = "操作时间", example = "2018-11-22 15:57:53", position = 100)
     private LocalDateTime createdTime;
 }

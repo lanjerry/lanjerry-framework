@@ -9,7 +9,7 @@ import org.lanjerry.admin.dto.sys.SysUserResetPasswordDTO;
 import org.lanjerry.admin.dto.sys.SysUserSaveDTO;
 import org.lanjerry.admin.dto.sys.SysUserUpdateDTO;
 import org.lanjerry.admin.service.sys.SysUserService;
-import org.lanjerry.admin.vo.sys.SysUserBaseVO;
+import org.lanjerry.admin.vo.sys.SysUserCurrentVO;
 import org.lanjerry.admin.vo.sys.SysUserInfoVO;
 import org.lanjerry.admin.vo.sys.SysUserPageVO;
 import org.lanjerry.admin.vo.sys.SysUserRouterVO;
@@ -51,7 +51,7 @@ public class SysUserController {
 
     @GetMapping("/page")
     @RequiresPermissions("sys:user:page")
-    @ApiOperation(value = "分页获取系统用户列表", position = 10)
+    @ApiOperation(value = "分页查询系统用户列表", position = 10)
     public ApiResult<IPage<SysUserPageVO>> pageUsers(@ApiParam(value = "系统用户列表查询参数", required = true) SysUserPageDTO dto) {
         return ApiResult.success(userService.pageUsers(dto));
     }
@@ -123,13 +123,13 @@ public class SysUserController {
     }
 
     @GetMapping("/info")
-    @ApiOperation(value = "查询用户信息", position = 100)
-    public ApiResult<SysUserBaseVO> info() {
-        return ApiResult.success(userService.info());
+    @ApiOperation(value = "查询当前登录用户信息", position = 100)
+    public ApiResult<SysUserCurrentVO> getCurrentUserinfo() {
+        return ApiResult.success(userService.getCurrentUserinfo());
     }
 
     @GetMapping("/router")
-    @ApiOperation(value = "系统用户路由", position = 110)
+    @ApiOperation(value = "查询当前登录用户的路由信息", position = 110)
     public ApiResult<List<SysUserRouterVO>> router() {
         return ApiResult.success(userService.router());
     }

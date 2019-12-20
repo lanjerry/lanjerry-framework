@@ -23,7 +23,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface SysRoleService extends IService<SysRole> {
 
     /**
-     * 分页获取系统角色列表
+     * 分页查询系统角色列表
      *
      * @author lanjerry
      * @since 2019/9/5 11:55
@@ -33,7 +33,7 @@ public interface SysRoleService extends IService<SysRole> {
     IPage<SysRolePageVO> pageRoles(SysRolePageDTO dto);
 
     /**
-     * 根据角色编号查询系统角色信息
+     * 根据角色编号查询角色信息
      *
      * @author lanjerry
      * @since 2019/12/19 9:34
@@ -71,7 +71,7 @@ public interface SysRoleService extends IService<SysRole> {
     void removeRoles(Integer[] ids);
 
     /**
-     * 根据角色编号查询系统角色的权限编号集
+     * 根据角色编号查询角色的权限编号集
      *
      * @author lanjerry
      * @since 2019/12/19 9:36
@@ -81,7 +81,7 @@ public interface SysRoleService extends IService<SysRole> {
     List<Integer> getPermissionIds(int id);
 
     /**
-     * 获取用户角色列表
+     * 查询系统角色列表
      * 
      * @author lanjerry
      * @since 2019/12/18 11:46

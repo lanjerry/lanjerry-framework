@@ -21,8 +21,8 @@ import org.lanjerry.admin.service.sys.SysUserRoleService;
 import org.lanjerry.admin.service.sys.SysUserService;
 import org.lanjerry.admin.util.AdminConsts;
 import org.lanjerry.admin.util.RedisUtil;
-import org.lanjerry.admin.vo.sys.SysPermissionFindVO;
-import org.lanjerry.admin.vo.sys.SysUserBaseVO;
+import org.lanjerry.admin.vo.sys.SysPermissionListVO;
+import org.lanjerry.admin.vo.sys.SysUserCurrentVO;
 import org.lanjerry.admin.vo.sys.SysUserInfoVO;
 import org.lanjerry.admin.vo.sys.SysUserPageVO;
 import org.lanjerry.admin.vo.sys.SysUserRouterMetaVO;
@@ -189,11 +189,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public SysUserBaseVO info() {
+    public SysUserCurrentVO getCurrentUserinfo() {
         JwtToken token = (JwtToken) SecurityUtils.getSubject().getPrincipal();
         SysUser oriUser = this.getById(token.getId());
         ApiAssert.notNull(oriUser, String.format("用户编号：%s不存在", token.getId()));
-        SysUserBaseVO result = BeanCopyUtil.beanCopy(oriUser, SysUserBaseVO.class);
+        SysUserCurrentVO result = BeanCopyUtil.beanCopy(oriUser, SysUserCurrentVO.class);
         // 设置角色和权限
         Set<String> roles = new HashSet<>();
         Set<String> permissions = new HashSet<>();
@@ -223,12 +223,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 .eq(SysPermission::getStatus, SysPermissionStatusEnum.SHOW)
                 .in(CollectionUtil.isNotEmpty(userPermissions), SysPermission::getPermission, userPermissions)
                 .list();
-        List<SysPermissionFindVO> treePermissions = permissionService.listPermissions(permissions, AdminConsts.SYS_PERMISSION_PARENT_ID);
+        List<SysPermissionListVO> treePermissions = permissionService.listPermissions(permissions, AdminConsts.SYS_PERMISSION_PARENT_ID);
         result = this.buildRouters(treePermissions);
         return result;
     }
 
-    private List<SysUserRouterVO> buildRouters(List<SysPermissionFindVO> treePermissions) {
+    private List<SysUserRouterVO> buildRouters(List<SysPermissionListVO> treePermissions) {
         List<SysUserRouterVO> result = new ArrayList<>();
         treePermissions.forEach(p -> {
             SysUserRouterVO router = new SysUserRouterVO();

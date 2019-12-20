@@ -28,41 +28,42 @@ public class SysLogPageDTO extends SplitPage {
     /**
      * ip地址
      */
-    @ApiModelProperty(value = "ip地址", example = "127.0.0.1", position = 20)
+    @ApiModelProperty(value = "IP地址", example = "127.0.0.1", position = 20)
     private String ipAddress;
 
     /**
      * 请求uri
      */
-    @ApiModelProperty(value = "请求uri", example = "/sys/user", position = 30)
+    @ApiModelProperty(value = "请求地址", example = "/sys/user", position = 30)
     private String requestUri;
 
     /**
      * 请求方式
      */
-    @ApiModelProperty(value = "请求方式", example = "POST", position = 70)
+    @ApiModelProperty(value = "请求方式", example = "POST", position = 40)
     private String requestMethod;
 
     /**
      * 动作名称
      */
-    @ApiModelProperty(value = "动作名称", example = "新增系统用户", position = 40)
+    @ApiModelProperty(value = "动作名称", example = "新增系统用户", position = 50)
     private String actionName;
 
     /**
      * 状态 1.成功 2.失败
      */
+    @ApiModelProperty(value = "状态 1.成功（SUCCESS） 2.失败（FAIL）", example = "SUCCESS", position = 60)
     private SysLogStatusEnum status;
 
     /**
      * 创建时间始
      */
-    @ApiModelProperty(value = "创建时间始", example = "2018-11-23", position = 40)
+    @ApiModelProperty(value = "创建时间始", example = "2018-11-23", position = 70)
     private String createdTimeStart;
 
     /**
      * 创建时间止
      */
-    @ApiModelProperty(value = "创建时间止", example = "2018-11-23", position = 50)
+    @ApiModelProperty(value = "创建时间止", example = "2018-11-23", position = 80)
     private String createdTimeEnd;
 }

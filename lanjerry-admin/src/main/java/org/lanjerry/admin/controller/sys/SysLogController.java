@@ -37,7 +37,7 @@ public class SysLogController {
 
     @GetMapping("/page")
     @RequiresPermissions("sys:log:page")
-    @ApiOperation(value = "分页获取系统日志列表", position = 10)
+    @ApiOperation(value = "分页查询系统日志列表", position = 10)
     public ApiResult<IPage<SysLogPageVO>> pageLogs(@ApiParam(value = "系统日志列表查询参数", required = true) SysLogPageDTO dto) {
         return ApiResult.success(logService.pageLogs(dto));
     }
@@ -50,7 +50,7 @@ public class SysLogController {
 
     @DeleteMapping("/{id}")
     @RequiresPermissions("sys:log:remove")
-    @ApiOperation(value = "删除系统日志", position = 20)
+    @ApiOperation(value = "删除系统日志", position = 30)
     public ApiResult removeLogs(@PathVariable("id") @ApiParam(value = "日志编号", required = true) Integer[] ids) {
         logService.removeLogs(ids);
         return ApiResult.success();

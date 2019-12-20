@@ -35,7 +35,7 @@ public class SysRolePageVO extends BaseEntity {
     /**
      * 权限标识
      */
-    @ApiModelProperty(value = "权限标识", example = "admin", position = 30)
+    @ApiModelProperty(value = "权限标识", example = "sale", position = 30)
     private String permissionTag;
 
     /**
@@ -47,6 +47,6 @@ public class SysRolePageVO extends BaseEntity {
     /**
      * 创建时间
      */
-    @ApiModelProperty(value = "创建时间", example = "2018-11-22T15:57:53", position = 50)
+    @ApiModelProperty(value = "创建时间", example = "2018-11-22 15:57:53", position = 50)
     private LocalDateTime createdTime;
 }

@@ -49,7 +49,7 @@ public class SysUserPageVO extends BaseEntity {
     /**
      * 角色集
      */
-    @ApiModelProperty(value = "状态 1.正常 2.禁用", position = 50)
+    @ApiModelProperty(value = "[\"采购\", \"销售\", \"管理员\"]", position = 50)
     private Set<String> roles;
 
     /**
@@ -61,6 +61,6 @@ public class SysUserPageVO extends BaseEntity {
     /**
      * 创建时间
      */
-    @ApiModelProperty(value = "创建时间", example = "2018-11-22T15:57:53", position = 70)
+    @ApiModelProperty(value = "创建时间", example = "2018-11-22 15:57:53", position = 70)
     private LocalDateTime createdTime;
 }

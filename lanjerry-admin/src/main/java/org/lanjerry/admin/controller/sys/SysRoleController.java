@@ -46,7 +46,7 @@ public class SysRoleController {
 
     @GetMapping("/page")
     @RequiresPermissions("sys:role:page")
-    @ApiOperation(value = "分页获取系统角色列表", position = 10)
+    @ApiOperation(value = "分页查询系统角色列表", position = 10)
     public ApiResult<IPage<SysRolePageVO>> pageRoles(@ApiParam(value = "系统角色列表查询参数", required = true) SysRolePageDTO dto) {
         return ApiResult.success(roleService.pageRoles(dto));
     }
@@ -86,12 +86,12 @@ public class SysRoleController {
 
     @GetMapping("/permissionIds/{id}")
     @ApiOperation(value = "根据角色编号查询角色的权限编号集", position = 60)
-    public ApiResult<List<Integer>> test(@PathVariable("id") @ApiParam(value = "角色编号", required = true) Integer id) {
+    public ApiResult<List<Integer>> getPermissionIds(@PathVariable("id") @ApiParam(value = "角色编号", required = true) Integer id) {
         return ApiResult.success(roleService.getPermissionIds(id));
     }
 
     @GetMapping("/list")
-    @ApiOperation(value = "获取系统角色列表", position = 70)
+    @ApiOperation(value = "查询系统角色列表", position = 70)
     public ApiResult<List<SysUserRoleVO>> listRoles() {
         return ApiResult.success(roleService.listRoles());
     }

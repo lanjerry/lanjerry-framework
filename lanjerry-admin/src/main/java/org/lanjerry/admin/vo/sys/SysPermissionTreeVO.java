@@ -32,7 +32,7 @@ public class SysPermissionTreeVO extends BaseEntity {
     /**
      * 权限名称
      */
-    @ApiModelProperty(value = "权限名称", example = "首页", required = true, position = 20)
+    @ApiModelProperty(value = "权限名称", example = "首页", position = 20)
     private String label;
 
     /**

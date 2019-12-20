@@ -2,9 +2,7 @@ package org.lanjerry.admin.vo.sys;
 
 import org.lanjerry.common.core.bean.BaseEntity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -23,11 +21,12 @@ public class SysUserRoleVO extends BaseEntity {
     /**
      * 角色编号
      */
-    @TableId(value = "id", type = IdType.AUTO)
+    @ApiModelProperty(value = "角色编号", example = "1", position = 10)
     private Integer id;
 
     /**
      * 角色名称
      */
+    @ApiModelProperty(value = "角色名称", example = "管理员", position = 20)
     private String name;
 }

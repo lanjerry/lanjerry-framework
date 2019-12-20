@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.lanjerry.admin.dto.sys.SysPermissionSaveOrUpdateDTO;
 import org.lanjerry.admin.service.sys.SysPermissionService;
-import org.lanjerry.admin.vo.sys.SysPermissionFindVO;
+import org.lanjerry.admin.vo.sys.SysPermissionListVO;
 import org.lanjerry.admin.vo.sys.SysPermissionInfoVO;
 import org.lanjerry.admin.vo.sys.SysPermissionTreeVO;
 import org.lanjerry.common.core.bean.ApiResult;
@@ -43,8 +43,8 @@ public class SysPermissionController {
 
     @GetMapping("/list")
     @RequiresPermissions("sys:permission:list")
-    @ApiOperation(value = "获取系统权限列表", position = 10)
-    public ApiResult<List<SysPermissionFindVO>> listPermissions() {
+    @ApiOperation(value = "查询系统权限列表", position = 10)
+    public ApiResult<List<SysPermissionListVO>> listPermissions() {
         return ApiResult.success(permissionService.listPermissions());
     }
 
@@ -82,7 +82,7 @@ public class SysPermissionController {
     }
 
     @GetMapping("/tree")
-    @ApiOperation(value = "获取树形结构系统权限列表", position = 60)
+    @ApiOperation(value = "查询树形结构系统权限列表", position = 60)
     public ApiResult<List<SysPermissionTreeVO>> treePermissions() {
         return ApiResult.success(permissionService.treePermissions());
     }

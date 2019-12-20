@@ -7,7 +7,7 @@ import org.lanjerry.admin.dto.sys.SysUserPageDTO;
 import org.lanjerry.admin.dto.sys.SysUserResetPasswordDTO;
 import org.lanjerry.admin.dto.sys.SysUserSaveDTO;
 import org.lanjerry.admin.dto.sys.SysUserUpdateDTO;
-import org.lanjerry.admin.vo.sys.SysUserBaseVO;
+import org.lanjerry.admin.vo.sys.SysUserCurrentVO;
 import org.lanjerry.admin.vo.sys.SysUserInfoVO;
 import org.lanjerry.admin.vo.sys.SysUserPageVO;
 import org.lanjerry.admin.vo.sys.SysUserRouterVO;
@@ -28,7 +28,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface SysUserService extends IService<SysUser> {
 
     /**
-     * 分页获取系统用户列表
+     * 分页查询系统用户列表
      *
      * @author lanjerry
      * @since 2019/9/5 11:53
@@ -38,7 +38,7 @@ public interface SysUserService extends IService<SysUser> {
     IPage<SysUserPageVO> pageUsers(SysUserPageDTO dto);
 
     /**
-     * 根据id查询系统用户信息
+     * 根据用户编号查询用户信息
      *
      * @author lanjerry
      * @since 2019/12/17 10:59
@@ -105,16 +105,16 @@ public interface SysUserService extends IService<SysUser> {
     String login(SysUserLoginDTO dto);
 
     /**
-     * 查询系统用户信息
+     * 查询当前登录用户信息
      *
      * @author lanjerry
      * @since 2019/11/22 17:42
      * @return org.lanjerry.admin.vo.sys.SysUserInfoVO
      */
-    SysUserBaseVO info();
+    SysUserCurrentVO getCurrentUserinfo();
 
     /**
-     * 获取系统用户路由
+     * 查询当前登录用户的路由信息
      *
      * @author lanjerry
      * @since 2019/12/10 16:37

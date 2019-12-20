@@ -47,41 +47,45 @@ public class SysPermissionSaveOrUpdateDTO extends BaseEntity {
     /**
      * 路由地址
      */
+    @ApiModelProperty(value = "路由地址", example = "user", position = 40)
     private String path;
 
     /**
      * 组件路径
      */
+    @ApiModelProperty(value = "组件路径", example = "sys/user", position = 50)
     private String component;
 
     /**
      * 权限标识
      */
-    @ApiModelProperty(value = "权限标识", example = "/index", position = 50)
+    @ApiModelProperty(value = "权限标识", example = "sys:user", position = 60)
     private String permission;
 
     /**
      * 图标
      */
-    @ApiModelProperty(value = "图标", example = "icon-home", position = 60)
+    @ApiModelProperty(value = "图标", example = "icon-home", position = 70)
     private String icon;
 
     /**
      * 排序
      */
     @NotNull(message = "排序不能为空")
-    @ApiModelProperty(value = "排序", example = "1", position = 70)
+    @ApiModelProperty(value = "排序", example = "1", required = true, position = 80)
     private Integer sort;
 
     /**
      * 状态 1.显示 2.隐藏
      */
     @NotNull(message = "状态不能为空")
+    @ApiModelProperty(value = "状态 1.显示（SHOW） 2.隐藏（HIDE）", example = "SHOW", required = true, position = 90)
     private SysPermissionStatusEnum status;
 
     /**
      * 是否外链 0.否 1.是
      */
     @NotNull(message = "是否外链不能为空")
+    @ApiModelProperty(value = "是否外链不能为空", example = "true", required = true, position = 100)
     private Boolean frameFlag;
 }

@@ -3,8 +3,8 @@ package org.lanjerry.common.core.entity.sys;
 import java.time.LocalDateTime;
 
 import org.lanjerry.common.core.bean.BaseEntity;
-import org.lanjerry.common.core.enums.sys.SysPermissionTypeEnum;
 import org.lanjerry.common.core.enums.sys.SysPermissionStatusEnum;
+import org.lanjerry.common.core.enums.sys.SysPermissionTypeEnum;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;

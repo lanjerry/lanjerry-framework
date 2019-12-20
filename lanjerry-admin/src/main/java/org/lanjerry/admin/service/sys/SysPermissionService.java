@@ -3,7 +3,7 @@ package org.lanjerry.admin.service.sys;
 import java.util.List;
 
 import org.lanjerry.admin.dto.sys.SysPermissionSaveOrUpdateDTO;
-import org.lanjerry.admin.vo.sys.SysPermissionFindVO;
+import org.lanjerry.admin.vo.sys.SysPermissionListVO;
 import org.lanjerry.admin.vo.sys.SysPermissionInfoVO;
 import org.lanjerry.admin.vo.sys.SysPermissionTreeVO;
 import org.lanjerry.common.core.entity.sys.SysPermission;
@@ -21,13 +21,13 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface SysPermissionService extends IService<SysPermission> {
 
     /**
-     * 获取系统权限列表
+     * 查询系统权限列表
      *
      * @author lanjerry
      * @since 2019/9/5 15:15
-     * @return java.util.List<org.lanjerry.admin.vo.sys.SysPermissionFindVO>
+     * @return java.util.List<org.lanjerry.admin.vo.sys.SysPermissionListVO>
      */
-    List<SysPermissionFindVO> listPermissions();
+    List<SysPermissionListVO> listPermissions();
 
     /**
      * 根据权限编号查询系统权限信息
@@ -74,12 +74,12 @@ public interface SysPermissionService extends IService<SysPermission> {
      * @since 2019/12/18 13:57
      * @param permissions 权限列表
      * @param parentId 父级id
-     * @return java.util.List<org.lanjerry.admin.vo.sys.SysPermissionFindVO>
+     * @return java.util.List<org.lanjerry.admin.vo.sys.SysPermissionListVO>
      */
-    List<SysPermissionFindVO> listPermissions(List<SysPermission> permissions, Integer parentId);
+    List<SysPermissionListVO> listPermissions(List<SysPermission> permissions, Integer parentId);
 
     /**
-     * 获取树形结构系统权限列表
+     * 查询树形结构系统权限列表
      *
      * @author lanjerry
      * @since 2019/9/5 14:56

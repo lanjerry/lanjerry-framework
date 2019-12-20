@@ -10,7 +10,7 @@ import org.lanjerry.admin.service.sys.SysPermissionService;
 import org.lanjerry.admin.service.sys.SysRolePermissionService;
 import org.lanjerry.admin.util.AdminConsts;
 import org.lanjerry.admin.util.RedisUtil;
-import org.lanjerry.admin.vo.sys.SysPermissionFindVO;
+import org.lanjerry.admin.vo.sys.SysPermissionListVO;
 import org.lanjerry.admin.vo.sys.SysPermissionInfoVO;
 import org.lanjerry.admin.vo.sys.SysPermissionTreeVO;
 import org.lanjerry.common.core.entity.sys.SysPermission;
@@ -41,7 +41,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     private SysRolePermissionService rolePermissionService;
 
     @Override
-    public List<SysPermissionFindVO> listPermissions() {
+    public List<SysPermissionListVO> listPermissions() {
         List<SysPermission> listPermissions = this.lambdaQuery().orderByAsc(SysPermission::getType).orderByAsc(SysPermission::getSort).list();
         return this.listPermissions(listPermissions, AdminConsts.SYS_PERMISSION_PARENT_ID);
     }
@@ -85,11 +85,11 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     }
 
     @Override
-    public List<SysPermissionFindVO> listPermissions(List<SysPermission> permissions, Integer parentId) {
-        List<SysPermissionFindVO> result = new ArrayList<>();
+    public List<SysPermissionListVO> listPermissions(List<SysPermission> permissions, Integer parentId) {
+        List<SysPermissionListVO> result = new ArrayList<>();
         permissions.forEach(permission -> {
             if (parentId.equals(permission.getParentId())) {
-                SysPermissionFindVO permissionVO = BeanCopyUtil.beanCopy(permission, SysPermissionFindVO.class);
+                SysPermissionListVO permissionVO = BeanCopyUtil.beanCopy(permission, SysPermissionListVO.class);
                 permissionVO.setChildren(this.listPermissions(permissions, permission.getId()));
                 result.add(permissionVO);
             }
