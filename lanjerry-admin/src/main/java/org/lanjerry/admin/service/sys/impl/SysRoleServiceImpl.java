@@ -59,8 +59,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                 .ge(StrUtil.isNotBlank(dto.getCreatedTimeStart()), SysRole::getCreatedTime, dto.getCreatedTimeStart() + AdminConsts.START_TIME)
                 .le(StrUtil.isNotBlank(dto.getCreatedTimeEnd()), SysRole::getCreatedTime, dto.getCreatedTimeEnd() + AdminConsts.END_TIME)
                 .page(new Page<>(dto.getPageNum(), dto.getPageSize()));
-        IPage<SysRolePageVO> result = BeanCopyUtil.pageCopy(page, SysRole.class, SysRolePageVO.class);
-        return result;
+        return BeanCopyUtil.pageCopy(page, SysRole.class, SysRolePageVO.class);
     }
 
     @Override

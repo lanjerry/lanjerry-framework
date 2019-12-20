@@ -1,9 +1,7 @@
 package org.lanjerry.common.core.enums.sys;
 
-import java.io.Serializable;
-
 import com.baomidou.mybatisplus.core.enums.IEnum;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * <p>
@@ -13,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  * @author lanjerry
  * @since 2019-09-03
  */
-@JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public enum SysPermissionTypeEnum implements IEnum {
+public enum SysPermissionTypeEnum implements IEnum<Integer> {
     MENU(1, "菜单"),
     BUTTON(2, "按钮");
 
@@ -27,15 +24,12 @@ public enum SysPermissionTypeEnum implements IEnum {
     }
 
     @Override
-    public Serializable getValue() {
+    public Integer getValue() {
         return value;
     }
 
+    @JsonValue
     public String getDesc() {
         return desc;
-    }
-
-    public String getEnumName() {
-        return name();
     }
 }

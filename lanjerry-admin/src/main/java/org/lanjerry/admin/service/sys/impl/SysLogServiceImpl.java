@@ -5,6 +5,7 @@ import java.util.Arrays;
 import org.lanjerry.admin.dto.sys.SysLogPageDTO;
 import org.lanjerry.admin.mapper.sys.SysLogMapper;
 import org.lanjerry.admin.service.sys.SysLogService;
+import org.lanjerry.admin.util.AdminConsts;
 import org.lanjerry.admin.vo.sys.SysLogInfoVO;
 import org.lanjerry.admin.vo.sys.SysLogPageVO;
 import org.lanjerry.common.core.entity.sys.SysLog;
@@ -34,10 +35,13 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
                 .like(StrUtil.isNotBlank(dto.getUserAccount()), SysLog::getUserAccount, dto.getUserAccount())
                 .like(StrUtil.isNotBlank(dto.getIpAddress()), SysLog::getIpAddress, dto.getIpAddress())
                 .like(StrUtil.isNotBlank(dto.getRequestUri()), SysLog::getRequestUri, dto.getRequestUri())
+                .like(StrUtil.isNotBlank(dto.getRequestMethod()), SysLog::getRequestMethod, dto.getRequestMethod())
                 .like(StrUtil.isNotBlank(dto.getActionName()), SysLog::getActionName, dto.getActionName())
+                .eq(dto.getStatus() != null, SysLog::getStatus, dto.getStatus())
+                .ge(StrUtil.isNotBlank(dto.getCreatedTimeStart()), SysLog::getCreatedTime, dto.getCreatedTimeStart() + AdminConsts.START_TIME)
+                .le(StrUtil.isNotBlank(dto.getCreatedTimeEnd()), SysLog::getCreatedTime, dto.getCreatedTimeEnd() + AdminConsts.END_TIME)
                 .page(new Page<>(dto.getPageNum(), dto.getPageSize()));
-        IPage<SysLogPageVO> result = BeanCopyUtil.pageCopy(page, SysLog.class, SysLogPageVO.class);
-        return result;
+        return BeanCopyUtil.pageCopy(page, SysLog.class, SysLogPageVO.class);
     }
 
     @Override

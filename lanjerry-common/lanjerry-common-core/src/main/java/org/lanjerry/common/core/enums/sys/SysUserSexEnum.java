@@ -1,9 +1,6 @@
 package org.lanjerry.common.core.enums.sys;
 
-import java.io.Serializable;
-
 import com.baomidou.mybatisplus.core.enums.IEnum;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * <p>
@@ -13,8 +10,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  * @author lanjerry
  * @since 2019-09-03
  */
-@JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public enum SysUserSexEnum implements IEnum {
+public enum SysUserSexEnum implements IEnum<Integer> {
     MALE(1, "男"),
     FEMALE(2, "女"),
     UNKNOWN(3, "未知");
@@ -28,15 +24,18 @@ public enum SysUserSexEnum implements IEnum {
     }
 
     @Override
-    public Serializable getValue() {
+    public Integer getValue() {
         return value;
     }
 
+    //@JsonValue
     public String getDesc() {
         return desc;
     }
 
-    public String getEnumName() {
-        return name();
+    @Override
+    public String toString() {
+        return getDesc();
     }
+
 }

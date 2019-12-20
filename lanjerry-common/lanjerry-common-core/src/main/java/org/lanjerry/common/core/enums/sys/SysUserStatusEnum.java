@@ -1,9 +1,6 @@
 package org.lanjerry.common.core.enums.sys;
 
-import java.io.Serializable;
-
 import com.baomidou.mybatisplus.core.enums.IEnum;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * <p>
@@ -13,8 +10,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  * @author lanjerry
  * @since 2019-09-03
  */
-@JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public enum SysUserStatusEnum implements IEnum {
+public enum SysUserStatusEnum implements IEnum<Integer> {
     NORMAL(1, "正常"),
     LOCKING(2, "冻结");
 
@@ -27,7 +23,7 @@ public enum SysUserStatusEnum implements IEnum {
     }
 
     @Override
-    public Serializable getValue() {
+    public Integer getValue() {
         return value;
     }
 
@@ -35,7 +31,8 @@ public enum SysUserStatusEnum implements IEnum {
         return desc;
     }
 
-    public String getEnumName() {
-        return name();
+    @Override
+    public String toString() {
+        return getDesc();
     }
 }
