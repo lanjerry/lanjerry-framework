@@ -53,8 +53,8 @@ public class SysRoleController {
 
     @GetMapping("/{id}")
     @ApiOperation(value = "根据角色编号查询角色信息", position = 20)
-    public ApiResult<SysRoleInfoVO> getInfoById(@PathVariable("id") @ApiParam(value = "角色编号", required = true) Integer id) {
-        return ApiResult.success(roleService.getInfoById(id));
+    public ApiResult<SysRoleInfoVO> getRole(@PathVariable("id") @ApiParam(value = "角色编号", required = true) Integer id) {
+        return ApiResult.success(roleService.getRole(id));
     }
 
     @PostMapping
@@ -86,8 +86,8 @@ public class SysRoleController {
 
     @GetMapping("/permissionIds/{id}")
     @ApiOperation(value = "根据角色编号查询角色的权限编号集", position = 60)
-    public ApiResult<List<Integer>> getPermissionIds(@PathVariable("id") @ApiParam(value = "角色编号", required = true) Integer id) {
-        return ApiResult.success(roleService.getPermissionIds(id));
+    public ApiResult<List<Integer>> getRolePermissionIds(@PathVariable("id") @ApiParam(value = "角色编号", required = true) Integer id) {
+        return ApiResult.success(roleService.getRolePermissionIds(id));
     }
 
     @GetMapping("/list")
@@ -96,4 +96,3 @@ public class SysRoleController {
         return ApiResult.success(roleService.listRoles());
     }
 }
-

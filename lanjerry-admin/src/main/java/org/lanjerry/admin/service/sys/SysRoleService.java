@@ -40,7 +40,7 @@ public interface SysRoleService extends IService<SysRole> {
      * @param id 角色编号
      * @return org.lanjerry.admin.vo.sys.SysRoleInfoVO
      */
-    SysRoleInfoVO getInfoById(int id);
+    SysRoleInfoVO getRole(int id);
 
     /**
      * 新增系统角色
@@ -78,7 +78,7 @@ public interface SysRoleService extends IService<SysRole> {
      * @param id 角色编号
      * @return java.util.List<java.lang.Integer>
      */
-    List<Integer> getPermissionIds(int id);
+    List<Integer> getRolePermissionIds(int id);
 
     /**
      * 查询系统角色列表

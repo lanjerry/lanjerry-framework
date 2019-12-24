@@ -1,7 +1,5 @@
 package org.lanjerry.common.core.enums.sys;
 
-import java.io.Serializable;
-
 import org.lanjerry.common.core.bean.BaseEnum;
 
 /**
@@ -12,7 +10,7 @@ import org.lanjerry.common.core.bean.BaseEnum;
  * @author lanjerry
  * @since 2019-09-03
  */
-public enum SysUserStatusEnum implements BaseEnum {
+public enum SysUserStatusEnum implements BaseEnum<Integer> {
     NORMAL(1, "正常"),
     LOCKING(2, "冻结");
 
@@ -24,9 +22,8 @@ public enum SysUserStatusEnum implements BaseEnum {
         this.text = text;
     }
 
-
     @Override
-    public Serializable getValue() {
+    public Integer getValue() {
         return value;
     }
 

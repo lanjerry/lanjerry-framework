@@ -100,14 +100,14 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
 
     @Override
-    public SysRoleInfoVO getInfoById(int id) {
+    public SysRoleInfoVO getRole(int id) {
         SysRole oriRole = this.getById(id);
         ApiAssert.notNull(oriRole, String.format("角色编号：%s不存在", id));
         return BeanCopyUtil.beanCopy(oriRole, SysRoleInfoVO.class);
     }
 
     @Override
-    public List<Integer> getPermissionIds(int id) {
+    public List<Integer> getRolePermissionIds(int id) {
         SysRole oriRole = this.getById(id);
         ApiAssert.notNull(oriRole, String.format("角色编号：%s不存在", id));
         // 设置权限id集
