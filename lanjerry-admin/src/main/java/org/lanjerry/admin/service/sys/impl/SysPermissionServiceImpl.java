@@ -10,8 +10,8 @@ import org.lanjerry.admin.service.sys.SysPermissionService;
 import org.lanjerry.admin.service.sys.SysRolePermissionService;
 import org.lanjerry.admin.util.AdminConsts;
 import org.lanjerry.admin.util.RedisUtil;
-import org.lanjerry.admin.vo.sys.SysPermissionListVO;
 import org.lanjerry.admin.vo.sys.SysPermissionInfoVO;
+import org.lanjerry.admin.vo.sys.SysPermissionListVO;
 import org.lanjerry.admin.vo.sys.SysPermissionTreeVO;
 import org.lanjerry.common.core.entity.sys.SysPermission;
 import org.lanjerry.common.core.entity.sys.SysRolePermission;
@@ -75,8 +75,8 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     public void removePermission(int id) {
         SysPermission oriPermission = this.getById(id);
         ApiAssert.notNull(oriPermission, String.format("权限编号：%s不存在", id));
-        ApiAssert.isTrue(this.count(Wrappers.<SysPermission>lambdaQuery().eq(SysPermission::getParentId, id))==0,String.format("权限：%s存在子菜单，不允许删除", oriPermission.getName()));
-        ApiAssert.isTrue(rolePermissionService.count(Wrappers.<SysRolePermission>lambdaQuery().eq(SysRolePermission::getPermissionId, id))==0,String.format("权限：%s存在已分配，不允许删除", oriPermission.getName()));
+        ApiAssert.isTrue(this.count(Wrappers.<SysPermission>lambdaQuery().eq(SysPermission::getParentId, id)) == 0, String.format("权限：%s存在子菜单，不允许删除", oriPermission.getName()));
+        ApiAssert.isTrue(rolePermissionService.count(Wrappers.<SysRolePermission>lambdaQuery().eq(SysRolePermission::getPermissionId, id)) == 0, String.format("权限：%s存在已分配，不允许删除", oriPermission.getName()));
 
         this.removeById(id);
 
@@ -98,7 +98,17 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     }
 
     @Override
-    public SysPermissionInfoVO getInfoById(int id) {
+    public void changePermissionStatus(int id, SysPermissionStatusEnum statusEnum) {
+        SysPermission oriPermission = this.getById(id);
+        ApiAssert.notNull(oriPermission, String.format("权限编号：%s不存在", id));
+        SysPermission permission = new SysPermission();
+        permission.setStatus(statusEnum);
+        permission.setId(id);
+        this.updateById(permission);
+    }
+
+    @Override
+    public SysPermissionInfoVO getPermission(int id) {
         SysPermission oriPermission = this.getById(id);
         ApiAssert.notNull(oriPermission, String.format("权限编号：%s不存在", id));
         return BeanCopyUtil.beanCopy(oriPermission, SysPermissionInfoVO.class);
@@ -108,7 +118,6 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     public List<SysPermissionTreeVO> treePermissions() {
         List<SysPermission> permissions = this.lambdaQuery()
                 .orderByAsc(SysPermission::getSort)
-                .eq(SysPermission::getStatus, SysPermissionStatusEnum.SHOW)
                 .list();
         return this.treePermissions(permissions, AdminConsts.SYS_PERMISSION_PARENT_ID);
     }

@@ -89,21 +89,21 @@ public class SysUserController {
         return ApiResult.success();
     }
 
-    @PutMapping("/lock/{id}")
-    @RequiresPermissions("sys:user:lock")
-    @SysLog("锁定系统用户")
-    @ApiOperation(value = "锁定系统用户", position = 60)
-    public ApiResult lock(@PathVariable("id") @ApiParam(value = "用户编号", required = true) Integer id) {
-        userService.changeUserStatus(id, SysUserStatusEnum.LOCKING);
+    @PutMapping("/enable/{id}")
+    @RequiresPermissions("sys:user:enable")
+    @SysLog("启用系统用户")
+    @ApiOperation(value = "启用系统用户", position = 60)
+    public ApiResult unlock(@PathVariable("id") @ApiParam(value = "用户编号", required = true) Integer id) {
+        userService.changeUserStatus(id, SysUserStatusEnum.ENABLE);
         return ApiResult.success();
     }
 
-    @PutMapping("/unlock/{id}")
-    @RequiresPermissions("sys:user:unlock")
-    @SysLog("解锁系统用户")
-    @ApiOperation(value = "解锁系统用户", position = 70)
-    public ApiResult unlock(@PathVariable("id") @ApiParam(value = "用户编号", required = true) Integer id) {
-        userService.changeUserStatus(id, SysUserStatusEnum.NORMAL);
+    @PutMapping("/disable/{id}")
+    @RequiresPermissions("sys:user:disable")
+    @SysLog("停用系统用户")
+    @ApiOperation(value = "停用系统用户", position = 70)
+    public ApiResult lock(@PathVariable("id") @ApiParam(value = "用户编号", required = true) Integer id) {
+        userService.changeUserStatus(id, SysUserStatusEnum.DISABLE);
         return ApiResult.success();
     }
 

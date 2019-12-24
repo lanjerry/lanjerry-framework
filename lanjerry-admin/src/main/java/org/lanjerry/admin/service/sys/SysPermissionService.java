@@ -3,10 +3,11 @@ package org.lanjerry.admin.service.sys;
 import java.util.List;
 
 import org.lanjerry.admin.dto.sys.SysPermissionSaveOrUpdateDTO;
-import org.lanjerry.admin.vo.sys.SysPermissionListVO;
 import org.lanjerry.admin.vo.sys.SysPermissionInfoVO;
+import org.lanjerry.admin.vo.sys.SysPermissionListVO;
 import org.lanjerry.admin.vo.sys.SysPermissionTreeVO;
 import org.lanjerry.common.core.entity.sys.SysPermission;
+import org.lanjerry.common.core.enums.sys.SysPermissionStatusEnum;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -37,7 +38,7 @@ public interface SysPermissionService extends IService<SysPermission> {
      * @param id 权限编号
      * @return org.lanjerry.admin.vo.sys.SysPermissionInfoVO
      */
-    SysPermissionInfoVO getInfoById(int id);
+    SysPermissionInfoVO getPermission(int id);
 
     /**
      * 新增系统权限
@@ -69,7 +70,7 @@ public interface SysPermissionService extends IService<SysPermission> {
 
     /**
      * 递归处理权限列表，重组成树形结构
-     * 
+     *
      * @author lanjerry
      * @since 2019/12/18 13:57
      * @param permissions 权限列表
@@ -77,6 +78,16 @@ public interface SysPermissionService extends IService<SysPermission> {
      * @return java.util.List<org.lanjerry.admin.vo.sys.SysPermissionListVO>
      */
     List<SysPermissionListVO> listPermissions(List<SysPermission> permissions, Integer parentId);
+
+    /**
+     * 启用或者停用系统权限
+     *
+     * @author lanjerry
+     * @since 2019/12/24 16:01
+     * @param id 权限编号
+     * @param statusEnum statusEnum 系统权限状态枚举
+     */
+    void changePermissionStatus(int id, SysPermissionStatusEnum statusEnum);
 
     /**
      * 查询树形结构系统权限列表

@@ -76,7 +76,7 @@ public class SysPermission extends BaseEntity {
     private Integer sort;
 
     /**
-     * 状态 1.显示 2.隐藏
+     * 状态 1.启用 2.停用
      */
     private SysPermissionStatusEnum status;
 

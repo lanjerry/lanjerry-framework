@@ -66,10 +66,10 @@ public class SysUserSaveDTO extends BaseEntity {
     private String phone;
 
     /**
-     * 状态 1.正常 2.禁用
+     * 状态 1.启用 2.停用
      */
     @NotNull(message = "状态不能为空")
-    @ApiModelProperty(value = "状态 1.正常 2.禁用", example = "1", required = true, position = 70)
+    @ApiModelProperty(value = "状态 1.启用 2.停用", example = "1", required = true, position = 70)
     private SysUserStatusEnum status;
 
     /**

@@ -1,7 +1,6 @@
 package org.lanjerry.common.core.enums.sys;
 
-import com.baomidou.mybatisplus.core.enums.IEnum;
-import com.fasterxml.jackson.annotation.JsonValue;
+import org.lanjerry.common.core.bean.BaseEnum;
 
 /**
  * <p>
@@ -11,16 +10,16 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * @author lanjerry
  * @since 2019-09-03
  */
-public enum SysPermissionTypeEnum implements IEnum<Integer> {
+public enum SysPermissionTypeEnum implements BaseEnum<Integer> {
     MENU(1, "菜单"),
     BUTTON(2, "按钮");
 
     private final Integer value;
-    private final String desc;
+    private final String text;
 
-    SysPermissionTypeEnum(final Integer value, final String desc) {
+    SysPermissionTypeEnum(final Integer value, final String text) {
         this.value = value;
-        this.desc = desc;
+        this.text = text;
     }
 
     @Override
@@ -28,8 +27,13 @@ public enum SysPermissionTypeEnum implements IEnum<Integer> {
         return value;
     }
 
-    @JsonValue
-    public String getDesc() {
-        return desc;
+    @Override
+    public String getText() {
+        return text;
+    }
+
+    @Override
+    public String getName() {
+        return name();
     }
 }

@@ -76,7 +76,7 @@ public interface SysUserService extends IService<SysUser> {
     void removeUsers(Integer[] ids);
 
     /**
-     * 锁定或者解锁系统用户
+     * 启用或者停用系统用户
      *
      * @author lanjerry
      * @since 2019/9/5 11:53

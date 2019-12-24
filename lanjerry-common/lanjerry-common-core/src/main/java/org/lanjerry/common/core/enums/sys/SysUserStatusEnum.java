@@ -11,8 +11,8 @@ import org.lanjerry.common.core.bean.BaseEnum;
  * @since 2019-09-03
  */
 public enum SysUserStatusEnum implements BaseEnum<Integer> {
-    NORMAL(1, "正常"),
-    LOCKING(2, "冻结");
+    ENABLE(1, "启用"),
+    DISABLE(2, "停用");
 
     private final Integer value;
     private final String text;

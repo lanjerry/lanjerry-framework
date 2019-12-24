@@ -1,7 +1,6 @@
 package org.lanjerry.admin.dto.sys;
 
 import org.lanjerry.common.core.bean.SplitPage;
-import org.lanjerry.common.core.enums.sys.SysLogStatusEnum;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -52,8 +51,8 @@ public class SysLogPageDTO extends SplitPage {
     /**
      * 状态 1.成功 2.失败
      */
-    @ApiModelProperty(value = "状态 1.成功（SUCCESS） 2.失败（FAIL）", example = "SUCCESS", position = 60)
-    private SysLogStatusEnum status;
+    @ApiModelProperty(value = "状态 1.成功 2.失败", example = "1", position = 60)
+    private Integer status;
 
     /**
      * 创建时间始

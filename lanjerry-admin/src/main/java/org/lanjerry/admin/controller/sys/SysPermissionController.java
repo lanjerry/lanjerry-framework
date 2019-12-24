@@ -5,10 +5,11 @@ import java.util.List;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.lanjerry.admin.dto.sys.SysPermissionSaveOrUpdateDTO;
 import org.lanjerry.admin.service.sys.SysPermissionService;
-import org.lanjerry.admin.vo.sys.SysPermissionListVO;
 import org.lanjerry.admin.vo.sys.SysPermissionInfoVO;
+import org.lanjerry.admin.vo.sys.SysPermissionListVO;
 import org.lanjerry.admin.vo.sys.SysPermissionTreeVO;
 import org.lanjerry.common.core.bean.ApiResult;
+import org.lanjerry.common.core.enums.sys.SysPermissionStatusEnum;
 import org.lanjerry.common.log.annotation.SysLog;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -50,8 +51,8 @@ public class SysPermissionController {
 
     @GetMapping("/{id}")
     @ApiOperation(value = "根据权限编号查询权限信息", position = 20)
-    public ApiResult<SysPermissionInfoVO> getInfoById(@PathVariable("id") @ApiParam(value = "权限编号", required = true) Integer id) {
-        return ApiResult.success(permissionService.getInfoById(id));
+    public ApiResult<SysPermissionInfoVO> getPermission(@PathVariable("id") @ApiParam(value = "权限编号", required = true) Integer id) {
+        return ApiResult.success(permissionService.getPermission(id));
     }
 
     @PostMapping
@@ -81,8 +82,26 @@ public class SysPermissionController {
         return ApiResult.success();
     }
 
+    @PutMapping("/enable/{id}")
+    @RequiresPermissions("sys:permission:enable")
+    @SysLog("启用系统权限")
+    @ApiOperation(value = "启用系统权限", position = 60)
+    public ApiResult lock(@PathVariable("id") @ApiParam(value = "权限编号", required = true) Integer id) {
+        permissionService.changePermissionStatus(id, SysPermissionStatusEnum.ENABLE);
+        return ApiResult.success();
+    }
+
+    @PutMapping("/disable/{id}")
+    @RequiresPermissions("sys:permission:disable")
+    @SysLog("停用系统权限")
+    @ApiOperation(value = "停用系统权限", position = 70)
+    public ApiResult unlock(@PathVariable("id") @ApiParam(value = "权限编号", required = true) Integer id) {
+        permissionService.changePermissionStatus(id, SysPermissionStatusEnum.DISABLE);
+        return ApiResult.success();
+    }
+
     @GetMapping("/tree")
-    @ApiOperation(value = "查询树形结构系统权限列表", position = 60)
+    @ApiOperation(value = "查询树形结构系统权限列表", position = 80)
     public ApiResult<List<SysPermissionTreeVO>> treePermissions() {
         return ApiResult.success(permissionService.treePermissions());
     }

@@ -220,7 +220,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         List<SysPermission> permissions = permissionService.lambdaQuery()
                 .orderByAsc(SysPermission::getSort)
                 .eq(SysPermission::getType, SysPermissionTypeEnum.MENU)
-                .eq(SysPermission::getStatus, SysPermissionStatusEnum.SHOW)
+                .eq(SysPermission::getStatus, SysPermissionStatusEnum.ENABLE)
                 .in(CollectionUtil.isNotEmpty(userPermissions), SysPermission::getPermission, userPermissions)
                 .list();
         List<SysPermissionListVO> treePermissions = permissionService.listPermissions(permissions, AdminConsts.SYS_PERMISSION_PARENT_ID);

@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.baomidou.mybatisplus.core.enums.IEnum;
 import com.fasterxml.classmate.ResolvedType;
 import com.google.common.base.Optional;
 
@@ -50,13 +51,13 @@ public class CodedEnumPropertyPlugin implements ModelPropertyBuilderPlugin {
         }
         final Class<?> rawPrimaryType = context.getBeanPropertyDefinition().get().getRawPrimaryType();
         //过滤得到目标类型
-        if (annotation.isPresent() && Enum.class.isAssignableFrom(rawPrimaryType)) {
+        if (annotation.isPresent() && IEnum.class.isAssignableFrom(rawPrimaryType)) {
             //获取CodedEnum的code值
-            Enum[] values = (Enum[]) rawPrimaryType.getEnumConstants();
-            final List<String> displayValues = Arrays.stream(values).map(codedEnum -> codedEnum.name()).collect(Collectors.toList());
+            IEnum[] values = (IEnum[]) rawPrimaryType.getEnumConstants();
+            final List<String> displayValues = Arrays.stream(values).map(codedEnum -> Integer.toString((Integer) codedEnum.getValue())).collect(Collectors.toList());
             final AllowableListValues allowableListValues = new AllowableListValues(displayValues, rawPrimaryType.getTypeName());
             //固定设置为int类型
-            final ResolvedType resolvedType = context.getResolver().resolve(String.class);
+            final ResolvedType resolvedType = context.getResolver().resolve(int.class);
             context.getBuilder().allowableValues(allowableListValues).type(resolvedType);
         }
     }
