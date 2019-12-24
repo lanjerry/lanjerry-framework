@@ -142,7 +142,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public void changeStatus(int id, SysUserStatusEnum statusEnum) {
+    public void changeUserStatus(int id, SysUserStatusEnum statusEnum) {
         SysUser oriUser = this.getById(id);
         ApiAssert.notNull(oriUser, String.format("用户编号：%s不存在", id));
         SysUser user = new SysUser();
@@ -152,7 +152,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public void resetPassword(SysUserResetPasswordDTO dto) {
+    public void resetUserPwd(SysUserResetPasswordDTO dto) {
         SysUser oriUser = this.getById(dto.getId());
         ApiAssert.notNull(oriUser, String.format("用户编号：%s不存在", dto.getId()));
         SysUser user = new SysUser();
@@ -178,7 +178,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public SysUserInfoVO getInfoById(int id) {
+    public SysUserInfoVO getUser(int id) {
         SysUser oriUser = this.getById(id);
         ApiAssert.notNull(oriUser, String.format("用户编号：%s不存在", id));
         SysUserInfoVO result = BeanCopyUtil.beanCopy(oriUser, SysUserInfoVO.class);

@@ -1,7 +1,6 @@
 package org.lanjerry.admin.dto.sys;
 
 import org.lanjerry.common.core.bean.SplitPage;
-import org.lanjerry.common.core.enums.sys.SysUserStatusEnum;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -40,6 +39,6 @@ public class SysUserPageDTO extends SplitPage {
     /**
      * 状态 1.正常 2.禁用
      */
-    @ApiModelProperty(value = "状态 1.正常（NORMAL） 2.禁用（LOCKING）", example = "NORMAL", position = 40)
-    private SysUserStatusEnum status;
+    @ApiModelProperty(value = "状态 1.正常 2.禁用", example = "1", position = 40)
+    private Integer status;
 }

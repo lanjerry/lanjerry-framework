@@ -2,7 +2,7 @@ package org.lanjerry.common.core.exception;
 
 import java.io.Serializable;
 
-import org.lanjerry.common.core.enums.ApiResultCodeEnum;
+import org.lanjerry.common.core.enums.global.ApiResultCodeEnum;
 
 import lombok.Builder;
 import lombok.Data;
@@ -39,11 +39,11 @@ public class ApiException extends RuntimeException implements Serializable {
     private Exception ex;
 
     public static ApiException argError(String msg) {
-        return restException(ApiResultCodeEnum.ARG_ERROR.val, msg);
+        return restException(ApiResultCodeEnum.ARG_ERROR.value, msg);
     }
 
     public static ApiException systemError(String msg) {
-        return restException(ApiResultCodeEnum.SYSTEM_ERROR.val, msg);
+        return restException(ApiResultCodeEnum.SYSTEM_ERROR.value, msg);
     }
 
     private static ApiException restException(long code, String msg) {

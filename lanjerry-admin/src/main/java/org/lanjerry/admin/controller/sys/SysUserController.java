@@ -58,8 +58,8 @@ public class SysUserController {
 
     @GetMapping("/{id}")
     @ApiOperation(value = "根据用户编号查询用户信息", position = 20)
-    public ApiResult<SysUserInfoVO> getInfoById(@PathVariable("id") @ApiParam(value = "用户编号", required = true) Integer id) {
-        return ApiResult.success(userService.getInfoById(id));
+    public ApiResult<SysUserInfoVO> getUser(@PathVariable("id") @ApiParam(value = "用户编号", required = true) Integer id) {
+        return ApiResult.success(userService.getUser(id));
     }
 
     @PostMapping
@@ -94,7 +94,7 @@ public class SysUserController {
     @SysLog("锁定系统用户")
     @ApiOperation(value = "锁定系统用户", position = 60)
     public ApiResult lock(@PathVariable("id") @ApiParam(value = "用户编号", required = true) Integer id) {
-        userService.changeStatus(id, SysUserStatusEnum.LOCKING);
+        userService.changeUserStatus(id, SysUserStatusEnum.LOCKING);
         return ApiResult.success();
     }
 
@@ -103,7 +103,7 @@ public class SysUserController {
     @SysLog("解锁系统用户")
     @ApiOperation(value = "解锁系统用户", position = 70)
     public ApiResult unlock(@PathVariable("id") @ApiParam(value = "用户编号", required = true) Integer id) {
-        userService.changeStatus(id, SysUserStatusEnum.NORMAL);
+        userService.changeUserStatus(id, SysUserStatusEnum.NORMAL);
         return ApiResult.success();
     }
 
@@ -111,8 +111,8 @@ public class SysUserController {
     @RequiresPermissions("sys:user:resetPassword")
     @SysLog("重置系统用户密码")
     @ApiOperation(value = "重置系统用户密码", position = 80)
-    public ApiResult resetPassword(@RequestBody @Validated @ApiParam(value = "系统用户重置密码参数", required = true) SysUserResetPasswordDTO dto) {
-        userService.resetPassword(dto);
+    public ApiResult resetUserPwd(@RequestBody @Validated @ApiParam(value = "系统用户重置密码参数", required = true) SysUserResetPasswordDTO dto) {
+        userService.resetUserPwd(dto);
         return ApiResult.success();
     }
 

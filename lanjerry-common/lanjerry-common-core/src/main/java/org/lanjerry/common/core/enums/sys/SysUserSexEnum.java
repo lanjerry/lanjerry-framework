@@ -1,6 +1,6 @@
 package org.lanjerry.common.core.enums.sys;
 
-import com.baomidou.mybatisplus.core.enums.IEnum;
+import org.lanjerry.common.core.bean.BaseEnum;
 
 /**
  * <p>
@@ -10,17 +10,17 @@ import com.baomidou.mybatisplus.core.enums.IEnum;
  * @author lanjerry
  * @since 2019-09-03
  */
-public enum SysUserSexEnum implements IEnum<Integer> {
+public enum SysUserSexEnum implements BaseEnum<Integer> {
     MALE(1, "男"),
     FEMALE(2, "女"),
     UNKNOWN(3, "未知");
 
     private final Integer value;
-    private final String desc;
+    private final String text;
 
-    SysUserSexEnum(final Integer value, final String desc) {
+    SysUserSexEnum(final Integer value, final String text) {
         this.value = value;
-        this.desc = desc;
+        this.text = text;
     }
 
     @Override
@@ -28,14 +28,13 @@ public enum SysUserSexEnum implements IEnum<Integer> {
         return value;
     }
 
-    //@JsonValue
-    public String getDesc() {
-        return desc;
+    @Override
+    public String getText() {
+        return text;
     }
 
     @Override
-    public String toString() {
-        return getDesc();
+    public String getName() {
+        return name();
     }
-
 }

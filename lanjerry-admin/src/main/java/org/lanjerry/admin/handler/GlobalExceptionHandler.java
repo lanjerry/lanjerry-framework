@@ -10,7 +10,7 @@ import javax.validation.ConstraintViolationException;
 
 import org.apache.shiro.authz.UnauthorizedException;
 import org.lanjerry.common.core.bean.ApiResult;
-import org.lanjerry.common.core.enums.ApiResultCodeEnum;
+import org.lanjerry.common.core.enums.global.ApiResultCodeEnum;
 import org.lanjerry.common.core.exception.ApiException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -82,7 +82,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(UnauthorizedException.class)
     public ApiResult handleUnauthorizedException(UnauthorizedException ex) {
-        return new ApiResult().setCode(ApiResultCodeEnum.UN_AUTHORIZED.val).setMsg(ApiResultCodeEnum.UN_AUTHORIZED.desc);
+        return new ApiResult().setCode(ApiResultCodeEnum.UN_AUTHORIZED.value).setMsg(ApiResultCodeEnum.UN_AUTHORIZED.text);
     }
 
     /**

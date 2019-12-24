@@ -1,6 +1,8 @@
 package org.lanjerry.common.core.enums.sys;
 
-import com.baomidou.mybatisplus.core.enums.IEnum;
+import java.io.Serializable;
+
+import org.lanjerry.common.core.bean.BaseEnum;
 
 /**
  * <p>
@@ -10,29 +12,31 @@ import com.baomidou.mybatisplus.core.enums.IEnum;
  * @author lanjerry
  * @since 2019-09-03
  */
-public enum SysUserStatusEnum implements IEnum<Integer> {
+public enum SysUserStatusEnum implements BaseEnum {
     NORMAL(1, "正常"),
     LOCKING(2, "冻结");
 
     private final Integer value;
-    private final String desc;
+    private final String text;
 
-    SysUserStatusEnum(final Integer value, final String desc) {
+    SysUserStatusEnum(final Integer value, final String text) {
         this.value = value;
-        this.desc = desc;
+        this.text = text;
     }
 
+
     @Override
-    public Integer getValue() {
+    public Serializable getValue() {
         return value;
     }
 
-    public String getDesc() {
-        return desc;
+    @Override
+    public String getText() {
+        return text;
     }
 
     @Override
-    public String toString() {
-        return getDesc();
+    public String getName() {
+        return name();
     }
 }

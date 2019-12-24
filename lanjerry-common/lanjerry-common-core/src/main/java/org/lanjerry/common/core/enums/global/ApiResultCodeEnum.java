@@ -1,4 +1,4 @@
-package org.lanjerry.common.core.enums;
+package org.lanjerry.common.core.enums.global;
 
 import lombok.AllArgsConstructor;
 
@@ -19,7 +19,7 @@ public enum ApiResultCodeEnum {
     ARG_ERROR(400, "参数错误"),
     UN_AUTHORIZED(401, "权限不足");
 
-    public final Integer val;
+    public final Integer value;
 
-    public final String desc;
+    public final String text;
 }

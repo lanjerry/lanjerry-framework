@@ -1,6 +1,6 @@
 package org.lanjerry.common.core.bean;
 
-import org.lanjerry.common.core.enums.ApiResultCodeEnum;
+import org.lanjerry.common.core.enums.global.ApiResultCodeEnum;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -51,15 +51,15 @@ public class ApiResult<T> extends BaseEntity {
     }
 
     public static ApiResult systemError(String message) {
-        return restResult(ApiResultCodeEnum.SYSTEM_ERROR.val, message, null);
+        return restResult(ApiResultCodeEnum.SYSTEM_ERROR.value, message, null);
     }
 
     public static ApiResult argError(String message) {
-        return restResult(ApiResultCodeEnum.ARG_ERROR.val, message, null);
+        return restResult(ApiResultCodeEnum.ARG_ERROR.value, message, null);
     }
 
     public static <T> ApiResult<T> restResult(ApiResultCodeEnum rEnum, T data) {
-        return restResult(rEnum.val, rEnum.desc, data);
+        return restResult(rEnum.value, rEnum.text, data);
     }
 
     private static <T> ApiResult<T> restResult(long code, String msg, T data) {

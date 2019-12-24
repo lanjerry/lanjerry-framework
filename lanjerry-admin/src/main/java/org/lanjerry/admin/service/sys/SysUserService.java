@@ -45,7 +45,7 @@ public interface SysUserService extends IService<SysUser> {
      * @param id 用户编号
      * @return org.lanjerry.admin.vo.sys.SysUserInfoVO
      */
-    SysUserInfoVO getInfoById(int id);
+    SysUserInfoVO getUser(int id);
 
     /**
      * 新增系统用户
@@ -83,7 +83,7 @@ public interface SysUserService extends IService<SysUser> {
      * @param id 用户编号
      * @param statusEnum 系统用户状态枚举
      */
-    void changeStatus(int id, SysUserStatusEnum statusEnum);
+    void changeUserStatus(int id, SysUserStatusEnum statusEnum);
 
     /**
      * 重置系统用户密码
@@ -92,7 +92,7 @@ public interface SysUserService extends IService<SysUser> {
      * @since 2019/9/5 11:53
      * @param dto 系统用户重置密码参数
      */
-    void resetPassword(SysUserResetPasswordDTO dto);
+    void resetUserPwd(SysUserResetPasswordDTO dto);
 
     /**
      * 系统用户登录
