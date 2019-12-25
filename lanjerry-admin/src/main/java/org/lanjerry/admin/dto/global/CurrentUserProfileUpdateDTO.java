@@ -1,5 +1,7 @@
 package org.lanjerry.admin.dto.global;
 
+import javax.validation.constraints.NotNull;
+
 import org.lanjerry.common.core.bean.BaseEntity;
 import org.lanjerry.common.core.enums.sys.SysUserSexEnum;
 
@@ -40,6 +42,7 @@ public class CurrentUserProfileUpdateDTO extends BaseEntity {
     /**
      * 性别 1.男 2.女 3.未知
      */
+    @NotNull(message = "性别不能为空")
     @ApiModelProperty(value = "性别 1.男 2.女 3.未知", example = "1", required = true, position = 40)
     private SysUserSexEnum sex;
 }

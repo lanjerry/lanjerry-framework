@@ -37,7 +37,7 @@ public class SysUserInfoVO extends BaseEntity {
     /**
      * 性别 1.男 2.女 3.未知
      */
-    @ApiModelProperty(value = "性别 1.男 2.女 3.未知", position = 30)
+    @ApiModelProperty(value = "性别 1.男 2.女 3.未知", example = "{\"value\": 1,\"text\": \"男\",\"name\": \"MALE\"}", position = 30)
     private SysUserSexEnum sex;
 
     /**
@@ -55,7 +55,7 @@ public class SysUserInfoVO extends BaseEntity {
     /**
      * 状态 1.启用 2.停用
      */
-    @ApiModelProperty(value = "状态 1.启用 2.停用", position = 60)
+    @ApiModelProperty(value = "状态 1.启用 2.停用", example = "{\"value\": 1,\"text\": \"启用\",\"name\": \"ENABLE\"}", position = 60)
     private SysUserStatusEnum status;
 
     /**

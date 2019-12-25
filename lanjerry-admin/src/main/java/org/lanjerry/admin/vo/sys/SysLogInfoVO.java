@@ -73,13 +73,13 @@ public class SysLogInfoVO extends BaseEntity {
     /**
      * 状态 1.成功 2.失败
      */
-    @ApiModelProperty(value = "状态 1.成功 2.失败", position = 90)
+    @ApiModelProperty(value = "状态 1.成功 2.失败", example = "{\"value\": 1,\"text\": \"成功\",\"name\": \"SUCCESS\"}", position = 90)
     private SysLogStatusEnum status;
 
     /**
      * 创建时间
      */
-    @ApiModelProperty(value = "操作时间", example = "2018-11-22T15:57:53", position = 100)
+    @ApiModelProperty(value = "操作时间", example = "2018-11-22 15:57:53", position = 100)
     private LocalDateTime createdTime;
 
     /**

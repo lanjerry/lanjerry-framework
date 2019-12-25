@@ -55,13 +55,13 @@ public class CurrentUserProfileVO extends BaseEntity {
     /**
      * 性别 1.男 2.女 3.未知
      */
-    @ApiModelProperty(value = "性别 1.男 2.女 3.未知", position = 60)
+    @ApiModelProperty(value = "性别 1.男 2.女 3.未知", example = "{\"value\": 1,\"text\": \"男\",\"name\": \"MALE\"}", position = 60)
     private SysUserSexEnum sex;
 
     /**
      * 角色集
      */
-    @ApiModelProperty(value = "[\"采购\", \"销售\", \"管理员\"]", position = 70)
+    @ApiModelProperty(value = "角色集", example = "[\"采购\", \"销售\", \"管理员\"]", position = 70)
     private Set<String> roles;
 
     /**

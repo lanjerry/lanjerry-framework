@@ -67,7 +67,7 @@ public class SysLogPageVO extends BaseEntity {
     /**
      * 状态 1.成功 2.失败
      */
-    @ApiModelProperty(value = "状态 1.成功 2.失败", position = 80)
+    @ApiModelProperty(value = "状态 1.成功 2.失败", example = "{\"value\": 1,\"text\": \"成功\",\"name\": \"SUCCESS\"}", position = 80)
     private SysLogStatusEnum status;
 
     /**

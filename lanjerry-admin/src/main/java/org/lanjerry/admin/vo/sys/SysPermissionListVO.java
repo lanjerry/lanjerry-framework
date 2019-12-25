@@ -68,7 +68,7 @@ public class SysPermissionListVO extends BaseEntity {
     /**
      * 状态 1.启用 2.停用
      */
-    @ApiModelProperty(value = "状态 1.启用 2.停用", position = 80)
+    @ApiModelProperty(value = "状态 1.启用 2.停用", example = "{\"value\": 1,\"text\": \"启用\",\"name\": \"ENABLE\"}", position = 80)
     private SysPermissionStatusEnum status;
 
     /**
@@ -98,7 +98,7 @@ public class SysPermissionListVO extends BaseEntity {
     /**
      * 类型 1.菜单 2.按钮
      */
-    @ApiModelProperty(value = "类型 1.菜单 2.按钮", position = 130)
+    @ApiModelProperty(value = "类型 1.菜单 2.按钮", example = "{\"value\": 1,\"text\": \"菜单\",\"name\": \"MENU\"}", position = 130)
     private SysPermissionTypeEnum type;
 
     /**

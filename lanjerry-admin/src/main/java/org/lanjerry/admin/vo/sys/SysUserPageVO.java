@@ -43,13 +43,13 @@ public class SysUserPageVO extends BaseEntity {
     /**
      * 状态 1.启用 2.停用
      */
-    @ApiModelProperty(value = "状态 1.启用 2.停用", position = 40)
+    @ApiModelProperty(value = "状态 1.启用 2.停用", example = "{\"value\": 1,\"text\": \"启用\",\"name\": \"ENABLE\"}", position = 40)
     private SysUserStatusEnum status;
 
     /**
      * 角色集
      */
-    @ApiModelProperty(value = "[\"采购\", \"销售\", \"管理员\"]", position = 50)
+    @ApiModelProperty(value = "角色集", example = "[\"采购\", \"销售\", \"管理员\"]", position = 50)
     private Set<String> roles;
 
     /**
