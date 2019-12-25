@@ -1,0 +1,45 @@
+package org.lanjerry.admin.dto.global;
+
+import org.lanjerry.common.core.bean.BaseEntity;
+import org.lanjerry.common.core.enums.sys.SysUserSexEnum;
+
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+/**
+ * <p>
+ * 当前登录用户基本资料更新DTO
+ * </p>
+ *
+ * @author lanjerry
+ * @since 2019-12-24
+ */
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class CurrentUserProfileUpdateDTO extends BaseEntity {
+
+    /**
+     * 昵称
+     */
+    @ApiModelProperty(value = "昵称", example = "管理员", position = 10)
+    private String name;
+
+    /**
+     * 邮箱
+     */
+    @ApiModelProperty(value = "邮箱", example = "38046851@qq.com", position = 20)
+    private String email;
+
+    /**
+     * 手机号码
+     */
+    @ApiModelProperty(value = "手机号码", example = "13623012336", position = 30)
+    private String phone;
+
+    /**
+     * 性别 1.男 2.女 3.未知
+     */
+    @ApiModelProperty(value = "性别 1.男 2.女 3.未知", example = "1", required = true, position = 40)
+    private SysUserSexEnum sex;
+}

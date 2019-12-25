@@ -43,7 +43,8 @@ public class SysUserSaveDTO extends BaseEntity {
     /**
      * 昵称
      */
-    @ApiModelProperty(value = "昵称", example = "管理员", position = 30)
+    @NotBlank(message = "昵称不能为空")
+    @ApiModelProperty(value = "昵称", example = "管理员", required = true, position = 30)
     private String name;
 
     /**

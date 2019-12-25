@@ -20,10 +20,7 @@ import org.lanjerry.common.core.entity.sys.SysRole;
 import org.lanjerry.common.core.entity.sys.SysRolePermission;
 import org.lanjerry.common.core.entity.sys.SysUser;
 import org.lanjerry.common.core.entity.sys.SysUserRole;
-import org.lanjerry.common.core.enums.global.ApiResultCodeEnum;
 import org.lanjerry.common.core.enums.sys.SysPermissionTypeEnum;
-import org.lanjerry.common.core.enums.sys.SysUserStatusEnum;
-import org.lanjerry.common.core.util.ApiAssert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -65,7 +62,6 @@ public class ShiroServiceImpl implements ShiroService {
             return null;
         }
         SysUser user = userService.getOne(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getAccount, account).last("limit 1"));
-        ApiAssert.isTrue(user != null && SysUserStatusEnum.ENABLE.equals(user.getStatus()), ApiResultCodeEnum.NOT_SING_IN.text);
         return user;
     }
 

@@ -1,7 +1,8 @@
-package org.lanjerry.admin.vo.sys;
+package org.lanjerry.admin.vo.global;
 
 import java.util.List;
 
+import org.lanjerry.admin.vo.sys.SysUserRouterMetaVO;
 import org.lanjerry.common.core.bean.BaseEntity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -21,7 +22,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class SysUserRouterVO extends BaseEntity {
+public class CurrentUserRouterVO extends BaseEntity {
 
     /**
      * 路由名称
@@ -63,5 +64,5 @@ public class SysUserRouterVO extends BaseEntity {
      * 子路由
      */
     @ApiModelProperty(value = "子路由", position = 70)
-    private List<SysUserRouterVO> children;
+    private List<CurrentUserRouterVO> children;
 }

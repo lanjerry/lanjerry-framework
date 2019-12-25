@@ -13,6 +13,7 @@ import org.lanjerry.common.auth.shiro.service.ShiroService;
 import org.lanjerry.common.core.constant.CommonConsts;
 import org.lanjerry.common.core.entity.sys.SysUser;
 import org.lanjerry.common.core.enums.global.ApiResultCodeEnum;
+import org.lanjerry.common.core.enums.sys.SysUserStatusEnum;
 import org.lanjerry.common.core.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -63,6 +64,9 @@ public class JwtRealm extends AuthorizingRealm {
 
         if (user instanceof SysUser) {
             SysUser sysUser = (SysUser) user;
+            if (!SysUserStatusEnum.ENABLE.equals(sysUser.getStatus())) {
+                throw new DisabledAccountException(ApiResultCodeEnum.NOT_SING_IN.text);
+            }
             jwtToken.setId(sysUser.getId());
             if (jwtToken.getAccount() == null) {
                 jwtToken.setAccount(sysUser.getAccount());

@@ -36,7 +36,8 @@ public class SysUserUpdateDTO extends BaseEntity {
     /**
      * 昵称
      */
-    @ApiModelProperty(value = "昵称", example = "管理员", position = 20)
+    @NotBlank(message = "昵称不能为空")
+    @ApiModelProperty(value = "昵称", example = "管理员", required = true,position = 20)
     private String name;
 
     /**

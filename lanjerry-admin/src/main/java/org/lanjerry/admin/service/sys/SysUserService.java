@@ -1,16 +1,11 @@
 package org.lanjerry.admin.service.sys;
 
-import java.util.List;
-
-import org.lanjerry.admin.dto.sys.SysUserLoginDTO;
 import org.lanjerry.admin.dto.sys.SysUserPageDTO;
 import org.lanjerry.admin.dto.sys.SysUserResetPasswordDTO;
 import org.lanjerry.admin.dto.sys.SysUserSaveDTO;
 import org.lanjerry.admin.dto.sys.SysUserUpdateDTO;
-import org.lanjerry.admin.vo.sys.SysUserCurrentVO;
 import org.lanjerry.admin.vo.sys.SysUserInfoVO;
 import org.lanjerry.admin.vo.sys.SysUserPageVO;
-import org.lanjerry.admin.vo.sys.SysUserRouterVO;
 import org.lanjerry.common.core.entity.sys.SysUser;
 import org.lanjerry.common.core.enums.sys.SysUserStatusEnum;
 
@@ -93,32 +88,4 @@ public interface SysUserService extends IService<SysUser> {
      * @param dto 系统用户重置密码参数
      */
     void resetUserPwd(SysUserResetPasswordDTO dto);
-
-    /**
-     * 系统用户登录
-     *
-     * @author lanjerry
-     * @since 2019/9/16 17:36
-     * @param dto 系统用户登录参数
-     * @return java.lang.String
-     */
-    String login(SysUserLoginDTO dto);
-
-    /**
-     * 查询当前登录用户信息
-     *
-     * @author lanjerry
-     * @since 2019/11/22 17:42
-     * @return org.lanjerry.admin.vo.sys.SysUserInfoVO
-     */
-    SysUserCurrentVO getCurrentUserinfo();
-
-    /**
-     * 查询当前登录用户的路由信息
-     *
-     * @author lanjerry
-     * @since 2019/12/10 16:37
-     * @return org.lanjerry.admin.vo.sys.SysUserRouterVO
-     */
-    List<SysUserRouterVO> router();
 }

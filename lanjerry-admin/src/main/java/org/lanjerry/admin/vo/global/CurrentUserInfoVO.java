@@ -1,4 +1,4 @@
-package org.lanjerry.admin.vo.sys;
+package org.lanjerry.admin.vo.global;
 
 import java.util.Set;
 
@@ -10,15 +10,15 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 系统用户信息VO
+ * 当前用户信息VO
  * </p>
  *
  * @author lanjerry
- * @since 2019-11-22
+ * @since 2019-12-25
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class SysUserCurrentVO extends BaseEntity {
+public class CurrentUserInfoVO extends BaseEntity {
 
     /**
      * 帐号
@@ -35,7 +35,7 @@ public class SysUserCurrentVO extends BaseEntity {
     /**
      * 头像地址
      */
-    @ApiModelProperty(value = "头像地址", example = "", position = 30)
+    @ApiModelProperty(value = "头像地址", example = "image/touxiang.png", position = 30)
     private String avatar;
 
     /**

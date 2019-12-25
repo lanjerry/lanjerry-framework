@@ -1,43 +1,25 @@
 package org.lanjerry.admin.service.sys.impl;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.DisabledAccountException;
-import org.apache.shiro.subject.Subject;
-import org.lanjerry.admin.dto.sys.SysUserLoginDTO;
 import org.lanjerry.admin.dto.sys.SysUserPageDTO;
 import org.lanjerry.admin.dto.sys.SysUserResetPasswordDTO;
 import org.lanjerry.admin.dto.sys.SysUserSaveDTO;
 import org.lanjerry.admin.dto.sys.SysUserUpdateDTO;
 import org.lanjerry.admin.mapper.sys.SysUserMapper;
-import org.lanjerry.admin.service.sys.SysPermissionService;
 import org.lanjerry.admin.service.sys.SysRoleService;
 import org.lanjerry.admin.service.sys.SysUserRoleService;
 import org.lanjerry.admin.service.sys.SysUserService;
 import org.lanjerry.admin.util.AdminConsts;
 import org.lanjerry.admin.util.RedisUtil;
-import org.lanjerry.admin.vo.sys.SysPermissionListVO;
-import org.lanjerry.admin.vo.sys.SysUserCurrentVO;
 import org.lanjerry.admin.vo.sys.SysUserInfoVO;
 import org.lanjerry.admin.vo.sys.SysUserPageVO;
-import org.lanjerry.admin.vo.sys.SysUserRouterMetaVO;
-import org.lanjerry.admin.vo.sys.SysUserRouterVO;
-import org.lanjerry.common.auth.shiro.jwt.JwtToken;
-import org.lanjerry.common.auth.shiro.service.ShiroService;
-import org.lanjerry.common.core.constant.CommonConsts;
-import org.lanjerry.common.core.entity.sys.SysPermission;
 import org.lanjerry.common.core.entity.sys.SysRole;
 import org.lanjerry.common.core.entity.sys.SysUser;
 import org.lanjerry.common.core.entity.sys.SysUserRole;
-import org.lanjerry.common.core.enums.sys.SysPermissionStatusEnum;
-import org.lanjerry.common.core.enums.sys.SysPermissionTypeEnum;
 import org.lanjerry.common.core.enums.sys.SysUserStatusEnum;
-import org.lanjerry.common.core.exception.ApiException;
 import org.lanjerry.common.core.util.ApiAssert;
 import org.lanjerry.common.core.util.BeanCopyUtil;
 import org.lanjerry.common.core.util.Md5Util;
@@ -71,12 +53,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Autowired
     private SysUserRoleService userRoleService;
 
-    @Autowired
-    private SysPermissionService permissionService;
-
-    @Autowired
-    private ShiroService shiroService;
-
     @Override
     public IPage<SysUserPageVO> pageUsers(SysUserPageDTO dto) {
         IPage<SysUser> page = this.lambdaQuery().orderByDesc(SysUser::getId)
@@ -96,6 +72,17 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 r.setRoles(new HashSet(roles.stream().map(SysRole::getName).distinct().collect(Collectors.toList())));
             }
         });
+        return result;
+    }
+
+    @Override
+    public SysUserInfoVO getUser(int id) {
+        SysUser oriUser = this.getById(id);
+        ApiAssert.notNull(oriUser, String.format("用户编号：%s不存在", id));
+        SysUserInfoVO result = BeanCopyUtil.beanCopy(oriUser, SysUserInfoVO.class);
+        // 设置角色id集
+        List<SysUserRole> userRoles = userRoleService.lambdaQuery().select(SysUserRole::getRoleId).eq(SysUserRole::getUserId, id).list();
+        result.setRoleIds(new HashSet(userRoles.stream().map(SysUserRole::getRoleId).distinct().collect(Collectors.toList())));
         return result;
     }
 
@@ -159,91 +146,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         user.setPassword(Md5Util.encode(dto.getPassword(), String.valueOf(dto.getId())));
         user.setId(dto.getId());
         this.updateById(user);
-    }
-
-    @Override
-    public String login(SysUserLoginDTO dto) {
-        String captchaCode = RedisUtil.get(AdminConsts.CAPTCHA_CODE_KEY.concat(dto.getCaptchaKey()), true);
-        ApiAssert.isTrue(dto.getCaptchaCode().trim().toLowerCase().equals(captchaCode), "验证码错误或者已失效");
-        Subject subject = SecurityUtils.getSubject();
-        JwtToken token = JwtToken.builder().account(dto.getAccount()).password(dto.getPassword()).build();
-        try {
-            subject.login(token);
-        } catch (DisabledAccountException e) {
-            throw ApiException.argError(e.getMessage());
-        } catch (Exception e) {
-            throw ApiException.systemError(e.getMessage());
-        }
-        return ((JwtToken) SecurityUtils.getSubject().getPrincipal()).getToken();
-    }
-
-    @Override
-    public SysUserInfoVO getUser(int id) {
-        SysUser oriUser = this.getById(id);
-        ApiAssert.notNull(oriUser, String.format("用户编号：%s不存在", id));
-        SysUserInfoVO result = BeanCopyUtil.beanCopy(oriUser, SysUserInfoVO.class);
-        // 设置角色id集
-        List<SysUserRole> userRoles = userRoleService.lambdaQuery().select(SysUserRole::getRoleId).eq(SysUserRole::getUserId, id).list();
-        result.setRoleIds(new HashSet(userRoles.stream().map(SysUserRole::getRoleId).distinct().collect(Collectors.toList())));
-        return result;
-    }
-
-    @Override
-    public SysUserCurrentVO getCurrentUserinfo() {
-        JwtToken token = (JwtToken) SecurityUtils.getSubject().getPrincipal();
-        SysUser oriUser = this.getById(token.getId());
-        ApiAssert.notNull(oriUser, String.format("用户编号：%s不存在", token.getId()));
-        SysUserCurrentVO result = BeanCopyUtil.beanCopy(oriUser, SysUserCurrentVO.class);
-        // 设置角色和权限
-        Set<String> roles = new HashSet<>();
-        Set<String> permissions = new HashSet<>();
-        if (CommonConsts.DEFAULT_ADMIN_ACCOUNT.equals(token.getAccount())) {
-            roles.add(CommonConsts.DEFAULT_ADMIN_ROLE);
-            permissions.add(CommonConsts.DEFAULT_ADMIN_PERMISSION);
-        } else {
-            roles = shiroService.getRolesById(token.getId());
-            permissions = shiroService.getPermissionsById(token.getId());
-        }
-        result.setRoles(roles);
-        result.setPermissions(permissions);
-        return result;
-    }
-
-    @Override
-    public List<SysUserRouterVO> router() {
-        List<SysUserRouterVO> result = new ArrayList<>();
-        JwtToken token = (JwtToken) SecurityUtils.getSubject().getPrincipal();
-        Set<String> userPermissions = new HashSet<>();
-        if (!CommonConsts.DEFAULT_ADMIN_ACCOUNT.equals(token.getAccount())) {
-            userPermissions = shiroService.getPermissionsById(token.getId());
-        }
-        List<SysPermission> permissions = permissionService.lambdaQuery()
-                .orderByAsc(SysPermission::getSort)
-                .eq(SysPermission::getType, SysPermissionTypeEnum.MENU)
-                .eq(SysPermission::getStatus, SysPermissionStatusEnum.ENABLE)
-                .in(CollectionUtil.isNotEmpty(userPermissions), SysPermission::getPermission, userPermissions)
-                .list();
-        List<SysPermissionListVO> treePermissions = permissionService.listPermissions(permissions, AdminConsts.SYS_PERMISSION_PARENT_ID);
-        result = this.buildRouters(treePermissions);
-        return result;
-    }
-
-    private List<SysUserRouterVO> buildRouters(List<SysPermissionListVO> treePermissions) {
-        List<SysUserRouterVO> result = new ArrayList<>();
-        treePermissions.forEach(p -> {
-            SysUserRouterVO router = new SysUserRouterVO();
-            router.setName(StrUtil.upperFirst(p.getPath()));
-            router.setPath(AdminConsts.SYS_PERMISSION_PARENT_ID.equals(p.getParentId()) && !p.getFrameFlag() ? "/".concat(p.getPath()) : p.getPath());
-            router.setComponent(StrUtil.isNotBlank(p.getComponent()) ? p.getComponent() : "Layout");
-            router.setMeta(SysUserRouterMetaVO.builder().title(p.getName()).icon(p.getIcon()).build());
-            if (SysPermissionTypeEnum.MENU.equals(p.getType()) && CollectionUtil.isNotEmpty(p.getChildren())) {
-                router.setAlwaysShow(true);
-                router.setRedirect("noRedirect");
-                router.setChildren(this.buildRouters(p.getChildren()));
-            }
-            result.add(router);
-        });
-        return result;
     }
 
     /**

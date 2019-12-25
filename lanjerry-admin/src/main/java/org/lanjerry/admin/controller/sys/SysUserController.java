@@ -1,18 +1,13 @@
 package org.lanjerry.admin.controller.sys;
 
-import java.util.List;
-
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.lanjerry.admin.dto.sys.SysUserLoginDTO;
 import org.lanjerry.admin.dto.sys.SysUserPageDTO;
 import org.lanjerry.admin.dto.sys.SysUserResetPasswordDTO;
 import org.lanjerry.admin.dto.sys.SysUserSaveDTO;
 import org.lanjerry.admin.dto.sys.SysUserUpdateDTO;
 import org.lanjerry.admin.service.sys.SysUserService;
-import org.lanjerry.admin.vo.sys.SysUserCurrentVO;
 import org.lanjerry.admin.vo.sys.SysUserInfoVO;
 import org.lanjerry.admin.vo.sys.SysUserPageVO;
-import org.lanjerry.admin.vo.sys.SysUserRouterVO;
 import org.lanjerry.common.core.bean.ApiResult;
 import org.lanjerry.common.core.enums.sys.SysUserStatusEnum;
 import org.lanjerry.common.log.annotation.SysLog;
@@ -114,23 +109,5 @@ public class SysUserController {
     public ApiResult resetUserPwd(@RequestBody @Validated @ApiParam(value = "系统用户重置密码参数", required = true) SysUserResetPasswordDTO dto) {
         userService.resetUserPwd(dto);
         return ApiResult.success();
-    }
-
-    @PostMapping("/login")
-    @ApiOperation(value = "系统用户登录", position = 90)
-    public ApiResult login(@RequestBody @Validated @ApiParam(value = "系统用户登录参数", required = true) SysUserLoginDTO dto) {
-        return ApiResult.success(userService.login(dto));
-    }
-
-    @GetMapping("/info")
-    @ApiOperation(value = "查询当前登录用户信息", position = 100)
-    public ApiResult<SysUserCurrentVO> getCurrentUserinfo() {
-        return ApiResult.success(userService.getCurrentUserinfo());
-    }
-
-    @GetMapping("/router")
-    @ApiOperation(value = "查询当前登录用户的路由信息", position = 110)
-    public ApiResult<List<SysUserRouterVO>> router() {
-        return ApiResult.success(userService.router());
     }
 }

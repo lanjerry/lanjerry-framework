@@ -1,4 +1,4 @@
-package org.lanjerry.admin.dto.sys;
+package org.lanjerry.admin.dto.global;
 
 import javax.validation.constraints.NotBlank;
 
@@ -10,15 +10,15 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 系统用户登录DTO
+ * 当前用户登录DTO
  * </p>
  *
  * @author lanjerry
- * @since 2019-09-10
+ * @since 2019-12-25
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class SysUserLoginDTO extends BaseEntity {
+public class CurrentUserLoginDTO extends BaseEntity {
 
     /**
      * 账号
