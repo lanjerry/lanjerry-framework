@@ -1,5 +1,9 @@
 package org.lanjerry.admin.mapper.sys;
 
+import java.util.List;
+import java.util.Set;
+
+import org.apache.ibatis.annotations.Param;
 import org.lanjerry.common.core.entity.sys.SysPermission;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -14,4 +18,23 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface SysPermissionMapper extends BaseMapper<SysPermission> {
 
+    /**
+     * 根据用户编号查询权限标识集
+     * 
+     * @author lanjerry
+     * @since 2019/12/26 18:03
+     * @param userId 用户编号
+     * @return java.util.Set<java.lang.String>
+     */
+    Set<String> getPermissionsByUserId(@Param("userId") Integer userId);
+
+    /**
+     * 根据角色编号查询权限编号集
+     *
+     * @author lanjerry
+     * @since 2019/12/27 10:13
+     * @param roleId 角色编号
+     * @return java.util.List<java.lang.Integer>
+     */
+    List<Integer> getIdsByRoleId(@Param("roleId") Integer roleId);
 }

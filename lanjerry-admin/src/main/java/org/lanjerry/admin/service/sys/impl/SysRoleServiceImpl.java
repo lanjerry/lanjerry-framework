@@ -3,10 +3,10 @@ package org.lanjerry.admin.service.sys.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import org.lanjerry.admin.dto.sys.SysRolePageDTO;
 import org.lanjerry.admin.dto.sys.SysRoleSaveOrUpdateDTO;
+import org.lanjerry.admin.mapper.sys.SysPermissionMapper;
 import org.lanjerry.admin.mapper.sys.SysRoleMapper;
 import org.lanjerry.admin.service.sys.SysPermissionService;
 import org.lanjerry.admin.service.sys.SysRolePermissionService;
@@ -19,7 +19,6 @@ import org.lanjerry.admin.vo.sys.SysUserRoleVO;
 import org.lanjerry.common.core.entity.sys.SysPermission;
 import org.lanjerry.common.core.entity.sys.SysRole;
 import org.lanjerry.common.core.entity.sys.SysRolePermission;
-import org.lanjerry.common.core.enums.sys.SysPermissionTypeEnum;
 import org.lanjerry.common.core.util.ApiAssert;
 import org.lanjerry.common.core.util.BeanCopyUtil;
 import org.springframework.stereotype.Service;
@@ -30,7 +29,6 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.AllArgsConstructor;
@@ -110,15 +108,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     public List<Integer> getRolePermissionIds(int id) {
         SysRole oriRole = this.getById(id);
         ApiAssert.notNull(oriRole, String.format("角色编号：%s不存在", id));
-        // 设置权限id集
-        List<Integer> result = new ArrayList<>();
-        List<SysRolePermission> rolePermissions = rolePermissionService.lambdaQuery().select(SysRolePermission::getPermissionId).eq(SysRolePermission::getRoleId, id).list();
-        List<Integer> permissionIds = rolePermissions.stream().map(SysRolePermission::getPermissionId).distinct().collect(Collectors.toList());
-        if (CollUtil.isNotEmpty(permissionIds)) {
-            List<SysPermission> permissions = permissionService.lambdaQuery().select(SysPermission::getId).eq(SysPermission::getType, SysPermissionTypeEnum.BUTTON).in(SysPermission::getId, permissionIds).list();
-            result = permissions.stream().map(SysPermission::getId).distinct().collect(Collectors.toList());
-        }
-        return result;
+        return ((SysPermissionMapper) permissionService.getBaseMapper()).getIdsByRoleId(id);
     }
 
     @Override

@@ -8,6 +8,7 @@ import org.lanjerry.admin.dto.sys.SysUserPageDTO;
 import org.lanjerry.admin.dto.sys.SysUserResetPasswordDTO;
 import org.lanjerry.admin.dto.sys.SysUserSaveDTO;
 import org.lanjerry.admin.dto.sys.SysUserUpdateDTO;
+import org.lanjerry.admin.mapper.sys.SysRoleMapper;
 import org.lanjerry.admin.mapper.sys.SysUserMapper;
 import org.lanjerry.admin.service.sys.SysRoleService;
 import org.lanjerry.admin.service.sys.SysUserRoleService;
@@ -32,7 +33,6 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 
@@ -62,15 +62,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 .eq(dto.getStatus() != null, SysUser::getStatus, dto.getStatus())
                 .page(new Page<>(dto.getPageNum(), dto.getPageSize()));
         IPage<SysUserPageVO> result = BeanCopyUtil.pageCopy(page, SysUser.class, SysUserPageVO.class);
+        SysRoleMapper roleMapper = (SysRoleMapper) roleService.getBaseMapper();
         result.getRecords().forEach(r -> {
             // 设置角色名称
-            List<SysUserRole> userRoles = userRoleService.lambdaQuery().select(SysUserRole::getRoleId).eq(SysUserRole::getUserId, r.getId()).list();
-            if (CollUtil.isNotEmpty(userRoles)) {
-                // 获取角色
-                List<Integer> roleIds = userRoles.stream().map(SysUserRole::getRoleId).distinct().collect(Collectors.toList());
-                List<SysRole> roles = roleService.lambdaQuery().select(SysRole::getName).in(SysRole::getId, roleIds).list();
-                r.setRoles(new HashSet(roles.stream().map(SysRole::getName).distinct().collect(Collectors.toList())));
-            }
+            r.setRoles(roleMapper.getNameByUserId(r.getId()));
         });
         return result;
     }

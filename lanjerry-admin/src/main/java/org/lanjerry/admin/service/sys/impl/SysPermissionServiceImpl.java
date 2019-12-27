@@ -105,6 +105,9 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         permission.setStatus(statusEnum);
         permission.setId(id);
         this.updateById(permission);
+
+        // 清空redis中的所有系统权限数据
+        RedisUtil.remove(new ArrayList<>(Objects.requireNonNull(RedisUtil.keys(AdminConsts.REDIS_SYS_USER_PERMISSION.concat("*")))));
     }
 
     @Override

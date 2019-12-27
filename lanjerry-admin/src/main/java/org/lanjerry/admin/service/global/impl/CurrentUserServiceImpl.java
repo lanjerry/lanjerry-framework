@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.DisabledAccountException;
@@ -12,11 +11,11 @@ import org.apache.shiro.subject.Subject;
 import org.lanjerry.admin.dto.global.CurrentUserLoginDTO;
 import org.lanjerry.admin.dto.global.CurrentUserPasswordUpdateDTO;
 import org.lanjerry.admin.dto.global.CurrentUserProfileUpdateDTO;
+import org.lanjerry.admin.mapper.sys.SysRoleMapper;
 import org.lanjerry.admin.mapper.sys.SysUserMapper;
 import org.lanjerry.admin.service.global.CurrentUserService;
 import org.lanjerry.admin.service.sys.SysPermissionService;
 import org.lanjerry.admin.service.sys.SysRoleService;
-import org.lanjerry.admin.service.sys.SysUserRoleService;
 import org.lanjerry.admin.util.AdminConsts;
 import org.lanjerry.admin.util.RedisUtil;
 import org.lanjerry.admin.vo.global.CurrentUserInfoVO;
@@ -28,9 +27,7 @@ import org.lanjerry.common.auth.shiro.jwt.JwtToken;
 import org.lanjerry.common.auth.shiro.service.ShiroService;
 import org.lanjerry.common.core.constant.CommonConsts;
 import org.lanjerry.common.core.entity.sys.SysPermission;
-import org.lanjerry.common.core.entity.sys.SysRole;
 import org.lanjerry.common.core.entity.sys.SysUser;
-import org.lanjerry.common.core.entity.sys.SysUserRole;
 import org.lanjerry.common.core.enums.global.ApiResultCodeEnum;
 import org.lanjerry.common.core.enums.sys.SysPermissionStatusEnum;
 import org.lanjerry.common.core.enums.sys.SysPermissionTypeEnum;
@@ -43,7 +40,6 @@ import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 
@@ -60,9 +56,6 @@ public class CurrentUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> 
 
     @Autowired
     private SysRoleService roleService;
-
-    @Autowired
-    private SysUserRoleService userRoleService;
 
     @Autowired
     private SysPermissionService permissionService;
@@ -139,13 +132,7 @@ public class CurrentUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> 
         ApiAssert.notNull(oriUser, String.format("用户编号：%s不存在", token.getId()));
         CurrentUserProfileVO result = BeanCopyUtil.beanCopy(oriUser, CurrentUserProfileVO.class);
         // 设置角色名称
-        List<SysUserRole> userRoles = userRoleService.lambdaQuery().select(SysUserRole::getRoleId).eq(SysUserRole::getUserId, token.getId()).list();
-        if (CollUtil.isNotEmpty(userRoles)) {
-            // 获取角色
-            List<Integer> roleIds = userRoles.stream().map(SysUserRole::getRoleId).distinct().collect(Collectors.toList());
-            List<SysRole> roles = roleService.lambdaQuery().select(SysRole::getName).in(SysRole::getId, roleIds).list();
-            result.setRoles(new HashSet(roles.stream().map(SysRole::getName).distinct().collect(Collectors.toList())));
-        }
+        result.setRoles(((SysRoleMapper) roleService.getBaseMapper()).getNameByUserId(token.getId()));
         return result;
     }
 

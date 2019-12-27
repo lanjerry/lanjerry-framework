@@ -2,4 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.lanjerry.admin.mapper.sys.SysPermissionMapper">
 
+    <select id="getPermissionsByUserId" resultType="string">
+		SELECT DISTINCT(sp.permission) FROM sys_permission sp
+		LEFT JOIN sys_role_permission srp ON srp.permission_id=sp.id
+		LEFT JOIN sys_user_role sur ON sur.role_id=srp.role_id
+		WHERE sp.type=2 AND sur.user_id=#{userId}
+    </select>
+
+	<select id="getIdsByRoleId" resultType="int">
+		SELECT DISTINCT(sp.id) FROM sys_permission sp
+		LEFT JOIN sys_role_permission srp ON srp.permission_id=sp.id
+		WHERE srp.role_id=#{roleId}
+	</select>
+
 </mapper>
