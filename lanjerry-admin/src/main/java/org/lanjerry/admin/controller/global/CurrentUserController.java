@@ -78,7 +78,7 @@ public class CurrentUserController {
     }
 
     @PostMapping("/logout")
-    @ApiOperation(value = "退出登录", position = 60)
+    @ApiOperation(value = "退出登录", position = 70)
     public ApiResult logout() {
         currentUserService.logout();
         return ApiResult.success();
