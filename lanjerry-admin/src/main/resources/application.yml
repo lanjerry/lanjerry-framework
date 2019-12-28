@@ -28,3 +28,7 @@ mybatis-plus:
   mapper-locations: classpath:/mapper/*/*Mapper.xml
   type-enums-package: org.lanjerry.common.core.enums
   type-aliases-package: org.lanjerry.common.core.entity
+
+# 演示模式配置
+demo:
+  enable: true

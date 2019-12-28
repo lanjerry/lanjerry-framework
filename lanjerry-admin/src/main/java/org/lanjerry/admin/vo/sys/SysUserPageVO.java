@@ -53,14 +53,26 @@ public class SysUserPageVO extends BaseEntity {
     private Set<String> roles;
 
     /**
+     * 最后登陆ip
+     */
+    @ApiModelProperty(value = "最后登陆ip", example = "127.0.0.1", position = 60)
+    private String loginIp;
+
+    /**
+     * 最后登陆时间
+     */
+    @ApiModelProperty(value = "最后登陆时间", example = "2018-11-22 15:57:53", position = 70)
+    private LocalDateTime loginTime;
+
+    /**
      * 创建人
      */
-    @ApiModelProperty(value = "创建人", example = "管理员", position = 60)
+    @ApiModelProperty(value = "创建人", example = "管理员", position = 80)
     private String creatorName;
 
     /**
      * 创建时间
      */
-    @ApiModelProperty(value = "创建时间", example = "2018-11-22 15:57:53", position = 70)
+    @ApiModelProperty(value = "创建时间", example = "2018-11-22 15:57:53", position = 90)
     private LocalDateTime createdTime;
 }

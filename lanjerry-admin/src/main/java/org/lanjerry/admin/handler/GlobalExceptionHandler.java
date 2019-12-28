@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
+import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.lanjerry.common.core.bean.ApiResult;
 import org.lanjerry.common.core.enums.global.ApiResultCodeEnum;
@@ -93,6 +94,11 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     public ApiResult handleGlobalException(HttpServletRequest request, HttpServletResponse response, Exception ex) {
+        if (ex.getCause() instanceof PersistenceException && ex.getCause().getCause() instanceof ApiException) {
+            ApiException apiException = (ApiException) ex.getCause().getCause();
+            return ApiResult.systemError(apiException.getMsg());
+        }
+
         log.error("BusinessExceptionHandler:" + ex.getMessage());
         log.error("ErrorUrl：" + request.getRequestURI());
         log.error("Msg：" + ex.getMessage());
