@@ -1,5 +1,7 @@
 package org.lanjerry.admin.plugin;
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.plugin.Interceptor;
@@ -24,7 +26,10 @@ import org.lanjerry.common.core.exception.ApiException;
 public class DemoPlugin implements Interceptor {
 
     @Override
-    public Object intercept(Invocation invocation) {
+    public Object intercept(Invocation invocation) throws InvocationTargetException, IllegalAccessException {
+        if (((MappedStatement) invocation.getArgs()[0]).getId().equals("org.lanjerry.admin.mapper.sys.SysUserMapper.updateLoginInfo")) {
+            return invocation.proceed();
+        }
         throw ApiException.systemError("演示模式，不允许操作");
     }
 

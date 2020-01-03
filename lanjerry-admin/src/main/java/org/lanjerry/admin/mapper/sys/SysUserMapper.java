@@ -1,5 +1,6 @@
 package org.lanjerry.admin.mapper.sys;
 
+import org.apache.ibatis.annotations.Param;
 import org.lanjerry.common.core.entity.sys.SysUser;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -14,4 +15,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface SysUserMapper extends BaseMapper<SysUser> {
 
+    void updateLoginInfo(@Param("userId") Integer userId, @Param("ipAddress") String ipAddress);
 }

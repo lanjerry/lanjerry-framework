@@ -2,4 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.lanjerry.admin.mapper.sys.SysUserMapper">
 
+    <update id="updateLoginInfo">
+        UPDATE sys_user SET
+        login_ip = #{ipAddress},
+        login_time = NOW()
+        where id = #{userId}
+    </update>
+
 </mapper>

@@ -3,7 +3,10 @@ package org.lanjerry.admin.service.global.impl;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.DisabledAccountException;
@@ -37,11 +40,14 @@ import org.lanjerry.common.core.util.BeanCopyUtil;
 import org.lanjerry.common.core.util.Md5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.extra.servlet.ServletUtil;
 
 /**
  * <p>
@@ -76,7 +82,14 @@ public class CurrentUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> 
         } catch (Exception e) {
             throw ApiException.systemError(e.getMessage());
         }
-        return ((JwtToken) SecurityUtils.getSubject().getPrincipal()).getToken();
+
+        // 获取IP地址
+        HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+        String ipAddress = ServletUtil.getClientIP(request);
+        ipAddress = CommonConsts.LOCAL_HOST_IPs.contains(ipAddress) ? CommonConsts.LOCAL_HOST_IP : ipAddress;
+        this.baseMapper.updateLoginInfo(token.getId(), ipAddress);
+
+        return token.getToken();
     }
 
     @Override
