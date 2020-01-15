@@ -20,13 +20,14 @@ public interface SysPermissionMapper extends BaseMapper<SysPermission> {
 
     /**
      * 根据用户编号查询权限标识集
-     * 
+     *
      * @author lanjerry
      * @since 2019/12/26 18:03
+     * @param type 权限类型
      * @param userId 用户编号
      * @return java.util.Set<java.lang.String>
      */
-    Set<String> getPermissionsByUserId(@Param("userId") Integer userId);
+    Set<String> getPermissionsByUserId(@Param("type") Integer type, @Param("userId") Integer userId);
 
     /**
      * 根据角色编号查询权限编号集

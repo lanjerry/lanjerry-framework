@@ -27,9 +27,14 @@ public interface AdminConsts {
     String REDIS_SYS_USER_PERMISSION = "sys_user_permission:";
 
     /**
+     * redis中系统用户路由数据
+     */
+    String REDIS_SYS_USER_ROUTER = "sys_user_router:";
+
+    /**
      * redis中系统用户权限数据过期时间15天（单位：秒）
      */
-    long REDIS_SYS_USER_PERMISSION_EXPIRE_TIME = 60 * 60 * 24 * 15;
+    long REDIS_SYS_USER_PERMISSION_ROUTER_EXPIRE_TIME = 60 * 60 * 24 * 15;
 
     /**
      * redis中验证码key

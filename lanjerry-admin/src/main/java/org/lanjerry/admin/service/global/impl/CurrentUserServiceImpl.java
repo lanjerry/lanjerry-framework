@@ -14,6 +14,7 @@ import org.apache.shiro.subject.Subject;
 import org.lanjerry.admin.dto.global.CurrentUserLoginDTO;
 import org.lanjerry.admin.dto.global.CurrentUserPasswordUpdateDTO;
 import org.lanjerry.admin.dto.global.CurrentUserProfileUpdateDTO;
+import org.lanjerry.admin.mapper.sys.SysPermissionMapper;
 import org.lanjerry.admin.mapper.sys.SysRoleMapper;
 import org.lanjerry.admin.mapper.sys.SysUserMapper;
 import org.lanjerry.admin.service.global.CurrentUserService;
@@ -48,6 +49,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.servlet.ServletUtil;
+import cn.hutool.json.JSONUtil;
 
 /**
  * <p>
@@ -121,18 +123,43 @@ public class CurrentUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> 
         JwtToken token = (JwtToken) SecurityUtils.getSubject().getPrincipal();
         ApiAssert.notNull(token.getId(), ApiResultCodeEnum.NOT_SING_IN.text);
         List<CurrentUserRouterVO> result;
-        Set<String> userPermissions = new HashSet<>();
-        if (!CommonConsts.DEFAULT_ADMIN_ACCOUNT.equals(token.getAccount())) {
-            userPermissions = shiroService.getPermissionsById(token.getId());
+        // 从redis中获取数据
+        try {
+            String jsonRouter = RedisUtil.get(AdminConsts.REDIS_SYS_USER_ROUTER.concat(String.valueOf(token.getId())));
+            if (StrUtil.isNotBlank(jsonRouter)) {
+                result = JSONUtil.toList(JSONUtil.parseArray(jsonRouter), CurrentUserRouterVO.class);
+                return result;
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-        List<SysPermission> permissions = permissionService.lambdaQuery()
-                .orderByAsc(SysPermission::getSort)
-                .eq(SysPermission::getType, SysPermissionTypeEnum.MENU)
-                .eq(SysPermission::getStatus, SysPermissionStatusEnum.ENABLE)
-                .in(CollectionUtil.isNotEmpty(userPermissions), SysPermission::getPermission, userPermissions)
-                .list();
+        // 从数据库中获取数据
+        List<SysPermission> permissions = new ArrayList<>();
+        if (CommonConsts.DEFAULT_ADMIN_ACCOUNT.equals(token.getAccount())) {
+            permissions = permissionService.lambdaQuery()
+                    .orderByAsc(SysPermission::getSort)
+                    .eq(SysPermission::getType, SysPermissionTypeEnum.MENU)
+                    .eq(SysPermission::getStatus, SysPermissionStatusEnum.ENABLE)
+                    .list();
+        } else {
+            Set<String> userPermissions = ((SysPermissionMapper) permissionService.getBaseMapper()).getPermissionsByUserId(SysPermissionTypeEnum.MENU.getValue(), token.getId());
+            if (CollectionUtil.isNotEmpty(userPermissions)) {
+                permissions = permissionService.lambdaQuery()
+                        .orderByAsc(SysPermission::getSort)
+                        .eq(SysPermission::getType, SysPermissionTypeEnum.MENU)
+                        .eq(SysPermission::getStatus, SysPermissionStatusEnum.ENABLE)
+                        .in(SysPermission::getPermission, userPermissions)
+                        .list();
+            }
+        }
         List<SysPermissionListVO> treePermissions = permissionService.listPermissions(permissions, AdminConsts.SYS_PERMISSION_PARENT_ID);
         result = this.buildRouters(treePermissions);
+        // 把数据存储到redis中，过期时间为15天
+        try {
+            RedisUtil.setFromString(AdminConsts.REDIS_SYS_USER_ROUTER.concat(String.valueOf(token.getId())), JSONUtil.toJsonStr(result), AdminConsts.REDIS_SYS_USER_PERMISSION_ROUTER_EXPIRE_TIME);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         return result;
     }
 

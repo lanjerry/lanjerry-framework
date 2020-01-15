@@ -14,6 +14,7 @@ import org.lanjerry.admin.util.AdminConsts;
 import org.lanjerry.admin.util.RedisUtil;
 import org.lanjerry.common.auth.shiro.service.ShiroService;
 import org.lanjerry.common.core.entity.sys.SysUser;
+import org.lanjerry.common.core.enums.sys.SysPermissionTypeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -94,11 +95,11 @@ public class ShiroServiceImpl implements ShiroService {
             ex.printStackTrace();
         }
         // 从数据库中获取数据
-        result = ((SysPermissionMapper) permissionService.getBaseMapper()).getPermissionsByUserId(id);
+        result = ((SysPermissionMapper) permissionService.getBaseMapper()).getPermissionsByUserId(SysPermissionTypeEnum.BUTTON.getValue(), id);
 
         // 把数据存储到redis中，过期时间为15天
         try {
-            RedisUtil.setFromString(AdminConsts.REDIS_SYS_USER_PERMISSION.concat(String.valueOf(id)), JSONUtil.toJsonStr(result), AdminConsts.REDIS_SYS_USER_PERMISSION_EXPIRE_TIME);
+            RedisUtil.setFromString(AdminConsts.REDIS_SYS_USER_PERMISSION.concat(String.valueOf(id)), JSONUtil.toJsonStr(result), AdminConsts.REDIS_SYS_USER_PERMISSION_ROUTER_EXPIRE_TIME);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
