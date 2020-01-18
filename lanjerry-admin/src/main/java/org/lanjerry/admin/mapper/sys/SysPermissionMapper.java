@@ -34,8 +34,9 @@ public interface SysPermissionMapper extends BaseMapper<SysPermission> {
      *
      * @author lanjerry
      * @since 2019/12/27 10:13
+     * @param type 权限类型
      * @param roleId 角色编号
      * @return java.util.List<java.lang.Integer>
      */
-    List<Integer> getIdsByRoleId(@Param("roleId") Integer roleId);
+    List<Integer> getIdsByRoleId(@Param("type") Integer type, @Param("roleId") Integer roleId);
 }

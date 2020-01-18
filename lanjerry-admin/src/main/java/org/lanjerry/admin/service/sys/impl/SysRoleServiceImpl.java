@@ -19,6 +19,7 @@ import org.lanjerry.admin.vo.sys.SysUserRoleVO;
 import org.lanjerry.common.core.entity.sys.SysPermission;
 import org.lanjerry.common.core.entity.sys.SysRole;
 import org.lanjerry.common.core.entity.sys.SysRolePermission;
+import org.lanjerry.common.core.enums.sys.SysPermissionTypeEnum;
 import org.lanjerry.common.core.util.ApiAssert;
 import org.lanjerry.common.core.util.BeanCopyUtil;
 import org.springframework.stereotype.Service;
@@ -108,7 +109,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     public List<Integer> getRolePermissionIds(int id) {
         SysRole oriRole = this.getById(id);
         ApiAssert.notNull(oriRole, String.format("角色编号：%s不存在", id));
-        return ((SysPermissionMapper) permissionService.getBaseMapper()).getIdsByRoleId(id);
+        return ((SysPermissionMapper) permissionService.getBaseMapper()).getIdsByRoleId(SysPermissionTypeEnum.BUTTON.getValue(), id);
     }
 
     @Override

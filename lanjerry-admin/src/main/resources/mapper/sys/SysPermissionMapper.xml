@@ -12,7 +12,7 @@
 	<select id="getIdsByRoleId" resultType="int">
 		SELECT DISTINCT(sp.id) FROM sys_permission sp
 		LEFT JOIN sys_role_permission srp ON srp.permission_id=sp.id
-		WHERE srp.role_id=#{roleId}
+		WHERE sp.type=#{type} AND srp.role_id=#{roleId}
 	</select>
 
 </mapper>
