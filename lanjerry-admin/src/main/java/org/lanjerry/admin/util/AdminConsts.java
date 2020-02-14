@@ -66,5 +66,5 @@ public interface AdminConsts {
     /**
      * 日期查询的默认时间止
      */
-    String END_TIME = " 59:59:59";
+    String END_TIME = " 23:59:59";
 }
