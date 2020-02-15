@@ -15,5 +15,13 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface SysUserMapper extends BaseMapper<SysUser> {
 
+    /**
+     * 更新用户登录信息
+     *
+     * @author lanjerry
+     * @since 2020/2/16 1:05
+     * @param userId 用户编号
+     * @param ipAddress IP地址
+     */
     void updateLoginInfo(@Param("userId") Integer userId, @Param("ipAddress") String ipAddress);
 }
