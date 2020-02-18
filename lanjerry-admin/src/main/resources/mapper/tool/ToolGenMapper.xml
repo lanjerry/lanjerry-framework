@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.lanjerry.admin.mapper.tool.ToolGenMapper">
+
+    <select id="pageDbTables" parameterType="org.lanjerry.admin.dto.tool.ToolGenDbTableDTO" resultType="org.lanjerry.admin.vo.tool.ToolGenDbTableVO">
+        SELECT table_name, table_comment, create_time, update_time FROM information_schema.tables
+		WHERE table_schema = (SELECT database())
+		AND table_name NOT LIKE 'tool_%'
+		AND table_name NOT IN (SELECT table_name FROM tool_gen)
+		<if test="dto.tableName != null and dto.tableName != ''">
+			AND lower(table_name) LIKE lower(concat('%', #{dto.tableName}, '%'))
+		</if>
+		<if test="dto.tableComment != null and dto.tableComment != ''">
+			AND lower(table_comment) LIKE lower(concat('%', #{dto.tableComment}, '%'))
+		</if>
+    </select>
+
+	<select id="selectDbTablesByNames" resultType="org.lanjerry.admin.vo.tool.ToolGenDbTableVO">
+		SELECT table_name, table_comment, create_time, update_time FROM information_schema.tables
+		WHERE table_name NOT LIKE 'qrtz_%' AND table_name NOT LIKE 'gen_%' AND table_schema = (SELECT database())
+		AND table_name IN
+		<foreach collection="array" item="name" open="(" separator="," close=")">
+			#{name}
+		</foreach>
+	</select>
+
+</mapper>

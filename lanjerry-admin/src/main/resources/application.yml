@@ -29,6 +29,15 @@ mybatis-plus:
   type-enums-package: org.lanjerry.common.core.enums
   type-aliases-package: org.lanjerry.common.core.entity
 
+# 代码生成
+gen:
+  # 作者
+  author: lanjerry
+  # 默认生成包路径 system 需改成自己的模块名称 如 system monitor tool
+  packageName: org.lanjerry.admin
+  # 自动去除表前缀，默认是true
+  autoRemovePre: false
+
 # 演示模式配置
 demo:
-  enable: true
+  enable: false

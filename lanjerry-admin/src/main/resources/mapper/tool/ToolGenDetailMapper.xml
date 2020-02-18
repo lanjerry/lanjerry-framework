@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.lanjerry.admin.mapper.tool.ToolGenDetailMapper">
+
+    <select id="selectDbTableColumnsByName" parameterType="String" resultType="org.lanjerry.admin.vo.tool.ToolGenDbTableColumnVO">
+		SELECT column_name, column_comment, column_type,
+		(CASE WHEN column_key = 'PRI' THEN '1' ELSE '0' END) AS pk_flag,
+		(CASE WHEN extra = 'auto_increment' THEN '1' ELSE '0' END) AS increment_flag,
+		(CASE WHEN (is_nullable = 'no' || column_key = 'PRI') THEN '1' ELSE '0' END) AS required_flag
+		FROM information_schema.columns WHERE table_schema = (SELECT database()) AND table_name = #{tableName}
+		ORDER BY ordinal_position
+	</select>
+
+</mapper>

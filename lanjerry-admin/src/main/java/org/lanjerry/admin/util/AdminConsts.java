@@ -57,6 +57,64 @@ public interface AdminConsts {
      */
     Integer SYS_PERMISSION_PARENT_ID = 0;
 
+    //============================代码生成=============================
+    /**
+     * 字符串类型
+     */
+    String GEN_TYPE_STRING = "String";
+
+    /**
+     * 整型
+     */
+    String GEN_TYPE_INTEGER = "Integer";
+
+    /**
+     * 长整型
+     */
+    String GEN_TYPE_LONG = "Long";
+
+    /**
+     * 定点型
+     */
+    String GEN_TYPE_BIGDECIMAL = "BigDecimal";
+
+    /**
+     * 单精度浮点型
+     */
+    String GEN_TYPE_FLOAT = "Float";
+
+    /**
+     * 双精度浮点型
+     */
+    String GEN_TYPE_DOUBLE = "Double";
+
+    /**
+     * 布尔类型
+     */
+    String GEN_TYPE_BOOLEAN = "Boolean";
+
+    /**
+     * 时间类型
+     */
+    String GEN_TYPE_DATE = "LocalDateTime";
+
+    /**
+     * 数据库字符串类型
+     */
+    String[] GEN_COLUMNTYPE_STR = { "char", "varchar", "narchar", "varchar2", "tinytext", "text",
+            "mediumtext", "longtext" };
+
+    /**
+     * 数据库时间类型
+     */
+    String[] GEN_COLUMNTYPE_TIME = { "datetime", "time", "date", "timestamp" };
+
+    /**
+     * 数据库数字类型
+     */
+    String[] GEN_COLUMNTYPE_NUMBER = { "tinyint", "smallint", "mediumint", "int", "number", "integer",
+            "bigint", "float", "double", "decimal" };
+
     //============================OTHER=============================
     /**
      * 日期查询的默认起始时分秒
