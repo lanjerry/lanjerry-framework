@@ -76,7 +76,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Transactional(rollbackFor = Exception.class)
     public void updateRole(int id, SysRoleSaveOrUpdateDTO dto) {
         SysRole oriRole = this.getById(id);
-        ApiAssert.notNull(oriRole, String.format("id：%s不存在", id));
+        ApiAssert.notNull(oriRole, String.format("角色编号：%s不存在", id));
         SysRole role = BeanCopyUtil.beanCopy(dto, SysRole.class);
         role.setId(id);
         this.updateById(role);
@@ -90,7 +90,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     public void removeRoles(Integer[] ids) {
         for (Integer id : ids) {
             SysRole oriRole = this.getById(id);
-            ApiAssert.notNull(oriRole, String.format("id：%s不存在", id));
+            ApiAssert.notNull(oriRole, String.format("角色编号：%s不存在", id));
             this.removeById(id);
 
             // 删除角色权限

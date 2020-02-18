@@ -58,7 +58,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     @Override
     public void updatePermission(int id, SysPermissionSaveOrUpdateDTO dto) {
         SysPermission oriPermission = this.getById(id);
-        ApiAssert.notNull(oriPermission, String.format("id：%s不存在", id));
+        ApiAssert.notNull(oriPermission, String.format("权限编号：%s不存在", id));
         if (SysPermissionTypeEnum.MENU.equals(oriPermission.getType())) {
             ApiAssert.isTrue(this.count(Wrappers.<SysPermission>lambdaQuery().eq(SysPermission::getName, dto.getName()).ne(SysPermission::getId, id)) == 0, String.format("名称：%s已存在", dto.getName()));
         }
