@@ -4,7 +4,9 @@ import java.time.LocalDateTime;
 
 import org.lanjerry.common.core.bean.BaseEntity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
@@ -91,34 +93,36 @@ public class ToolGenDetail extends BaseEntity {
     private Boolean queryFlag;
 
     /**
-     * 查询方式（等于、不等于、大于、小于、范围）
+     * 查询方式
      */
     private String queryType;
 
     /**
-     * 显示类型（文本框、文本域、下拉框、复选框、单选框、日期控件）
+     * 显示类型
      */
     private String htmlType;
 
     /**
      * 创建人id
      */
+    @TableField(fill = FieldFill.INSERT)
     private Integer creatorId;
 
     /**
      * 创建人
      */
+    @TableField(fill = FieldFill.INSERT)
     private String creatorName;
 
     /**
      * 创建时间
      */
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdTime;
 
     /**
      * 更新时间
      */
+    @TableField(fill = FieldFill.UPDATE)
     private LocalDateTime updatedTime;
-
-
 }

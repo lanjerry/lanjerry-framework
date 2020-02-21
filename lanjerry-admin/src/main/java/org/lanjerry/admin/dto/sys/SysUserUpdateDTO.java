@@ -16,7 +16,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 系统用户新增或者更新DTO
+ * 系统用户更新DTO
  * </p>
  *
  * @author lanjerry

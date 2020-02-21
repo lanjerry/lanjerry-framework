@@ -59,8 +59,8 @@ public class SysUserInfoVO extends BaseEntity {
     private SysUserStatusEnum status;
 
     /**
-     * 角色id集
+     * 角色编号集
      */
-    @ApiModelProperty(value = "角色id集", example = "[1, 2, 7]", position = 70)
+    @ApiModelProperty(value = "角色编号集", example = "[1, 2, 7]", position = 70)
     private Set<Integer> roleIds;
 }

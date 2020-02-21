@@ -1,19 +1,24 @@
 package org.lanjerry.admin.service.tool.impl;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import org.lanjerry.admin.config.global.ToolGenConfig;
 import org.lanjerry.admin.dto.tool.ToolGenDbTableDTO;
 import org.lanjerry.admin.dto.tool.ToolGenPageDTO;
+import org.lanjerry.admin.dto.tool.ToolGenUpdateDTO;
 import org.lanjerry.admin.mapper.tool.ToolGenDetailMapper;
 import org.lanjerry.admin.mapper.tool.ToolGenMapper;
 import org.lanjerry.admin.service.tool.ToolGenDetailService;
 import org.lanjerry.admin.service.tool.ToolGenService;
 import org.lanjerry.admin.util.AdminConsts;
+import org.lanjerry.admin.vo.tool.ToolGenColumnVO;
 import org.lanjerry.admin.vo.tool.ToolGenDbTableColumnVO;
 import org.lanjerry.admin.vo.tool.ToolGenDbTableVO;
+import org.lanjerry.admin.vo.tool.ToolGenInfoVO;
 import org.lanjerry.admin.vo.tool.ToolGenPageVO;
+import org.lanjerry.admin.vo.tool.ToolGenResultVO;
 import org.lanjerry.common.core.entity.tool.ToolGen;
 import org.lanjerry.common.core.entity.tool.ToolGenDetail;
 import org.lanjerry.common.core.util.ApiAssert;
@@ -59,6 +64,35 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
     }
 
     @Override
+    public ToolGenResultVO getGen(int id) {
+        ToolGen gen = this.getById(id);
+        ApiAssert.notNull(gen, String.format("表编号：%s不存在", id));
+        ToolGenResultVO result = new ToolGenResultVO();
+        ToolGenInfoVO info = BeanCopyUtil.beanCopy(gen, ToolGenInfoVO.class);
+        info.setTplFunctions(new HashSet<>(Arrays.asList(gen.getTplFunction().split(","))));
+        result.setInfo(info);
+        result.setColumns(BeanCopyUtil.listCopy(genDetailService.list(Wrappers.<ToolGenDetail>lambdaQuery().eq(ToolGenDetail::getTableId, id)), ToolGenDetail.class, ToolGenColumnVO.class));
+        return result;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateGen(int id, ToolGenUpdateDTO dto) {
+        ToolGen oriGen = this.getById(id);
+        ApiAssert.notNull(oriGen, String.format("表编号：%s不存在", id));
+        ToolGen gen = BeanCopyUtil.beanCopy(dto.getInfo(), ToolGen.class);
+        gen.setTplFunction(String.join(",", dto.getInfo().getTplFunctions()));
+        gen.setId(id);
+        this.updateById(gen);
+
+        // 更新明细表
+        dto.getColumns().forEach(c -> {
+            ToolGenDetail detail = BeanCopyUtil.beanCopy(c, ToolGenDetail.class);
+            genDetailService.updateById(detail);
+        });
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public void removeGens(Integer[] ids) {
         for (Integer id : ids) {
@@ -66,7 +100,7 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
             ApiAssert.notNull(gen, String.format("表编号：%s不存在", id));
             this.removeById(id);
 
-            // 删除数据表字段
+            // 删除明细表
             genDetailService.remove(Wrappers.<ToolGenDetail>lambdaQuery().eq(ToolGenDetail::getTableId, id));
         }
     }

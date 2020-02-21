@@ -2,8 +2,10 @@ package org.lanjerry.admin.service.tool;
 
 import org.lanjerry.admin.dto.tool.ToolGenDbTableDTO;
 import org.lanjerry.admin.dto.tool.ToolGenPageDTO;
+import org.lanjerry.admin.dto.tool.ToolGenUpdateDTO;
 import org.lanjerry.admin.vo.tool.ToolGenDbTableVO;
 import org.lanjerry.admin.vo.tool.ToolGenPageVO;
+import org.lanjerry.admin.vo.tool.ToolGenResultVO;
 import org.lanjerry.common.core.entity.tool.ToolGen;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -20,6 +22,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface ToolGenService extends IService<ToolGen> {
 
     IPage<ToolGenPageVO> pageGens(ToolGenPageDTO dto);
+
+    ToolGenResultVO getGen(int id);
+
+    void updateGen(int id, ToolGenUpdateDTO dto);
 
     void removeGens(Integer[] ids);
 
