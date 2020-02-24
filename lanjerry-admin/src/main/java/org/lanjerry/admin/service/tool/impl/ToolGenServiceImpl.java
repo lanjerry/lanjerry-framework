@@ -1,9 +1,20 @@
 package org.lanjerry.admin.service.tool.impl;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
 import org.lanjerry.admin.config.global.ToolGenConfig;
 import org.lanjerry.admin.dto.tool.ToolGenDbTableDTO;
 import org.lanjerry.admin.dto.tool.ToolGenPageDTO;
@@ -13,6 +24,8 @@ import org.lanjerry.admin.mapper.tool.ToolGenMapper;
 import org.lanjerry.admin.service.tool.ToolGenDetailService;
 import org.lanjerry.admin.service.tool.ToolGenService;
 import org.lanjerry.admin.util.AdminConsts;
+import org.lanjerry.admin.util.GeneratorCodeUtil;
+import org.lanjerry.admin.vo.tool.ToolGenCodeVO;
 import org.lanjerry.admin.vo.tool.ToolGenColumnVO;
 import org.lanjerry.admin.vo.tool.ToolGenDbTableColumnVO;
 import org.lanjerry.admin.vo.tool.ToolGenDbTableVO;
@@ -69,10 +82,62 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
         ApiAssert.notNull(gen, String.format("表编号：%s不存在", id));
         ToolGenResultVO result = new ToolGenResultVO();
         ToolGenInfoVO info = BeanCopyUtil.beanCopy(gen, ToolGenInfoVO.class);
-        info.setTplFunctions(new HashSet<>(Arrays.asList(gen.getTplFunction().split(","))));
+        if (StrUtil.isNotBlank(gen.getTplFunction())) {
+            info.setTplFunctions(Arrays.asList(gen.getTplFunction().split(",")));
+        }
         result.setInfo(info);
         result.setColumns(BeanCopyUtil.listCopy(genDetailService.list(Wrappers.<ToolGenDetail>lambdaQuery().eq(ToolGenDetail::getTableId, id)), ToolGenDetail.class, ToolGenColumnVO.class));
         return result;
+    }
+
+    @Override
+    public Map<String, String> preview(int id) {
+        ToolGen gen = this.getById(id);
+        ApiAssert.notNull(gen, String.format("表编号：%s不存在", id));
+        // 设置基本信息
+        ToolGenCodeVO genCode = BeanCopyUtil.beanCopy(gen, ToolGenCodeVO.class);
+        if (StrUtil.isNotBlank(gen.getTplFunction())) {
+            genCode.setTplFunctions(Arrays.asList(gen.getTplFunction().split(",")));
+        }
+        // 设置主键
+        List<ToolGenDetail> details = genDetailService.list(Wrappers.<ToolGenDetail>lambdaQuery().eq(ToolGenDetail::getTableId, id));
+        Optional<ToolGenDetail> pkOptional = details.stream().filter(ToolGenDetail::getPkFlag).findFirst();
+        if (pkOptional.isPresent()) {
+            genCode.setPkComment(pkOptional.get().getColumnComment());
+            genCode.setPkJavaType(pkOptional.get().getJavaType());
+            genCode.setPkJavaField(pkOptional.get().getJavaField());
+        }
+        genCode.setColumns(details);
+        Map<String, String> result = new HashMap<>();
+
+        // 初始化vm模板
+        GeneratorCodeUtil.initVelocity();
+
+        // 设置模板信息
+        VelocityContext context = GeneratorCodeUtil.setVelocityContext(genCode);
+
+        // 获取模板列表
+        List<String> templates = GeneratorCodeUtil.getTemplates(gen.getTplFunction());
+
+        // 渲染模板
+        for (String template : templates) {
+            StringWriter sw = new StringWriter();
+            Template tpl = Velocity.getTemplate(template, "UTF-8");
+            tpl.merge(context, sw);
+            result.put(template, sw.toString());
+        }
+        return result;
+    }
+
+    @Override
+    public byte[] code(Integer[] ids) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ZipOutputStream zip = new ZipOutputStream(outputStream);
+        for (Integer id : ids) {
+            generatorCode(id, zip);
+        }
+        IOUtils.closeQuietly(zip);
+        return outputStream.toByteArray();
     }
 
     @Override
@@ -123,7 +188,7 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
             toolGen.setTableComment(t.getTableComment());
             toolGen.setClassName(StrUtil.upperFirst(StrUtil.toCamelCase(tableName)));
             toolGen.setPackageName(genConfig.getPackageName());
-            toolGen.setModuleName(StrUtil.subSuf(toolGen.getPackageName(), toolGen.getPackageName().lastIndexOf(".") + 1));
+            toolGen.setModuleName(StrUtil.subPre(tableName, tableName.indexOf("_")));
             toolGen.setBusinessName(StrUtil.subSuf(tableName, tableName.lastIndexOf("_") + 1));
             toolGen.setFunctionName(StrUtil.removeSuffix(t.getTableComment(), "表"));
             toolGen.setFunctionAuthor(genConfig.getAuthor());
@@ -144,6 +209,14 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
         });
     }
 
+    /**
+     * 根据字段类型转换成java类型
+     *
+     * @author lanjerry
+     * @since 2020/2/23 0:56
+     * @param columnType 字段类型
+     * @return java.lang.String
+     */
     private String getJavaType(String columnType) {
         String dbType = StrUtil.subBefore(columnType, "(", false);
         if (ArrayUtil.contains(AdminConsts.GEN_COLUMNTYPE_STR, dbType)) {
@@ -178,5 +251,44 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
             return result;
         }
         return dbType;
+    }
+
+    /**
+     * 代码生成
+     *
+     * @author lanjerry
+     * @since 2020/2/23 1:12
+     * @param id 表编号
+     * @param zip zip
+     */
+    private void generatorCode(int id, ZipOutputStream zip) {
+        ToolGen gen = this.getById(id);
+        ApiAssert.notNull(gen, String.format("表编号：%s不存在", id));
+        ToolGenCodeVO genCode = BeanCopyUtil.beanCopy(gen, ToolGenCodeVO.class);
+
+        // 初始化vm模板
+        GeneratorCodeUtil.initVelocity();
+
+        // 设置模板变量信息
+        VelocityContext context = GeneratorCodeUtil.setVelocityContext(genCode);
+
+        // 获取模板列表
+        List<String> templates = GeneratorCodeUtil.getTemplates(gen.getTplFunction());
+
+        // 渲染模板
+        for (String template : templates) {
+            try {
+                StringWriter sw = new StringWriter();
+                Template tpl = Velocity.getTemplate(template, "UTF-8");
+                tpl.merge(context, sw);
+                zip.putNextEntry(new ZipEntry(GeneratorCodeUtil.getFileName(template, gen)));
+                IOUtils.write(sw.toString(), zip, "UTF-8");
+                IOUtils.closeQuietly(sw);
+                zip.flush();
+                zip.closeEntry();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

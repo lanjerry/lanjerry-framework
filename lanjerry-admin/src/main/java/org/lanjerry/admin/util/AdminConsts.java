@@ -115,6 +115,11 @@ public interface AdminConsts {
     String[] GEN_COLUMNTYPE_NUMBER = { "tinyint", "smallint", "mediumint", "int", "number", "integer",
             "bigint", "float", "double", "decimal" };
 
+    /**
+     * 项目空间路径
+     */
+    String GEN_PROJECT_PATH = "main/java";
+
     //============================OTHER=============================
     /**
      * 日期查询的默认起始时分秒

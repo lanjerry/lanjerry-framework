@@ -1,6 +1,12 @@
 package org.lanjerry.admin.controller.tool;
 
 
+import java.io.IOException;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.io.IOUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.lanjerry.admin.dto.tool.ToolGenDbTableDTO;
 import org.lanjerry.admin.dto.tool.ToolGenPageDTO;
@@ -55,6 +61,25 @@ public class ToolGenController {
     @ApiOperation(value = "根据表编号查询表信息", position = 20)
     public ApiResult<ToolGenResultVO> getGen(@PathVariable("id") @ApiParam(value = "表编号", required = true) Integer id) {
         return ApiResult.success(genService.getGen(id));
+    }
+
+    @GetMapping("/preview/{id}")
+    @RequiresPermissions("tool:gen:preview")
+    @ApiOperation(value = "预览代码生成", position = 40)
+    public ApiResult<Map<String, String>> preview(@PathVariable("id") @ApiParam(value = "表编号", required = true) Integer id) {
+        return ApiResult.success(genService.preview(id));
+    }
+
+    @GetMapping("/code")
+    @RequiresPermissions("tool:gen:code")
+    @ApiOperation(value = "代码生成", position = 40)
+    public void code(HttpServletResponse response, Integer[] ids) throws IOException {
+        byte[] data = genService.code(ids);
+        response.reset();
+        response.setHeader("Content-Disposition", "attachment; filename=\"lanjerry.zip\"");
+        response.addHeader("Content-Length", "" + data.length);
+        response.setContentType("application/octet-stream; charset=UTF-8");
+        IOUtils.write(data, response.getOutputStream());
     }
 
     @PutMapping("/{id}")

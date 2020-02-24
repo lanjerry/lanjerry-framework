@@ -1,0 +1,119 @@
+#set($saveDTO = "SaveDTO")
+#set($updateDTO = "UpdateDTO")
+#set($saveOrUpdateDTO = "SaveOrUpdateDTO")
+package ${packageName}.controller.${moduleName};
+
+import java.util.List;
+
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+#if(${tplFunctions.indexOf("pageList")}!=-1)
+import ${packageName}.dto.${moduleName}.${ClassName}PageDTO;
+#end
+#if(${tplFunctions.indexOf("add")}!=-1&&${tplFunctions.indexOf("update")}!=-1)
+import ${packageName}.dto.${moduleName}.${ClassName}${saveOrUpdateDTO};
+#end
+#if(${tplFunctions.indexOf("add")}!=-1&&${tplFunctions.indexOf("update")}==-1)
+import ${packageName}.dto.${moduleName}.${ClassName}${saveDTO};
+#end
+#if(${tplFunctions.indexOf("update")}!=-1&&${tplFunctions.indexOf("add")}==-1)
+import ${packageName}.dto.${moduleName}.${ClassName}${updateDTO};
+#end
+import ${packageName}.service.${moduleName}.${ClassName}Service;
+#if(${tplFunctions.indexOf("update")}!=-1)
+import ${packageName}.vo.${moduleName}.${ClassName}InfoVO;
+#end
+#if(${tplFunctions.indexOf("pageList")}!=-1)
+import ${packageName}.vo.${moduleName}.${ClassName}PageVO;
+#end
+import org.lanjerry.common.core.bean.ApiResult;
+import org.lanjerry.common.log.annotation.SysLog;
+import org.springframework.validation.annotation.Validated;
+#if(${tplFunctions.indexOf("delete")}!=-1)
+import org.springframework.web.bind.annotation.DeleteMapping;
+#end
+#if(${tplFunctions.indexOf("pageList")}!=-1||${tplFunctions.indexOf("update")}!=-1)
+import org.springframework.web.bind.annotation.GetMapping;
+#end
+#if(${tplFunctions.indexOf("update")}!=-1||${tplFunctions.indexOf("delete")}!=-1)
+import org.springframework.web.bind.annotation.PathVariable;
+#end
+#if(${tplFunctions.indexOf("add")}!=-1)
+import org.springframework.web.bind.annotation.PostMapping;
+#end
+#if(${tplFunctions.indexOf("update")}!=-1)
+import org.springframework.web.bind.annotation.PutMapping;
+#end
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import lombok.AllArgsConstructor;
+
+/**
+ * <p>
+ * ${functionName}前端控制器
+ * </p>
+ *
+ * @author ${author}
+ * @since ${datetime}
+ */
+@RestController
+@AllArgsConstructor
+@RequestMapping("/${moduleName}/${businessName}")
+@Api(tags = "${functionName}模块api")
+public class ${ClassName}Controller {
+
+    private final ${ClassName}Service ${businessName}Service;
+    #foreach($function in $!{tplFunctions})
+    #if($function=="pageList")
+
+    @GetMapping("/page")
+    @RequiresPermissions("${permissionPrefix}:page")
+    @ApiOperation(value = "分页查询${functionName}列表")
+    public ApiResult<IPage<${ClassName}PageVO>> page${BusinessName}s(@ApiParam(value = "${functionName}列表查询参数", required = true) ${ClassName}PageDTO dto) {
+        return ApiResult.success(${businessName}Service.page${BusinessName}s(dto));
+    }
+    #elseif($function=="add")
+
+    @PostMapping
+    @RequiresPermissions("${permissionPrefix}:save")
+    @SysLog("新增${functionName}")
+    @ApiOperation(value = "新增${functionName}")
+    public ApiResult save${BusinessName}(@RequestBody @Validated @ApiParam(value = "${functionName}新增参数", required = true) ${ClassName}#if(${tplFunctions.indexOf("update")}!=-1)${saveOrUpdateDTO}#else${saveDTO}#end dto) {
+        ${businessName}Service.save${BusinessName}(dto);
+        return ApiResult.success();
+    }
+    #elseif($function=="update")
+
+    @GetMapping("/{${pkJavaField}}")
+    @ApiOperation(value = "根据${pkComment}查询${functionName}信息")
+    public ApiResult<${ClassName}InfoVO> get${BusinessName}(@PathVariable("${pkJavaField}") @ApiParam(value = "${pkComment}", required = true) ${pkJavaType} ${pkJavaField}) {
+        return ApiResult.success(${businessName}Service.get${BusinessName}(${pkJavaField}));
+    }
+
+    @PutMapping("/{${pkJavaField}}")
+    @RequiresPermissions("${permissionPrefix}:update")
+    @SysLog("更新${functionName}")
+    @ApiOperation(value = "更新${functionName}")
+    public ApiResult update${BusinessName}(@PathVariable("${pkJavaField}") @ApiParam(value = "${pkComment}", required = true) ${pkJavaType} ${pkJavaField}, @RequestBody @Validated @ApiParam(value = "${functionName}更新参数", required = true) ${ClassName}#if(${tplFunctions.indexOf("add")}!=-1)${saveOrUpdateDTO}#else${updateDTO}#end dto) {
+        ${businessName}Service.update${BusinessName}(${pkJavaField}, dto);
+        return ApiResult.success();
+    }
+    #elseif($function=="delete")
+
+    @DeleteMapping("/{${pkJavaField}s}")
+    @RequiresPermissions("${permissionPrefix}:remove")
+    @SysLog("删除${functionName}")
+    @ApiOperation(value = "删除${functionName}")
+    public ApiResult remove${BusinessName}s(@PathVariable("${pkJavaField}s") @ApiParam(value = "${pkComment}数组", required = true) ${pkJavaType}[] ${pkJavaField}s) {
+        ${businessName}Service.remove${BusinessName}s(ids);
+        return ApiResult.success();
+    }
+    #end
+    #end
+}

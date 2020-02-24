@@ -33,7 +33,7 @@ mybatis-plus:
 gen:
   # 作者
   author: lanjerry
-  # 默认生成包路径 system 需改成自己的模块名称 如 system monitor tool
+  # 默认生成包路径
   packageName: org.lanjerry.admin
   # 自动去除表前缀，默认是true
   autoRemovePre: false

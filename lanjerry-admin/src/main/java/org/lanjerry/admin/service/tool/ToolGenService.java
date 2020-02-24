@@ -1,5 +1,7 @@
 package org.lanjerry.admin.service.tool;
 
+import java.util.Map;
+
 import org.lanjerry.admin.dto.tool.ToolGenDbTableDTO;
 import org.lanjerry.admin.dto.tool.ToolGenPageDTO;
 import org.lanjerry.admin.dto.tool.ToolGenUpdateDTO;
@@ -24,6 +26,10 @@ public interface ToolGenService extends IService<ToolGen> {
     IPage<ToolGenPageVO> pageGens(ToolGenPageDTO dto);
 
     ToolGenResultVO getGen(int id);
+
+    Map<String, String> preview(int id);
+
+    byte[] code(Integer[] ids);
 
     void updateGen(int id, ToolGenUpdateDTO dto);
 

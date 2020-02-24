@@ -1,6 +1,6 @@
 package org.lanjerry.admin.vo.tool;
 
-import java.util.Set;
+import java.util.List;
 
 import org.lanjerry.common.core.bean.BaseEntity;
 
@@ -54,7 +54,7 @@ public class ToolGenInfoVO extends BaseEntity {
      * 模板功能集
      */
     @ApiModelProperty(value = "模板功能集", example = "[pageList, add, update, delete]", position = 60)
-    private Set<String> tplFunctions;
+    private List<String> tplFunctions;
 
     /**
      * 生成包路径
