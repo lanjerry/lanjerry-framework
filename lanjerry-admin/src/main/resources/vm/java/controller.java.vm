@@ -60,7 +60,7 @@ import lombok.AllArgsConstructor;
  * </p>
  *
  * @author ${author}
- * @since ${datetime}
+ * @since ${date}
  */
 @RestController
 @AllArgsConstructor

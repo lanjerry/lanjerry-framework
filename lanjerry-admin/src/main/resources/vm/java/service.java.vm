@@ -1,0 +1,92 @@
+package ${packageName}.service.${moduleName};
+
+import java.util.List;
+
+#if(${tplFunctions.indexOf("pageList")}!=-1)
+import ${packageName}.dto.${moduleName}.${ClassName}PageDTO;
+#end
+#if(${tplFunctions.indexOf("add")}!=-1&&${tplFunctions.indexOf("update")}!=-1)
+import ${packageName}.dto.${moduleName}.${ClassName}${saveOrUpdateDTO};
+#end
+#if(${tplFunctions.indexOf("add")}!=-1&&${tplFunctions.indexOf("update")}==-1)
+import ${packageName}.dto.${moduleName}.${ClassName}${saveDTO};
+#end
+#if(${tplFunctions.indexOf("update")}!=-1&&${tplFunctions.indexOf("add")}==-1)
+import ${packageName}.dto.${moduleName}.${ClassName}${updateDTO};
+#end
+#if(${tplFunctions.indexOf("update")}!=-1)
+import ${packageName}.vo.${moduleName}.${ClassName}InfoVO;
+#end
+#if(${tplFunctions.indexOf("pageList")}!=-1)
+import ${packageName}.vo.${moduleName}.${ClassName}PageVO;
+#end
+import org.lanjerry.common.core.entity.${moduleName}.${ClassName};
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.IService;
+
+/**
+ * <p>
+ * ${functionName}服务类
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+public interface ${ClassName}Service extends IService<${ClassName}> {
+    #foreach($function in $!{tplFunctions})
+    #if($function=="pageList")
+
+    /**
+     * 分页查询${functionName}列表
+     *
+     * @author ${author}
+     * @since ${datetime}
+     * @param dto ${functionName}列表查询参数
+     * @return com.baomidou.mybatisplus.core.metadata.IPage<${packageName}.vo.${moduleName}.${ClassName}PageVO>
+     */
+    IPage<${ClassName}PageVO> page${BusinessName}s(${ClassName}PageDTO dto);
+    #elseif($function=="add")
+
+    /**
+     * 新增${functionName}
+     *
+     * @author ${author}
+     * @since ${datetime}
+     * @param dto ${functionName}新增参数
+     */
+    void save${BusinessName}(${ClassName}#if(${tplFunctions.indexOf("update")}!=-1)${saveOrUpdateDTO}#else${saveDTO}#end dto);
+    #elseif($function=="update")
+
+    /**
+      * 根据${pkComment}查询${functionName}信息
+      *
+      * @author ${author}
+      * @since ${datetime}
+      * @param ${pkJavaField} ${pkComment}
+      * @return ${packageName}.vo.${moduleName}.${ClassName}InfoVO
+      */
+    ${ClassName}InfoVO get${BusinessName}(${pkJavaType} ${pkJavaField});
+
+    /**
+     * 更新${functionName}
+     *
+     * @author ${author}
+     * @since ${datetime}
+     * @param ${pkJavaField} ${pkComment}
+     * @param dto ${functionName}更新参数
+     */
+    void update${BusinessName}(${pkJavaType} ${pkJavaField}, ${ClassName}#if(${tplFunctions.indexOf("add")}!=-1)${saveOrUpdateDTO}#else${updateDTO}#end dto);
+    #elseif($function=="delete")
+
+    /**
+     * 删除${functionName}
+     *
+     * @author ${author}
+     * @since ${datetime}
+     * @param ${pkJavaField}s ${pkComment}数组
+     */
+    void remove${BusinessName}s(${pkJavaType}[] ${pkJavaField}s);
+    #end
+    #end
+}

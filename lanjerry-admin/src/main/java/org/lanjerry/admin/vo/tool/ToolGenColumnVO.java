@@ -61,6 +61,12 @@ public class ToolGenColumnVO extends BaseEntity {
     private Boolean requiredFlag;
 
     /**
+     * 是否唯一 0.否 1.是
+     */
+    @ApiModelProperty(value = "是否唯一 0.否 1.是", example = "是", position = 70)
+    private Boolean onlyFlag;
+
+    /**
      * 是否表单字段 0.否 1.是
      */
     @ApiModelProperty(value = "是否表单字段 0.否 1.是", example = "是", position = 80)

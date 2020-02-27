@@ -3,7 +3,6 @@ package org.lanjerry.admin.vo.tool;
 import java.util.List;
 
 import org.lanjerry.common.core.bean.BaseEntity;
-import org.lanjerry.common.core.entity.tool.ToolGenDetail;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -61,11 +60,6 @@ public class ToolGenCodeVO extends BaseEntity {
     private String functionAuthor;
 
     /**
-     * 表字段集
-     */
-    private List<ToolGenDetail> columns;
-
-    /**
      * 主键字段描述
      */
     private String pkComment;
@@ -79,4 +73,14 @@ public class ToolGenCodeVO extends BaseEntity {
      * 主键JAVA字段名
      */
     private String pkJavaField;
+
+    /**
+     * 主键JAVA字段名首字母大写
+     */
+    private String pkUpperFirstJavaField;
+
+    /**
+     * 表字段集
+     */
+    private List<ToolGenCodeColumnVO> columns;
 }

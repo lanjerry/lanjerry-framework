@@ -3,9 +3,11 @@ package org.lanjerry.admin.util;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
+import org.lanjerry.admin.vo.tool.ToolGenCodeColumnVO;
 import org.lanjerry.admin.vo.tool.ToolGenCodeVO;
 import org.lanjerry.common.core.entity.tool.ToolGen;
 
@@ -52,6 +54,7 @@ public class GeneratorCodeUtil {
         velocityContext.put("pkComment", gen.getPkComment());
         velocityContext.put("pkJavaType", gen.getPkJavaType());
         velocityContext.put("pkJavaField", gen.getPkJavaField());
+        velocityContext.put("pkUpperFirstJavaField", gen.getPkUpperFirstJavaField());
         velocityContext.put("ClassName", gen.getClassName());
         velocityContext.put("className", StrUtil.lowerFirst(gen.getClassName()));
         velocityContext.put("moduleName", gen.getModuleName());
@@ -60,8 +63,16 @@ public class GeneratorCodeUtil {
         //velocityContext.put("basePackage", StrUtil.subBefore(gen.getPackageName(), ".", true));
         velocityContext.put("packageName", gen.getPackageName());
         velocityContext.put("author", gen.getFunctionAuthor());
-        velocityContext.put("datetime", DateUtil.today());
+        velocityContext.put("date", DateUtil.today());
+        velocityContext.put("datetime", DateUtil.now());
         velocityContext.put("permissionPrefix", String.format("%s:%s", gen.getModuleName(), gen.getBusinessName()));
+
+        // 查询字段
+        List<ToolGenCodeColumnVO> queryColumns = gen.getColumns().stream().filter(ToolGenCodeColumnVO::getQueryFlag).collect(Collectors.toList());
+        velocityContext.put("queryColumns", queryColumns);
+        // 唯一字段
+        List<ToolGenCodeColumnVO> onlyColumns = gen.getColumns().stream().filter(ToolGenCodeColumnVO::getOnlyFlag).collect(Collectors.toList());
+        velocityContext.put("onlyColumns", onlyColumns);
         return velocityContext;
     }
 
@@ -71,9 +82,12 @@ public class GeneratorCodeUtil {
      * @author lanjerry
      * @since 2020/2/24 1:40
      */
-    public static List<String> getTemplates(String tplFunction) {
+    public static List<String> getTemplates(String tplFunctions) {
         List<String> result = new ArrayList<>();
         result.add("vm/java/controller.java.vm");
+        result.add("vm/java/mapper.java.vm");
+        result.add("vm/java/service.java.vm");
+        result.add("vm/java/serviceImpl.java.vm");
         return result;
     }
 

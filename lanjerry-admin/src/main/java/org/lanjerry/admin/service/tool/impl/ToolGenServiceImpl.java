@@ -25,6 +25,7 @@ import org.lanjerry.admin.service.tool.ToolGenDetailService;
 import org.lanjerry.admin.service.tool.ToolGenService;
 import org.lanjerry.admin.util.AdminConsts;
 import org.lanjerry.admin.util.GeneratorCodeUtil;
+import org.lanjerry.admin.vo.tool.ToolGenCodeColumnVO;
 import org.lanjerry.admin.vo.tool.ToolGenCodeVO;
 import org.lanjerry.admin.vo.tool.ToolGenColumnVO;
 import org.lanjerry.admin.vo.tool.ToolGenDbTableColumnVO;
@@ -99,15 +100,21 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
         if (StrUtil.isNotBlank(gen.getTplFunction())) {
             genCode.setTplFunctions(Arrays.asList(gen.getTplFunction().split(",")));
         }
-        // 设置主键
+        // 设置主键信息
         List<ToolGenDetail> details = genDetailService.list(Wrappers.<ToolGenDetail>lambdaQuery().eq(ToolGenDetail::getTableId, id));
         Optional<ToolGenDetail> pkOptional = details.stream().filter(ToolGenDetail::getPkFlag).findFirst();
         if (pkOptional.isPresent()) {
             genCode.setPkComment(pkOptional.get().getColumnComment());
             genCode.setPkJavaType(pkOptional.get().getJavaType());
             genCode.setPkJavaField(pkOptional.get().getJavaField());
+            genCode.setPkUpperFirstJavaField(StrUtil.upperFirst(pkOptional.get().getJavaField()));
         }
-        genCode.setColumns(details);
+        // 设置字段信息
+        List<ToolGenCodeColumnVO> columns = BeanCopyUtil.listCopy(details, ToolGenDetail.class, ToolGenCodeColumnVO.class);
+        columns.forEach(c -> {
+            c.setUpperFirstJavaField(StrUtil.upperFirst(c.getJavaField()));
+        });
+        genCode.setColumns(columns);
         Map<String, String> result = new HashMap<>();
 
         // 初始化vm模板

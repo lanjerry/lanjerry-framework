@@ -1,41 +1,21 @@
-package org.lanjerry.common.core.entity.tool;
-
-import java.time.LocalDateTime;
+package org.lanjerry.admin.vo.tool;
 
 import org.lanjerry.common.core.bean.BaseEntity;
-
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 代码生成业务明细表
+ * 代码生成字段VO
  * </p>
  *
  * @author lanjerry
- * @since 2020-02-13
+ * @since 2020-02-27
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("tool_gen_detail")
-public class ToolGenDetail extends BaseEntity {
-
-    /**
-     * 字段编号
-     */
-    @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
-
-    /**
-     * 表编号
-     */
-    private Integer tableId;
+public class ToolGenCodeColumnVO extends BaseEntity {
 
     /**
      * 列名称
@@ -61,6 +41,11 @@ public class ToolGenDetail extends BaseEntity {
      * JAVA字段名
      */
     private String javaField;
+
+    /**
+     * JAVA字段名首字母大写
+     */
+    private String upperFirstJavaField;
 
     /**
      * 是否主键 0.否 1.是
@@ -106,28 +91,4 @@ public class ToolGenDetail extends BaseEntity {
      * 显示类型
      */
     private String htmlType;
-
-    /**
-     * 创建人id
-     */
-    @TableField(fill = FieldFill.INSERT)
-    private Integer creatorId;
-
-    /**
-     * 创建人
-     */
-    @TableField(fill = FieldFill.INSERT)
-    private String creatorName;
-
-    /**
-     * 创建时间
-     */
-    @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createdTime;
-
-    /**
-     * 更新时间
-     */
-    @TableField(fill = FieldFill.UPDATE)
-    private LocalDateTime updatedTime;
 }
