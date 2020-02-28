@@ -1,0 +1,47 @@
+package ${basePackage}.common.core.entity.${moduleName};
+
+import java.time.LocalDateTime;
+
+import ${basePackage}.common.core.bean.BaseEntity;
+
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+/**
+ * <p>
+ * ${tableComment}
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Data
+@EqualsAndHashCode(callSuper = true)
+@TableName("${tableName}")
+public class ${ClassName} extends BaseEntity{
+#foreach ($column in $columns)
+
+    /**
+    * $column.columnComment
+    */
+#if($column.pkFlag)
+    @TableId(value = "$column.javaField", type = IdType.AUTO)
+#end
+#if($column.javaField=="deleteFlag")
+    @TableLogic
+#end
+#if($column.javaField=="deleteFlag"||$column.javaField=="creatorId"||$column.javaField=="creatorName"||$column.javaField=="createdTime")
+    @TableField(fill = FieldFill.INSERT)
+#elseif($column.javaField=="updatedTime")
+    @TableField(fill = FieldFill.UPDATE)
+#end
+    private $column.javaType $column.javaField;
+#end
+}

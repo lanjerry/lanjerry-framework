@@ -18,16 +18,16 @@ import ${packageName}.dto.${moduleName}.${ClassName}${updateDTO};
 #end
 import ${packageName}.mapper.${moduleName}.${ClassName}Mapper;
 import ${packageName}.service.${moduleName}.${ClassName}Service;
-import org.lanjerry.admin.util.AdminConsts;
+import ${packageName}.util.AdminConsts;
 #if(${tplFunctions.indexOf("update")}!=-1)
 import ${packageName}.vo.${moduleName}.${ClassName}InfoVO;
 #end
 #if(${tplFunctions.indexOf("pageList")}!=-1)
 import ${packageName}.vo.${moduleName}.${ClassName}PageVO;
 #end
-import org.lanjerry.common.core.entity.${moduleName}.${ClassName};
-import org.lanjerry.common.core.util.ApiAssert;
-import org.lanjerry.common.core.util.BeanCopyUtil;
+import ${basePackage}.common.core.entity.${moduleName}.${ClassName};
+import ${basePackage}.common.core.util.ApiAssert;
+import ${basePackage}.common.core.util.BeanCopyUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,43 +48,44 @@ import cn.hutool.core.util.StrUtil;
  */
 @Service
 public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${ClassName}> implements ${ClassName}Service {
-    #foreach($function in $!{tplFunctions})
-    #if($function=="pageList")
+#foreach($function in $!{tplFunctions})
+#if($function=="pageList")
 
     @Override
     public IPage<${ClassName}PageVO> page${BusinessName}s(${ClassName}PageDTO dto) {
-        IPage<${ClassName}> page = this.lambdaQuery().orderByDesc(${ClassName}::get${pkUpperFirstJavaField})
-        #foreach($column in $!{queryColumns})
-        #set($columnQueryType = $column.queryType)
-        #set($columnJavaField = "get"+$column.upperFirstJavaField+"()")
-        #set($columnJudge = "dto."+$columnJavaField+ "!= null")
-        #if($column.javaType=="String")
-            #set($columnJudge ="StrUtil.isNotBlank(dto."+$columnJavaField+")")
-        #end
-            #if($column.queryType=="between"&&$column.javaType.indexOf("Time")!=-1)
-            #set($columnTimeStart = "dto.get"+$column.upperFirstJavaField+"Start()")
-            #set($columnTimeEnd = "dto.get"+$column.upperFirstJavaField+"End()")
+        IPage<${ClassName}> page = this.lambdaQuery().orderByDesc(${ClassName}::get${PkJavaField})
+#foreach($column in $!{queryColumns})
+#set($columnQueryType = $column.queryType)
+#set($columnJavaField = "get"+$column.upperFirstJavaField+"()")
+#set($columnJudge = "dto."+$columnJavaField+ "!= null")
+#if($column.javaType=="String")
+#set($columnJudge ="StrUtil.isNotBlank(dto."+$columnJavaField+")")
+#end
+#if($column.queryType=="between"&&$column.javaType.indexOf("Time")!=-1)
+#set($columnTimeStart = "dto.get"+$column.upperFirstJavaField+"Start()")
+#set($columnTimeEnd = "dto.get"+$column.upperFirstJavaField+"End()")
             .ge(StrUtil.isNotBlank($columnTimeStart), ${ClassName}::get$column.upperFirstJavaField, $columnTimeEnd + AdminConsts.START_TIME)
             .le(StrUtil.isNotBlank($columnTimeEnd), ${ClassName}::get$column.upperFirstJavaField, $columnTimeEnd + AdminConsts.END_TIME)
-            #else
+#else
             .$columnQueryType($columnJudge, ${ClassName}::get$column.upperFirstJavaField, dto.$columnJavaField)
-            #end
-        #end
+#end
+#set($columnQueryType = "")
+#end
             .page(new Page<>(dto.getPageNum(), dto.getPageSize()));
         return BeanCopyUtil.pageCopy(page, ${ClassName}.class, ${ClassName}PageVO.class);
     }
-    #elseif($function=="add")
+#elseif($function=="add")
 
     @Override
     public void save${BusinessName}(${ClassName}#if(${tplFunctions.indexOf("update")}!=-1)${saveOrUpdateDTO}#else${saveDTO}#end dto) {
-        #foreach($column in $!{onlyColumns})
-        #set($columnJavaField = "get"+$column.upperFirstJavaField+"()")
+#foreach($column in $!{onlyColumns})
+#set($columnJavaField = "get"+$column.upperFirstJavaField+"()")
         ApiAssert.isTrue(this.count(Wrappers.<${ClassName}>lambdaQuery().eq(${ClassName}::get$column.upperFirstJavaField, dto.$columnJavaField)) == 0, String.format("$column.columnComment：%s已存在", dto.$columnJavaField));
-        #end
+#end
         ${ClassName} ${businessName} = BeanCopyUtil.beanCopy(dto, ${ClassName}.class);
         this.save(role);
     }
-    #elseif($function=="update")
+#elseif($function=="update")
 
     @Override
     public ${ClassName}InfoVO get${BusinessName}(${pkJavaType} ${pkJavaField}) {
@@ -97,15 +98,15 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
     public void update${BusinessName}(${pkJavaType} ${pkJavaField}, ${ClassName}#if(${tplFunctions.indexOf("add")}!=-1)${saveOrUpdateDTO}#else${updateDTO}#end dto)
         ${ClassName} ori${BusinessName} = this.getById(${pkJavaField});
         ApiAssert.notNull(ori${BusinessName}, String.format("${pkComment}：%s不存在", ${pkJavaField}));
-        #foreach($column in $!{onlyColumns})
-        #set($columnJavaField = "get"+$column.upperFirstJavaField+"()")
-        ApiAssert.isTrue(this.count(Wrappers.<${ClassName}>lambdaQuery().ne(${ClassName}::get${pkUpperFirstJavaField},${pkJavaField}).eq(${ClassName}::get$column.upperFirstJavaField, dto.$columnJavaField)) == 0, String.format("$column.columnComment：%s已存在", dto.$columnJavaField));
-        #end
+#foreach($column in $!{onlyColumns})
+#set($columnJavaField = "get"+$column.upperFirstJavaField+"()")
+        ApiAssert.isTrue(this.count(Wrappers.<${ClassName}>lambdaQuery().ne(${ClassName}::get${PkJavaField}, ${pkJavaField}).eq(${ClassName}::get$column.upperFirstJavaField, dto.$columnJavaField)) == 0, String.format("$column.columnComment：%s已存在", dto.$columnJavaField));
+#end
         ${ClassName} ${businessName} = BeanCopyUtil.beanCopy(dto, ${ClassName}.class);
         ${businessName}.setId(${pkJavaField});
         this.updateById(${businessName});
     }
-    #elseif($function=="delete")
+#elseif($function=="delete")
 
     @Override
     public void remove${BusinessName}s(${pkJavaType}[] ${pkJavaField}s) {
@@ -115,6 +116,6 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
             this.removeById(${pkJavaField});
         }
     }
-    #end
-    #end
+#end
+#end
 }

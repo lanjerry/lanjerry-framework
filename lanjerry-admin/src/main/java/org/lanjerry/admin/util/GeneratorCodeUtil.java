@@ -50,22 +50,25 @@ public class GeneratorCodeUtil {
     public static VelocityContext setVelocityContext(ToolGenCodeVO gen) {
         VelocityContext velocityContext = new VelocityContext();
         velocityContext.put("tplFunctions", gen.getTplFunctions());
-        velocityContext.put("functionName", StrUtil.isNotBlank(gen.getFunctionName()) ? gen.getFunctionName() : "【请填写功能名称】");
+        velocityContext.put("tableName", gen.getTableName());
+        velocityContext.put("tableComment", gen.getTableComment());
+        velocityContext.put("functionName", gen.getFunctionName());
         velocityContext.put("pkComment", gen.getPkComment());
         velocityContext.put("pkJavaType", gen.getPkJavaType());
         velocityContext.put("pkJavaField", gen.getPkJavaField());
-        velocityContext.put("pkUpperFirstJavaField", gen.getPkUpperFirstJavaField());
+        velocityContext.put("PkJavaField",StrUtil.upperFirst(gen.getPkJavaField()));
         velocityContext.put("ClassName", gen.getClassName());
         velocityContext.put("className", StrUtil.lowerFirst(gen.getClassName()));
         velocityContext.put("moduleName", gen.getModuleName());
         velocityContext.put("BusinessName", StrUtil.upperFirst(gen.getBusinessName()));
         velocityContext.put("businessName", gen.getBusinessName());
-        //velocityContext.put("basePackage", StrUtil.subBefore(gen.getPackageName(), ".", true));
+        velocityContext.put("basePackage", StrUtil.subBefore(gen.getPackageName(), ".", true));
         velocityContext.put("packageName", gen.getPackageName());
         velocityContext.put("author", gen.getFunctionAuthor());
         velocityContext.put("date", DateUtil.today());
         velocityContext.put("datetime", DateUtil.now());
         velocityContext.put("permissionPrefix", String.format("%s:%s", gen.getModuleName(), gen.getBusinessName()));
+        velocityContext.put("columns", gen.getColumns());
 
         // 查询字段
         List<ToolGenCodeColumnVO> queryColumns = gen.getColumns().stream().filter(ToolGenCodeColumnVO::getQueryFlag).collect(Collectors.toList());
@@ -88,6 +91,9 @@ public class GeneratorCodeUtil {
         result.add("vm/java/mapper.java.vm");
         result.add("vm/java/service.java.vm");
         result.add("vm/java/serviceImpl.java.vm");
+        result.add("vm/java/entity.java.vm");
+        result.add("vm/java/pageDTO.java.vm");
+        result.add("vm/xml/mapper.xml.vm");
         return result;
     }
 

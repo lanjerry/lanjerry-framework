@@ -80,7 +80,7 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
     @Override
     public ToolGenResultVO getGen(int id) {
         ToolGen gen = this.getById(id);
-        ApiAssert.notNull(gen, String.format("表编号：%s不存在", id));
+        ApiAssert.notNull(gen, String.format("表编号：%s不存在" , id));
         ToolGenResultVO result = new ToolGenResultVO();
         ToolGenInfoVO info = BeanCopyUtil.beanCopy(gen, ToolGenInfoVO.class);
         if (StrUtil.isNotBlank(gen.getTplFunction())) {
@@ -94,9 +94,10 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
     @Override
     public Map<String, String> preview(int id) {
         ToolGen gen = this.getById(id);
-        ApiAssert.notNull(gen, String.format("表编号：%s不存在", id));
+        ApiAssert.notNull(gen, String.format("表编号：%s不存在" , id));
         // 设置基本信息
         ToolGenCodeVO genCode = BeanCopyUtil.beanCopy(gen, ToolGenCodeVO.class);
+        genCode.setFunctionName(StrUtil.isNotBlank(gen.getFunctionName()) ? gen.getFunctionName() : "【请填写功能名称】");
         if (StrUtil.isNotBlank(gen.getTplFunction())) {
             genCode.setTplFunctions(Arrays.asList(gen.getTplFunction().split(",")));
         }
@@ -107,11 +108,13 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
             genCode.setPkComment(pkOptional.get().getColumnComment());
             genCode.setPkJavaType(pkOptional.get().getJavaType());
             genCode.setPkJavaField(pkOptional.get().getJavaField());
-            genCode.setPkUpperFirstJavaField(StrUtil.upperFirst(pkOptional.get().getJavaField()));
         }
         // 设置字段信息
         List<ToolGenCodeColumnVO> columns = BeanCopyUtil.listCopy(details, ToolGenDetail.class, ToolGenCodeColumnVO.class);
         columns.forEach(c -> {
+            if(c.getQueryFlag()){
+                c.setQueryType(StrUtil.isNotBlank(c.getQueryType()) ? c.getQueryType() : "【请填写查询方式】");
+            }
             c.setUpperFirstJavaField(StrUtil.upperFirst(c.getJavaField()));
         });
         genCode.setColumns(columns);
@@ -151,9 +154,9 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
     @Transactional(rollbackFor = Exception.class)
     public void updateGen(int id, ToolGenUpdateDTO dto) {
         ToolGen oriGen = this.getById(id);
-        ApiAssert.notNull(oriGen, String.format("表编号：%s不存在", id));
+        ApiAssert.notNull(oriGen, String.format("表编号：%s不存在" , id));
         ToolGen gen = BeanCopyUtil.beanCopy(dto.getInfo(), ToolGen.class);
-        gen.setTplFunction(String.join(",", dto.getInfo().getTplFunctions()));
+        gen.setTplFunction(String.join("," , dto.getInfo().getTplFunctions()));
         gen.setId(id);
         this.updateById(gen);
 
@@ -169,7 +172,7 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
     public void removeGens(Integer[] ids) {
         for (Integer id : ids) {
             ToolGen gen = this.getById(id);
-            ApiAssert.notNull(gen, String.format("表编号：%s不存在", id));
+            ApiAssert.notNull(gen, String.format("表编号：%s不存在" , id));
             this.removeById(id);
 
             // 删除明细表
@@ -196,7 +199,7 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
             toolGen.setClassName(StrUtil.upperFirst(StrUtil.toCamelCase(tableName)));
             toolGen.setPackageName(genConfig.getPackageName());
             toolGen.setModuleName(StrUtil.subPre(tableName, tableName.indexOf("_")));
-            toolGen.setBusinessName(StrUtil.subSuf(tableName, tableName.lastIndexOf("_") + 1));
+            toolGen.setBusinessName(StrUtil.toCamelCase(StrUtil.subSuf(tableName, tableName.indexOf("_") + 1)));
             toolGen.setFunctionName(StrUtil.removeSuffix(t.getTableComment(), "表"));
             toolGen.setFunctionAuthor(genConfig.getAuthor());
             this.save(toolGen);
@@ -225,7 +228,7 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
      * @return java.lang.String
      */
     private String getJavaType(String columnType) {
-        String dbType = StrUtil.subBefore(columnType, "(", false);
+        String dbType = StrUtil.subBefore(columnType, "(" , false);
         if (ArrayUtil.contains(AdminConsts.GEN_COLUMNTYPE_STR, dbType)) {
             return AdminConsts.GEN_TYPE_STRING;
         }
@@ -234,7 +237,7 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
         }
         if (ArrayUtil.contains(AdminConsts.GEN_COLUMNTYPE_NUMBER, dbType)) {
             String result;
-            String[] dbLength = StrUtil.subBetween(columnType, "(", ")").split(",");
+            String[] dbLength = StrUtil.subBetween(columnType, "(" , ")").split(",");
             switch (dbType) {
                 case "tinyint":
                     result = "1".equals(dbLength[0]) ? AdminConsts.GEN_TYPE_BOOLEAN : AdminConsts.GEN_TYPE_INTEGER;
@@ -270,7 +273,7 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
      */
     private void generatorCode(int id, ZipOutputStream zip) {
         ToolGen gen = this.getById(id);
-        ApiAssert.notNull(gen, String.format("表编号：%s不存在", id));
+        ApiAssert.notNull(gen, String.format("表编号：%s不存在" , id));
         ToolGenCodeVO genCode = BeanCopyUtil.beanCopy(gen, ToolGenCodeVO.class);
 
         // 初始化vm模板

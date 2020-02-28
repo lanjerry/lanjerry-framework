@@ -1,6 +1,6 @@
 package ${packageName}.mapper.${moduleName};
 
-import org.lanjerry.common.core.entity.${moduleName}.${ClassName};
+import ${basePackage}.common.core.entity.${moduleName}.${ClassName};
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 

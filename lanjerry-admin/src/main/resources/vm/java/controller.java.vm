@@ -25,8 +25,8 @@ import ${packageName}.vo.${moduleName}.${ClassName}InfoVO;
 #if(${tplFunctions.indexOf("pageList")}!=-1)
 import ${packageName}.vo.${moduleName}.${ClassName}PageVO;
 #end
-import org.lanjerry.common.core.bean.ApiResult;
-import org.lanjerry.common.log.annotation.SysLog;
+import ${basePackage}.common.core.bean.ApiResult;
+import ${basePackage}.common.log.annotation.SysLog;
 import org.springframework.validation.annotation.Validated;
 #if(${tplFunctions.indexOf("delete")}!=-1)
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -69,8 +69,8 @@ import lombok.AllArgsConstructor;
 public class ${ClassName}Controller {
 
     private final ${ClassName}Service ${businessName}Service;
-    #foreach($function in $!{tplFunctions})
-    #if($function=="pageList")
+#foreach($function in $!{tplFunctions})
+#if($function=="pageList")
 
     @GetMapping("/page")
     @RequiresPermissions("${permissionPrefix}:page")
@@ -78,7 +78,7 @@ public class ${ClassName}Controller {
     public ApiResult<IPage<${ClassName}PageVO>> page${BusinessName}s(@ApiParam(value = "${functionName}列表查询参数", required = true) ${ClassName}PageDTO dto) {
         return ApiResult.success(${businessName}Service.page${BusinessName}s(dto));
     }
-    #elseif($function=="add")
+#elseif($function=="add")
 
     @PostMapping
     @RequiresPermissions("${permissionPrefix}:save")
@@ -88,7 +88,7 @@ public class ${ClassName}Controller {
         ${businessName}Service.save${BusinessName}(dto);
         return ApiResult.success();
     }
-    #elseif($function=="update")
+#elseif($function=="update")
 
     @GetMapping("/{${pkJavaField}}")
     @ApiOperation(value = "根据${pkComment}查询${functionName}信息")
@@ -104,7 +104,7 @@ public class ${ClassName}Controller {
         ${businessName}Service.update${BusinessName}(${pkJavaField}, dto);
         return ApiResult.success();
     }
-    #elseif($function=="delete")
+#elseif($function=="delete")
 
     @DeleteMapping("/{${pkJavaField}s}")
     @RequiresPermissions("${permissionPrefix}:remove")
@@ -114,6 +114,6 @@ public class ${ClassName}Controller {
         ${businessName}Service.remove${BusinessName}s(ids);
         return ApiResult.success();
     }
-    #end
-    #end
+#end
+#end
 }

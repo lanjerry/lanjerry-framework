@@ -30,6 +30,11 @@ public class ToolGenCodeVO extends BaseEntity {
     private String tableName;
 
     /**
+     * 表描述
+     */
+    private String tableComment;
+
+    /**
      * 生成功能名
      */
     private String functionName;
@@ -73,11 +78,6 @@ public class ToolGenCodeVO extends BaseEntity {
      * 主键JAVA字段名
      */
     private String pkJavaField;
-
-    /**
-     * 主键JAVA字段名首字母大写
-     */
-    private String pkUpperFirstJavaField;
 
     /**
      * 表字段集
