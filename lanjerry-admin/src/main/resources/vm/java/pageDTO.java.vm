@@ -1,5 +1,15 @@
 package ${packageName}.dto.${moduleName};
 
+#foreach ($import in $pageDTOImports)
+import $import
+#end
+
+import ${basePackage}.common.core.bean.SplitPage;
+
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 /**
  * <p>
  * ${functionName}分页查询DTO
@@ -14,34 +24,26 @@ public class ${ClassName}PageDTO extends SplitPage {
 #set($position = 0)
 #foreach ($column in $queryColumns)
 #set($position = $position + 10)
-#set($example = "")
-#if($column.javaType=="LocalDateTime"||$column.javaType.indexOf("Time")!=-1)
-#set($example = ${date})
-#elseif($column.javaType=="Integer")
-#set($example = "1")
-#elseif($column.javaType=="Boolean")
-#set($example = "true")
-#end
 #if($column.queryType=="between"&&$column.javaType.indexOf("Time")!=-1)
 
     /**
     * $column.columnComment始
     */
-    @ApiModelProperty(value = "$column.columnComment始", example = "$example", position = $position)
+    @ApiModelProperty(value = "$column.columnComment始", example = "$column.columnExample", position = $position)
     private String createdTimeStart;
 #set($position = $position + 10)
 
     /**
      * $column.columnComment止
      */
-    @ApiModelProperty(value = "$column.columnComment止", example = "$example", position = $position)
+    @ApiModelProperty(value = "$column.columnComment止", example = "$column.columnExample", position = $position)
     private String createdTimeEnd;
 #else
 
     /**
      * $column.columnComment
      */
-    @ApiModelProperty(value = "$column.columnComment", example = "$example", position = $position)
+    @ApiModelProperty(value = "$column.columnComment", example = "$column.columnExample", position = $position)
     private $column.javaType $column.javaField;
 #end
 #end

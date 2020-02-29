@@ -46,6 +46,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 
@@ -80,7 +81,7 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
     @Override
     public ToolGenResultVO getGen(int id) {
         ToolGen gen = this.getById(id);
-        ApiAssert.notNull(gen, String.format("表编号：%s不存在" , id));
+        ApiAssert.notNull(gen, String.format("表编号：%s不存在", id));
         ToolGenResultVO result = new ToolGenResultVO();
         ToolGenInfoVO info = BeanCopyUtil.beanCopy(gen, ToolGenInfoVO.class);
         if (StrUtil.isNotBlank(gen.getTplFunction())) {
@@ -94,9 +95,12 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
     @Override
     public Map<String, String> preview(int id) {
         ToolGen gen = this.getById(id);
-        ApiAssert.notNull(gen, String.format("表编号：%s不存在" , id));
+        ApiAssert.notNull(gen, String.format("表编号：%s不存在", id));
         // 设置基本信息
         ToolGenCodeVO genCode = BeanCopyUtil.beanCopy(gen, ToolGenCodeVO.class);
+        // 设置生成包基本路径
+        genCode.setBasePackage(StrUtil.subBefore(gen.getPackageName(), ".", true));
+        // 设置功能名称
         genCode.setFunctionName(StrUtil.isNotBlank(gen.getFunctionName()) ? gen.getFunctionName() : "【请填写功能名称】");
         if (StrUtil.isNotBlank(gen.getTplFunction())) {
             genCode.setTplFunctions(Arrays.asList(gen.getTplFunction().split(",")));
@@ -112,10 +116,14 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
         // 设置字段信息
         List<ToolGenCodeColumnVO> columns = BeanCopyUtil.listCopy(details, ToolGenDetail.class, ToolGenCodeColumnVO.class);
         columns.forEach(c -> {
-            if(c.getQueryFlag()){
+            // 设置查询方式
+            if (c.getQueryFlag()) {
                 c.setQueryType(StrUtil.isNotBlank(c.getQueryType()) ? c.getQueryType() : "【请填写查询方式】");
             }
+            // 设置JAVA字段名首字母大写
             c.setUpperFirstJavaField(StrUtil.upperFirst(c.getJavaField()));
+            // 设置字段例子
+            c.setColumnExample(getColumnExample(c));
         });
         genCode.setColumns(columns);
         Map<String, String> result = new HashMap<>();
@@ -154,9 +162,9 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
     @Transactional(rollbackFor = Exception.class)
     public void updateGen(int id, ToolGenUpdateDTO dto) {
         ToolGen oriGen = this.getById(id);
-        ApiAssert.notNull(oriGen, String.format("表编号：%s不存在" , id));
+        ApiAssert.notNull(oriGen, String.format("表编号：%s不存在", id));
         ToolGen gen = BeanCopyUtil.beanCopy(dto.getInfo(), ToolGen.class);
-        gen.setTplFunction(String.join("," , dto.getInfo().getTplFunctions()));
+        gen.setTplFunction(String.join(",", dto.getInfo().getTplFunctions()));
         gen.setId(id);
         this.updateById(gen);
 
@@ -172,7 +180,7 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
     public void removeGens(Integer[] ids) {
         for (Integer id : ids) {
             ToolGen gen = this.getById(id);
-            ApiAssert.notNull(gen, String.format("表编号：%s不存在" , id));
+            ApiAssert.notNull(gen, String.format("表编号：%s不存在", id));
             this.removeById(id);
 
             // 删除明细表
@@ -225,10 +233,9 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
      * @author lanjerry
      * @since 2020/2/23 0:56
      * @param columnType 字段类型
-     * @return java.lang.String
      */
     private String getJavaType(String columnType) {
-        String dbType = StrUtil.subBefore(columnType, "(" , false);
+        String dbType = StrUtil.subBefore(columnType, "(", false);
         if (ArrayUtil.contains(AdminConsts.GEN_COLUMNTYPE_STR, dbType)) {
             return AdminConsts.GEN_TYPE_STRING;
         }
@@ -237,7 +244,7 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
         }
         if (ArrayUtil.contains(AdminConsts.GEN_COLUMNTYPE_NUMBER, dbType)) {
             String result;
-            String[] dbLength = StrUtil.subBetween(columnType, "(" , ")").split(",");
+            String[] dbLength = StrUtil.subBetween(columnType, "(", ")").split(",");
             switch (dbType) {
                 case "tinyint":
                     result = "1".equals(dbLength[0]) ? AdminConsts.GEN_TYPE_BOOLEAN : AdminConsts.GEN_TYPE_INTEGER;
@@ -264,6 +271,40 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
     }
 
     /**
+     * 根据java类型设置字段例子值
+     *
+     * @author lanjerry
+     * @since 2020/3/1 1:12
+     */
+    private String getColumnExample(ToolGenCodeColumnVO column) {
+        String result = column.getColumnComment();
+        switch (column.getJavaType()) {
+            case "String":
+                result = "测试" + column.getColumnComment();
+                break;
+            case "LocalDateTime":
+                result = DateUtil.today();
+                break;
+            case "Integer":
+                result = "1";
+                break;
+            case "Long":
+                result = "1L";
+                break;
+            case "Float":
+                result = "1.18";
+                break;
+            case "BigDecimal":
+                result = "1.18";
+                break;
+            case "Boolean":
+                result = "true";
+                break;
+        }
+        return result;
+    }
+
+    /**
      * 代码生成
      *
      * @author lanjerry
@@ -273,7 +314,7 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
      */
     private void generatorCode(int id, ZipOutputStream zip) {
         ToolGen gen = this.getById(id);
-        ApiAssert.notNull(gen, String.format("表编号：%s不存在" , id));
+        ApiAssert.notNull(gen, String.format("表编号：%s不存在", id));
         ToolGenCodeVO genCode = BeanCopyUtil.beanCopy(gen, ToolGenCodeVO.class);
 
         // 初始化vm模板

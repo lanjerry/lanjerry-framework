@@ -1,35 +1,10 @@
 package ${packageName}.service.${moduleName}.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+#foreach ($import in $serviceImplImports)
+import $import
+#end
 
-#if(${tplFunctions.indexOf("pageList")}!=-1)
-import ${packageName}.dto.${moduleName}.${ClassName}PageDTO;
-#end
-#if(${tplFunctions.indexOf("add")}!=-1&&${tplFunctions.indexOf("update")}!=-1)
-import ${packageName}.dto.${moduleName}.${ClassName}${saveOrUpdateDTO};
-#end
-#if(${tplFunctions.indexOf("add")}!=-1&&${tplFunctions.indexOf("update")}==-1)
-import ${packageName}.dto.${moduleName}.${ClassName}${saveDTO};
-#end
-#if(${tplFunctions.indexOf("update")}!=-1&&${tplFunctions.indexOf("add")}==-1)
-import ${packageName}.dto.${moduleName}.${ClassName}${updateDTO};
-#end
-import ${packageName}.mapper.${moduleName}.${ClassName}Mapper;
-import ${packageName}.service.${moduleName}.${ClassName}Service;
-import ${packageName}.util.AdminConsts;
-#if(${tplFunctions.indexOf("update")}!=-1)
-import ${packageName}.vo.${moduleName}.${ClassName}InfoVO;
-#end
-#if(${tplFunctions.indexOf("pageList")}!=-1)
-import ${packageName}.vo.${moduleName}.${ClassName}PageVO;
-#end
-import ${basePackage}.common.core.entity.${moduleName}.${ClassName};
-import ${basePackage}.common.core.util.ApiAssert;
-import ${basePackage}.common.core.util.BeanCopyUtil;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;

@@ -48,6 +48,11 @@ public class ToolGenCodeColumnVO extends BaseEntity {
     private String upperFirstJavaField;
 
     /**
+     * 字段例子
+     */
+    private String columnExample;
+
+    /**
      * 是否主键 0.否 1.是
      */
     private Boolean pkFlag;

@@ -3,46 +3,11 @@
 #set($saveOrUpdateDTO = "SaveOrUpdateDTO")
 package ${packageName}.controller.${moduleName};
 
-import java.util.List;
-
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-#if(${tplFunctions.indexOf("pageList")}!=-1)
-import ${packageName}.dto.${moduleName}.${ClassName}PageDTO;
+#foreach ($import in $controllerImports)
+import $import
 #end
-#if(${tplFunctions.indexOf("add")}!=-1&&${tplFunctions.indexOf("update")}!=-1)
-import ${packageName}.dto.${moduleName}.${ClassName}${saveOrUpdateDTO};
-#end
-#if(${tplFunctions.indexOf("add")}!=-1&&${tplFunctions.indexOf("update")}==-1)
-import ${packageName}.dto.${moduleName}.${ClassName}${saveDTO};
-#end
-#if(${tplFunctions.indexOf("update")}!=-1&&${tplFunctions.indexOf("add")}==-1)
-import ${packageName}.dto.${moduleName}.${ClassName}${updateDTO};
-#end
-import ${packageName}.service.${moduleName}.${ClassName}Service;
-#if(${tplFunctions.indexOf("update")}!=-1)
-import ${packageName}.vo.${moduleName}.${ClassName}InfoVO;
-#end
-#if(${tplFunctions.indexOf("pageList")}!=-1)
-import ${packageName}.vo.${moduleName}.${ClassName}PageVO;
-#end
-import ${basePackage}.common.core.bean.ApiResult;
-import ${basePackage}.common.log.annotation.SysLog;
 import org.springframework.validation.annotation.Validated;
-#if(${tplFunctions.indexOf("delete")}!=-1)
-import org.springframework.web.bind.annotation.DeleteMapping;
-#end
-#if(${tplFunctions.indexOf("pageList")}!=-1||${tplFunctions.indexOf("update")}!=-1)
-import org.springframework.web.bind.annotation.GetMapping;
-#end
-#if(${tplFunctions.indexOf("update")}!=-1||${tplFunctions.indexOf("delete")}!=-1)
-import org.springframework.web.bind.annotation.PathVariable;
-#end
-#if(${tplFunctions.indexOf("add")}!=-1)
-import org.springframework.web.bind.annotation.PostMapping;
-#end
-#if(${tplFunctions.indexOf("update")}!=-1)
-import org.springframework.web.bind.annotation.PutMapping;
-#end
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

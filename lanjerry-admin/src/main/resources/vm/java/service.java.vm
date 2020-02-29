@@ -1,26 +1,8 @@
 package ${packageName}.service.${moduleName};
 
-import java.util.List;
-
-#if(${tplFunctions.indexOf("pageList")}!=-1)
-import ${packageName}.dto.${moduleName}.${ClassName}PageDTO;
+#foreach ($import in $serviceImports)
+import $import
 #end
-#if(${tplFunctions.indexOf("add")}!=-1&&${tplFunctions.indexOf("update")}!=-1)
-import ${packageName}.dto.${moduleName}.${ClassName}${saveOrUpdateDTO};
-#end
-#if(${tplFunctions.indexOf("add")}!=-1&&${tplFunctions.indexOf("update")}==-1)
-import ${packageName}.dto.${moduleName}.${ClassName}${saveDTO};
-#end
-#if(${tplFunctions.indexOf("update")}!=-1&&${tplFunctions.indexOf("add")}==-1)
-import ${packageName}.dto.${moduleName}.${ClassName}${updateDTO};
-#end
-#if(${tplFunctions.indexOf("update")}!=-1)
-import ${packageName}.vo.${moduleName}.${ClassName}InfoVO;
-#end
-#if(${tplFunctions.indexOf("pageList")}!=-1)
-import ${packageName}.vo.${moduleName}.${ClassName}PageVO;
-#end
-import ${basePackage}.common.core.entity.${moduleName}.${ClassName};
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;

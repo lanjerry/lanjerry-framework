@@ -1,14 +1,10 @@
 package ${basePackage}.common.core.entity.${moduleName};
 
-import java.time.LocalDateTime;
-
 import ${basePackage}.common.core.bean.BaseEntity;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
+#foreach ($import in $entityImports)
+import $import
+#end
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import lombok.Data;

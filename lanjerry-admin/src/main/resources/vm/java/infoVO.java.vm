@@ -1,0 +1,34 @@
+package ${packageName}.vo.${moduleName};
+
+#foreach ($import in $infoVOImports)
+import $import
+#end
+
+import ${basePackage}.common.core.bean.BaseEntity;
+
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+/**
+ * <p>
+ * ${functionName}信息VO
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class ${ClassName}InfoVO extends BaseEntity {
+#set($position = 0)
+#foreach ($column in $formColumns)
+#set($position = $position + 10)
+
+    /**
+     * $column.columnComment
+     */
+    @ApiModelProperty(value = "$column.columnComment", example = "$column.columnExample", position = $position)
+    private $column.javaType $column.javaField;
+#end
+}

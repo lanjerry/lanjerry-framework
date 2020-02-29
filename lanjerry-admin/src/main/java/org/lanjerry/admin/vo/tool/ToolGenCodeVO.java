@@ -55,6 +55,11 @@ public class ToolGenCodeVO extends BaseEntity {
     private String businessName;
 
     /**
+     * 生成包基本路径
+     */
+    private String basePackage;
+
+    /**
      * 生成包路径
      */
     private String packageName;
