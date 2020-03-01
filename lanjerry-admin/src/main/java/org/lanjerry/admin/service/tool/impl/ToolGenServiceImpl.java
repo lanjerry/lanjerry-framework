@@ -120,6 +120,8 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
             if (c.getQueryFlag()) {
                 c.setQueryType(StrUtil.isNotBlank(c.getQueryType()) ? c.getQueryType() : "【请填写查询方式】");
             }
+            // 设置字段长度
+            c.setColumnLength(StrUtil.subBetween(c.getColumnType(), "(", ")"));
             // 设置JAVA字段名首字母大写
             c.setUpperFirstJavaField(StrUtil.upperFirst(c.getJavaField()));
             // 设置字段例子
@@ -135,7 +137,7 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
         VelocityContext context = GeneratorCodeUtil.setVelocityContext(genCode);
 
         // 获取模板列表
-        List<String> templates = GeneratorCodeUtil.getTemplates(gen.getTplFunction());
+        List<String> templates = GeneratorCodeUtil.getTemplates(genCode.getTplFunctions());
 
         // 渲染模板
         for (String template : templates) {
@@ -324,7 +326,7 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
         VelocityContext context = GeneratorCodeUtil.setVelocityContext(genCode);
 
         // 获取模板列表
-        List<String> templates = GeneratorCodeUtil.getTemplates(gen.getTplFunction());
+        List<String> templates = GeneratorCodeUtil.getTemplates(genCode.getTplFunctions());
 
         // 渲染模板
         for (String template : templates) {

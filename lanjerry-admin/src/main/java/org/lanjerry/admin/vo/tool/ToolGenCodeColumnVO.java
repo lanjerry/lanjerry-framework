@@ -33,6 +33,11 @@ public class ToolGenCodeColumnVO extends BaseEntity {
     private String columnType;
 
     /**
+     * 列长度
+     */
+    private String columnLength;
+
+    /**
      * JAVA类型
      */
     private String javaType;

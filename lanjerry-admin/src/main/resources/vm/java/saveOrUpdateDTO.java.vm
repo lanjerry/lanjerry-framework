@@ -1,0 +1,50 @@
+package ${packageName}.vo.${moduleName};
+
+#foreach ($import in $saveOrUpdateDTOImports)
+import $import
+#end
+
+import ${basePackage}.core.bean.BaseEntity;
+
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+/**
+ * <p>
+ * ${functionName}新增DTO
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class ${ClassName}SaveOrUpdateDTO extends BaseEntity {
+#set($position = 0)
+#foreach ($column in $formColumns)
+#set($position = $position + 10)
+
+    /**
+     * $column.columnComment
+     */
+#if($column.javaType=="String"||$column.javaType=="Integer")
+    @Size(max = $column.columnLength, message = "$column.columnComment输入长度不能超过$column.columnLength个字符")
+#end
+#if($column.javaField.indexOf("mail")!=-1)
+    @Email(message = "$column.columnComment格式不正确")
+#end
+#if($column.javaField.indexOf("phone")!=-1)
+    @Pattern(regexp = "^[1](([3|5|8][\\d])|([4][5,6,7,8,9])|([6][5,6])|([7][3,4,5,6,7,8])|([9][8,9]))[\\d]{8}$", message = "$column.columnComment格式不正确")
+#end
+#if($column.requiredFlag)
+#if($column.javaType=="String")
+    @NotBlank(message = "$column.columnComment不能为空")
+#else
+    @NotNull(message = "$column.columnComment不能为空")
+#end
+#end
+    @ApiModelProperty(value = "$column.columnComment", example = "$column.columnExample", position = $position)
+    private $column.javaType $column.javaField;
+#end
+}

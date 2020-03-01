@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * ${functionName}分页查询DTO
+ * ${functionName}分页查询VO
  * </p>
  *
  * @author ${author}

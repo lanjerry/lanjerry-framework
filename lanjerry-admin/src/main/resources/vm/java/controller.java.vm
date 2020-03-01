@@ -34,47 +34,53 @@ import lombok.AllArgsConstructor;
 public class ${ClassName}Controller {
 
     private final ${ClassName}Service ${businessName}Service;
+#set($position = 0)
 #foreach($function in $!{tplFunctions})
 #if($function=="pageList")
+#set($position = $position + 10)
 
     @GetMapping("/page")
     @RequiresPermissions("${permissionPrefix}:page")
-    @ApiOperation(value = "分页查询${functionName}列表")
+    @ApiOperation(value = "分页查询${functionName}列表", position = $position)
     public ApiResult<IPage<${ClassName}PageVO>> page${BusinessName}s(@ApiParam(value = "${functionName}列表查询参数", required = true) ${ClassName}PageDTO dto) {
         return ApiResult.success(${businessName}Service.page${BusinessName}s(dto));
     }
 #elseif($function=="add")
+#set($position = $position + 10)
 
     @PostMapping
     @RequiresPermissions("${permissionPrefix}:save")
     @SysLog("新增${functionName}")
-    @ApiOperation(value = "新增${functionName}")
+    @ApiOperation(value = "新增${functionName}", position = $position)
     public ApiResult save${BusinessName}(@RequestBody @Validated @ApiParam(value = "${functionName}新增参数", required = true) ${ClassName}#if(${tplFunctions.indexOf("update")}!=-1)${saveOrUpdateDTO}#else${saveDTO}#end dto) {
         ${businessName}Service.save${BusinessName}(dto);
         return ApiResult.success();
     }
 #elseif($function=="update")
+#set($position = $position + 10)
 
     @GetMapping("/{${pkJavaField}}")
-    @ApiOperation(value = "根据${pkComment}查询${functionName}信息")
+    @ApiOperation(value = "根据${pkComment}查询${functionName}信息", position = $position)
     public ApiResult<${ClassName}InfoVO> get${BusinessName}(@PathVariable("${pkJavaField}") @ApiParam(value = "${pkComment}", required = true) ${pkJavaType} ${pkJavaField}) {
         return ApiResult.success(${businessName}Service.get${BusinessName}(${pkJavaField}));
     }
+#set($position = $position + 10)
 
     @PutMapping("/{${pkJavaField}}")
     @RequiresPermissions("${permissionPrefix}:update")
     @SysLog("更新${functionName}")
-    @ApiOperation(value = "更新${functionName}")
+    @ApiOperation(value = "更新${functionName}", position = $position)
     public ApiResult update${BusinessName}(@PathVariable("${pkJavaField}") @ApiParam(value = "${pkComment}", required = true) ${pkJavaType} ${pkJavaField}, @RequestBody @Validated @ApiParam(value = "${functionName}更新参数", required = true) ${ClassName}#if(${tplFunctions.indexOf("add")}!=-1)${saveOrUpdateDTO}#else${updateDTO}#end dto) {
         ${businessName}Service.update${BusinessName}(${pkJavaField}, dto);
         return ApiResult.success();
     }
 #elseif($function=="delete")
+#set($position = $position + 10)
 
     @DeleteMapping("/{${pkJavaField}s}")
     @RequiresPermissions("${permissionPrefix}:remove")
     @SysLog("删除${functionName}")
-    @ApiOperation(value = "删除${functionName}")
+    @ApiOperation(value = "删除${functionName}", position = $position)
     public ApiResult remove${BusinessName}s(@PathVariable("${pkJavaField}s") @ApiParam(value = "${pkComment}数组", required = true) ${pkJavaType}[] ${pkJavaField}s) {
         ${businessName}Service.remove${BusinessName}s(ids);
         return ApiResult.success();

@@ -100,14 +100,17 @@ public class GeneratorCodeUtil {
         // entity导入包
         velocityContext.put("entityImports", getEntityImports(gen.getColumns()));
 
+        // pageVO导入包
+        velocityContext.put("pageVOImports", getVOorPageDTOImports(listColumns));
+
         // infoVO导入包
-        velocityContext.put("infoVOImports", getDTOorVOImports(formColumns));
+        velocityContext.put("infoVOImports", getVOorPageDTOImports(formColumns));
 
         // pageDTO导入包
-        velocityContext.put("pageDTOImports", getDTOorVOImports(queryColumns));
+        velocityContext.put("pageDTOImports", getVOorPageDTOImports(queryColumns));
 
-        // pageVO导入包
-        velocityContext.put("pageVOImports", getDTOorVOImports(listColumns));
+        // saveOrUpdateDTO导入包
+        velocityContext.put("saveOrUpdateDTOImports", getSaveOrUpdateDTOImports(formColumns));
         return velocityContext;
     }
 
@@ -117,17 +120,32 @@ public class GeneratorCodeUtil {
      * @author lanjerry
      * @since 2020/2/24 1:40
      */
-    public static List<String> getTemplates(String tplFunctions) {
+    public static List<String> getTemplates(List<String> tplFunctions) {
         List<String> result = new ArrayList<>();
-        result.add("vm/java/controller.java.vm");
+        result.add("vm/java/entity.java.vm");
         result.add("vm/java/mapper.java.vm");
         result.add("vm/java/service.java.vm");
         result.add("vm/java/serviceImpl.java.vm");
-        result.add("vm/java/entity.java.vm");
-        result.add("vm/java/pageDTO.java.vm");
-        result.add("vm/java/infoVO.java.vm");
-        result.add("vm/java/pageVO.java.vm");
+        result.add("vm/java/controller.java.vm");
         result.add("vm/xml/mapper.xml.vm");
+        if (tplFunctions.indexOf("pageList") != -1) {
+            result.add("vm/java/pageDTO.java.vm");
+        }
+        if (tplFunctions.indexOf("add") != -1 && tplFunctions.indexOf("update") != -1) {
+            result.add("vm/java/saveOrUpdateDTO.java.vm");
+        }
+        if (tplFunctions.indexOf("add") != -1 && tplFunctions.indexOf("update") == -1) {
+            result.add("vm/java/saveDTO.java.vm");
+        }
+        if (tplFunctions.indexOf("update") != -1 && tplFunctions.indexOf("add") == -1) {
+            result.add("vm/java/updateDTO.java.vm");
+        }
+        if (tplFunctions.indexOf("update") != -1) {
+            result.add("vm/java/infoVO.java.vm");
+        }
+        if (tplFunctions.indexOf("pageList") != -1) {
+            result.add("vm/java/pageVO.java.vm");
+        }
         return result;
     }
 
@@ -272,13 +290,39 @@ public class GeneratorCodeUtil {
         return result;
     }
 
-    private static List<String> getDTOorVOImports(List<ToolGenCodeColumnVO> columns) {
+    private static List<String> getVOorPageDTOImports(List<ToolGenCodeColumnVO> columns) {
         List<String> result = new ArrayList<>();
         if (columns.stream().anyMatch(c -> c.getJavaType().equals("BigDecimal"))) {
             result.add("java.math.BigDecimal;");
         }
         if (columns.stream().anyMatch(c -> c.getJavaType().equals("LocalDateTime"))) {
             result.add("java.time.LocalDateTime;");
+        }
+        return result;
+    }
+
+    private static List<String> getSaveOrUpdateDTOImports(List<ToolGenCodeColumnVO> columns) {
+        List<String> result = new ArrayList<>();
+        if (columns.stream().anyMatch(c -> c.getJavaType().equals("BigDecimal"))) {
+            result.add("java.math.BigDecimal;");
+        }
+        if (columns.stream().anyMatch(c -> c.getJavaType().equals("LocalDateTime"))) {
+            result.add("java.time.LocalDateTime;");
+        }
+        if (columns.stream().anyMatch(c -> CollectionUtil.contains(Arrays.asList("String", "Integer"), c.getJavaType()))) {
+            result.add("javax.validation.constraints.Size;");
+        }
+        if (columns.stream().anyMatch(c -> c.getJavaField().contains("mail"))) {
+            result.add("javax.validation.constraints.Email;");
+        }
+        if (columns.stream().anyMatch(c -> c.getJavaField().contains("phone"))) {
+            result.add("javax.validation.constraints.Pattern;");
+        }
+        if(columns.stream().anyMatch(c -> c.getRequiredFlag() && c.getJavaType().equals("String"))){
+            result.add("javax.validation.constraints.NotBlank;");
+        }
+        if(columns.stream().anyMatch(c -> c.getRequiredFlag() && !c.getJavaType().equals("String"))){
+            result.add("javax.validation.constraints.NotNull;");
         }
         return result;
     }
