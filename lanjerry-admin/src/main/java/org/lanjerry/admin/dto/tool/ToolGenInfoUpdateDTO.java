@@ -63,7 +63,7 @@ public class ToolGenInfoUpdateDTO extends BaseEntity {
      */
     @NotNull(message = "生成信息-模板功能不能为空")
     @Size(min = 1, message = "请至少选择一个模板功能")
-    @ApiModelProperty(value = "模板功能集", example = "[pageList, add, update, delete]", position = 60)
+    @ApiModelProperty(value = "模板功能集", example = "[\"pageList\", \"add\", \"update\", \"delete\"]", position = 60)
     private List<String> tplFunctions;
 
     /**

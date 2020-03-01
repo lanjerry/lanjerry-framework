@@ -53,7 +53,7 @@ public class ToolGenInfoVO extends BaseEntity {
     /**
      * 模板功能集
      */
-    @ApiModelProperty(value = "模板功能集", example = "[pageList, add, update, delete]", position = 60)
+    @ApiModelProperty(value = "模板功能集", example = "[\"pageList\", \"add\", \"update\", \"delete\"]", position = 60)
     private List<String> tplFunctions;
 
     /**
