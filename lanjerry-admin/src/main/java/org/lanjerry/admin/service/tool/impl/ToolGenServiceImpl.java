@@ -128,8 +128,6 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
             c.setColumnExample(getColumnExample(c));
         });
         genCode.setColumns(columns);
-        Map<String, String> result = new HashMap<>();
-
         // 初始化vm模板
         GeneratorCodeUtil.initVelocity();
 
@@ -140,6 +138,7 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
         List<String> templates = GeneratorCodeUtil.getTemplates(genCode.getTplFunctions());
 
         // 渲染模板
+        Map<String, String> result = new HashMap<>();
         for (String template : templates) {
             StringWriter sw = new StringWriter();
             Template tpl = Velocity.getTemplate(template, "UTF-8");

@@ -131,6 +131,12 @@ public class GeneratorCodeUtil {
         if (tplFunctions.indexOf("pageList") != -1) {
             result.add("vm/java/pageDTO.java.vm");
         }
+        if (tplFunctions.indexOf("pageList") != -1) {
+            result.add("vm/java/pageVO.java.vm");
+        }
+        if (tplFunctions.indexOf("update") != -1) {
+            result.add("vm/java/infoVO.java.vm");
+        }
         if (tplFunctions.indexOf("add") != -1 && tplFunctions.indexOf("update") != -1) {
             result.add("vm/java/saveOrUpdateDTO.java.vm");
         }
@@ -139,12 +145,6 @@ public class GeneratorCodeUtil {
         }
         if (tplFunctions.indexOf("update") != -1 && tplFunctions.indexOf("add") == -1) {
             result.add("vm/java/updateDTO.java.vm");
-        }
-        if (tplFunctions.indexOf("update") != -1) {
-            result.add("vm/java/infoVO.java.vm");
-        }
-        if (tplFunctions.indexOf("pageList") != -1) {
-            result.add("vm/java/pageVO.java.vm");
         }
         return result;
     }

@@ -65,7 +65,7 @@ public class ToolGenController {
 
     @GetMapping("/preview/{id}")
     @RequiresPermissions("tool:gen:preview")
-    @ApiOperation(value = "预览代码生成", position = 40)
+    @ApiOperation(value = "预览代码生成", position = 30)
     public ApiResult<Map<String, String>> preview(@PathVariable("id") @ApiParam(value = "表编号", required = true) Integer id) {
         return ApiResult.success(genService.preview(id));
     }
@@ -85,7 +85,7 @@ public class ToolGenController {
     @PutMapping("/{id}")
     @RequiresPermissions("tool:gen:update")
     @SysLog("更新代码生成业务")
-    @ApiOperation(value = "更新代码生成业务", position = 40)
+    @ApiOperation(value = "更新代码生成业务", position = 50)
     public ApiResult updateGen(@PathVariable("id") @ApiParam(value = "表编号", required = true) Integer id, @RequestBody @Validated @ApiParam(value = "代码生成业务更新参数", required = true) ToolGenUpdateDTO dto) {
         genService.updateGen(id, dto);
         return ApiResult.success();
@@ -94,20 +94,20 @@ public class ToolGenController {
     @DeleteMapping("/{id}")
     @RequiresPermissions("tool:gen:remove")
     @SysLog("删除代码生成业务")
-    @ApiOperation(value = "删除代码生成业务", position = 20)
+    @ApiOperation(value = "删除代码生成业务", position = 60)
     public ApiResult removeGens(@PathVariable("id") @ApiParam(value = "表编号", required = true) Integer[] ids) {
         genService.removeGens(ids);
         return ApiResult.success();
     }
 
     @GetMapping("/pageDbTables")
-    @ApiOperation(value = "分页查询数据库表", position = 30)
+    @ApiOperation(value = "分页查询数据库表", position = 70)
     public ApiResult<IPage<ToolGenDbTableVO>> pageDbTables(@ApiParam(value = "数据库表查询参数", required = true) ToolGenDbTableDTO dto) {
         return ApiResult.success(genService.pageDbTables(dto));
     }
 
     @PostMapping("/importDbTables/{tables}")
-    @ApiOperation(value = "导入数据库表", position = 40)
+    @ApiOperation(value = "导入数据库表", position = 80)
     public ApiResult importDbTables(@PathVariable("tables") @ApiParam(value = "数据库表数组", required = true) String[] tableNames) {
         genService.importDbTables(tableNames);
         return ApiResult.success();
