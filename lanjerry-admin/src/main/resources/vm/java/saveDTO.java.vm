@@ -4,7 +4,7 @@ package ${packageName}.vo.${moduleName};
 import $import
 #end
 
-import ${basePackage}.core.bean.BaseEntity;
+import ${basePackage}.common.core.bean.BaseEntity;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

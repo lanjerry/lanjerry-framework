@@ -189,7 +189,7 @@ public class GeneratorCodeUtil {
                 result = StrUtil.format("{}/service/{}/{}Service.java", javaPath, gen.getModuleName(), gen.getClassName());
                 break;
             case "vm/java/serviceImpl.java.vm":
-                result = StrUtil.format("{}/service/impl/{}ServiceImpl.java", javaPath, gen.getClassName());
+                result = StrUtil.format("{}/service/{}/impl/{}ServiceImpl.java", javaPath, gen.getModuleName(), gen.getClassName());
                 break;
             case "vm/java/updateDTO.java.vm":
                 result = StrUtil.format("{}/dto/{}/{}UpdateDTO.java", javaPath, gen.getModuleName(), gen.getClassName());

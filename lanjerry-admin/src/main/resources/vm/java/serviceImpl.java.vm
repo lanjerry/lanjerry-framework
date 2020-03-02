@@ -70,13 +70,13 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
         ApiAssert.isTrue(this.count(Wrappers.<${ClassName}>lambdaQuery().eq(${ClassName}::get$column.upperFirstJavaField, dto.$columnJavaField)) == 0, String.format("$column.columnComment：%s已存在", dto.$columnJavaField));
 #end
         ${ClassName} ${businessName} = BeanCopyUtil.beanCopy(dto, ${ClassName}.class);
-        this.save(role);
+        this.save(${businessName});
     }
 #end
 #if(${tplFunctions.indexOf("update")}!=-1)
 
     @Override
-    public void update${BusinessName}(${pkJavaType} ${pkJavaField}, ${ClassName}#if(${tplFunctions.indexOf("add")}!=-1)${saveOrUpdateDTO}#else${updateDTO}#end dto)
+    public void update${BusinessName}(${pkJavaType} ${pkJavaField}, ${ClassName}#if(${tplFunctions.indexOf("add")}!=-1)${saveOrUpdateDTO}#else${updateDTO}#end dto) {
         ${ClassName} ori${BusinessName} = this.getById(${pkJavaField});
         ApiAssert.notNull(ori${BusinessName}, String.format("${pkComment}：%s不存在", ${pkJavaField}));
 #foreach($column in $!{onlyColumns})
