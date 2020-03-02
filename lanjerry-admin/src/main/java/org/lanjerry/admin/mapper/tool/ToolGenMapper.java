@@ -2,6 +2,7 @@ package org.lanjerry.admin.mapper.tool;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.lanjerry.admin.dto.tool.ToolGenDbTableDTO;
 import org.lanjerry.admin.vo.tool.ToolGenDbTableVO;
 import org.lanjerry.common.core.entity.tool.ToolGen;
@@ -9,8 +10,6 @@ import org.lanjerry.common.core.entity.tool.ToolGen;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-
-import io.lettuce.core.dynamic.annotation.Param;
 
 /**
  * <p>
@@ -22,7 +21,7 @@ import io.lettuce.core.dynamic.annotation.Param;
  */
 public interface ToolGenMapper extends BaseMapper<ToolGen> {
 
-    IPage<ToolGenDbTableVO> pageDbTables(Page page, @Param("dto") ToolGenDbTableDTO dto);
+    IPage<ToolGenDbTableVO> pageDbTables(Page page, @Param("dto")ToolGenDbTableDTO dto);
 
     List<ToolGenDbTableVO> selectDbTablesByNames(String[] tableNames);
 }
