@@ -21,7 +21,22 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
  */
 public interface ToolGenMapper extends BaseMapper<ToolGen> {
 
+    /**
+     * 分页查询数据库表
+     * 
+     * @author lanjerry
+     * @since 2020/3/2 11:30
+     * @return com.baomidou.mybatisplus.core.metadata.IPage<org.lanjerry.admin.vo.tool.ToolGenDbTableVO>
+     */
     IPage<ToolGenDbTableVO> pageDbTables(Page page, @Param("dto")ToolGenDbTableDTO dto);
 
+    /**
+     * 根据表名称查询数据库表
+     * 
+     * @author lanjerry
+     * @since 2020/3/2 11:30
+     * @param tableNames 表名称数组
+     * @return java.util.List<org.lanjerry.admin.vo.tool.ToolGenDbTableVO>
+     */
     List<ToolGenDbTableVO> selectDbTablesByNames(String[] tableNames);
 }

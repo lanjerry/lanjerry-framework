@@ -10,10 +10,10 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.lanjerry.admin.vo.tool.ToolGenCodeColumnVO;
 import org.lanjerry.admin.vo.tool.ToolGenCodeVO;
-import org.lanjerry.common.core.entity.tool.ToolGen;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 
 /**
@@ -128,23 +128,25 @@ public class GeneratorCodeUtil {
         result.add("vm/java/serviceImpl.java.vm");
         result.add("vm/java/controller.java.vm");
         result.add("vm/xml/mapper.xml.vm");
-        if (tplFunctions.indexOf("pageList") != -1) {
-            result.add("vm/java/pageDTO.java.vm");
-        }
-        if (tplFunctions.indexOf("pageList") != -1) {
-            result.add("vm/java/pageVO.java.vm");
-        }
-        if (tplFunctions.indexOf("update") != -1) {
-            result.add("vm/java/infoVO.java.vm");
-        }
-        if (tplFunctions.indexOf("add") != -1 && tplFunctions.indexOf("update") != -1) {
-            result.add("vm/java/saveOrUpdateDTO.java.vm");
-        }
-        if (tplFunctions.indexOf("add") != -1 && tplFunctions.indexOf("update") == -1) {
-            result.add("vm/java/saveDTO.java.vm");
-        }
-        if (tplFunctions.indexOf("update") != -1 && tplFunctions.indexOf("add") == -1) {
-            result.add("vm/java/updateDTO.java.vm");
+        if (CollectionUtil.isNotEmpty(tplFunctions)) {
+            if (tplFunctions.indexOf("pageList") != -1) {
+                result.add("vm/java/pageDTO.java.vm");
+            }
+            if (tplFunctions.indexOf("pageList") != -1) {
+                result.add("vm/java/pageVO.java.vm");
+            }
+            if (tplFunctions.indexOf("update") != -1) {
+                result.add("vm/java/infoVO.java.vm");
+            }
+            if (tplFunctions.indexOf("add") != -1 && tplFunctions.indexOf("update") != -1) {
+                result.add("vm/java/saveOrUpdateDTO.java.vm");
+            }
+            if (tplFunctions.indexOf("add") != -1 && tplFunctions.indexOf("update") == -1) {
+                result.add("vm/java/saveDTO.java.vm");
+            }
+            if (tplFunctions.indexOf("update") != -1 && tplFunctions.indexOf("add") == -1) {
+                result.add("vm/java/updateDTO.java.vm");
+            }
         }
         return result;
     }
@@ -155,15 +157,123 @@ public class GeneratorCodeUtil {
      * @author lanjerry
      * @since 2020/2/24 1:40
      */
-    public static String getFileName(String template, ToolGen gen) {
+    public static String getFileName(String template, ToolGenCodeVO gen) {
         String result = "";
         String javaPath = AdminConsts.GEN_PROJECT_PATH + "/" + StrUtil.replace(gen.getPackageName(), ".", "/");
         switch (template) {
             case "vm/java/controller.java.vm":
                 result = StrUtil.format("{}/controller/{}Controller.java", javaPath, gen.getClassName());
                 break;
-            default:
-                result = "";
+            case "vm/java/entity.java.vm":
+                result = StrUtil.format("{}/entity/{}.java", javaPath, gen.getClassName());
+                break;
+            case "vm/java/infoVO.java.vm":
+                result = StrUtil.format("{}/vo/{}InfoVO.java", javaPath, gen.getClassName());
+                break;
+            case "vm/java/mapper.java.vm":
+                result = StrUtil.format("{}/mapper/{}Mapper.java", javaPath, gen.getClassName());
+                break;
+            case "vm/java/pageDTO.java.vm":
+                result = StrUtil.format("{}/dto/{}PageDTO.java", javaPath, gen.getClassName());
+                break;
+            case "vm/java/pageVO.java.vm":
+                result = StrUtil.format("{}/vo/{}PageVO.java", javaPath, gen.getClassName());
+                break;
+            case "vm/java/saveDTO.java.vm":
+                result = StrUtil.format("{}/dto/{}SaveDTO.java", javaPath, gen.getClassName());
+                break;
+            case "vm/java/saveOrUpdateDTO.java.vm":
+                result = StrUtil.format("{}/dto/{}SaveOrUpdateDTO.java", javaPath, gen.getClassName());
+                break;
+            case "vm/java/service.java.vm":
+                result = StrUtil.format("{}/service/{}Service.java", javaPath, gen.getClassName());
+                break;
+            case "vm/java/serviceImpl.java.vm":
+                result = StrUtil.format("{}/service/impl/{}ServiceImpl.java", javaPath, gen.getClassName());
+                break;
+            case "vm/java/updateDTO.java.vm":
+                result = StrUtil.format("{}/dto/{}UpdateDTO.java", javaPath, gen.getClassName());
+                break;
+            case "vm/xml/mapper.xml.vm":
+                result = StrUtil.format("{}/{}Mapper.xml", javaPath, gen.getClassName());
+                break;
+        }
+        return result;
+    }
+
+    /**
+     * 根据字段类型转换成java类型
+     *
+     * @author lanjerry
+     * @since 2020/2/23 0:56
+     * @param columnType 字段类型
+     */
+    public static String getJavaType(String columnType) {
+        String dbType = StrUtil.subBefore(columnType, "(", false);
+        if (ArrayUtil.contains(AdminConsts.GEN_COLUMNTYPE_STR, dbType)) {
+            return AdminConsts.GEN_TYPE_STRING;
+        }
+        if (ArrayUtil.contains(AdminConsts.GEN_COLUMNTYPE_TIME, dbType)) {
+            return AdminConsts.GEN_TYPE_DATE;
+        }
+        if (ArrayUtil.contains(AdminConsts.GEN_COLUMNTYPE_NUMBER, dbType)) {
+            String result;
+            String[] dbLength = StrUtil.subBetween(columnType, "(", ")").split(",");
+            switch (dbType) {
+                case "tinyint":
+                    result = "1".equals(dbLength[0]) ? AdminConsts.GEN_TYPE_BOOLEAN : AdminConsts.GEN_TYPE_INTEGER;
+                    break;
+                case "bigint":
+                    result = AdminConsts.GEN_TYPE_LONG;
+                    break;
+                case "float":
+                    result = AdminConsts.GEN_TYPE_FLOAT;
+                    break;
+                case "double":
+                    result = AdminConsts.GEN_TYPE_DOUBLE;
+                    break;
+                case "decimal":
+                    result = AdminConsts.GEN_TYPE_BIGDECIMAL;
+                    break;
+                default:
+                    result = AdminConsts.GEN_TYPE_INTEGER;
+                    break;
+            }
+            return result;
+        }
+        return dbType;
+    }
+
+    /**
+     * 根据java类型设置字段例子值
+     *
+     * @author lanjerry
+     * @since 2020/3/1 1:12
+     */
+    public static String getColumnExample(ToolGenCodeColumnVO column) {
+        String result = column.getColumnComment();
+        switch (column.getJavaType()) {
+            case "String":
+                result = "测试" + column.getColumnComment();
+                break;
+            case "LocalDateTime":
+                result = DateUtil.today();
+                break;
+            case "Integer":
+                result = "1";
+                break;
+            case "Long":
+                result = "1L";
+                break;
+            case "Float":
+                result = "1.18";
+                break;
+            case "BigDecimal":
+                result = "1.18";
+                break;
+            case "Boolean":
+                result = "true";
+                break;
         }
         return result;
     }
@@ -318,10 +428,10 @@ public class GeneratorCodeUtil {
         if (columns.stream().anyMatch(c -> c.getJavaField().contains("phone"))) {
             result.add("javax.validation.constraints.Pattern;");
         }
-        if(columns.stream().anyMatch(c -> c.getRequiredFlag() && c.getJavaType().equals("String"))){
+        if (columns.stream().anyMatch(c -> c.getRequiredFlag() && c.getJavaType().equals("String"))) {
             result.add("javax.validation.constraints.NotBlank;");
         }
-        if(columns.stream().anyMatch(c -> c.getRequiredFlag() && !c.getJavaType().equals("String"))){
+        if (columns.stream().anyMatch(c -> c.getRequiredFlag() && !c.getJavaType().equals("String"))) {
             result.add("javax.validation.constraints.NotNull;");
         }
         return result;

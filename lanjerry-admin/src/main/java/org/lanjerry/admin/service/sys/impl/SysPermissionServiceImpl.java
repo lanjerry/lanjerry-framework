@@ -47,6 +47,13 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     }
 
     @Override
+    public SysPermissionInfoVO getPermission(int id) {
+        SysPermission oriPermission = this.getById(id);
+        ApiAssert.notNull(oriPermission, String.format("权限编号：%s不存在", id));
+        return BeanCopyUtil.beanCopy(oriPermission, SysPermissionInfoVO.class);
+    }
+
+    @Override
     public void savePermission(SysPermissionSaveOrUpdateDTO dto) {
         if (SysPermissionTypeEnum.MENU.equals(dto.getType())) {
             ApiAssert.isTrue(this.count(Wrappers.<SysPermission>lambdaQuery().eq(SysPermission::getName, dto.getName())) == 0, String.format("名称：%s已存在", dto.getName()));
@@ -85,19 +92,6 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     }
 
     @Override
-    public List<SysPermissionListVO> listPermissions(List<SysPermission> permissions, Integer parentId) {
-        List<SysPermissionListVO> result = new ArrayList<>();
-        permissions.forEach(permission -> {
-            if (parentId.equals(permission.getParentId())) {
-                SysPermissionListVO permissionVO = BeanCopyUtil.beanCopy(permission, SysPermissionListVO.class);
-                permissionVO.setChildren(this.listPermissions(permissions, permission.getId()));
-                result.add(permissionVO);
-            }
-        });
-        return result;
-    }
-
-    @Override
     public void changePermissionStatus(int id, SysPermissionStatusEnum statusEnum) {
         SysPermission oriPermission = this.getById(id);
         ApiAssert.notNull(oriPermission, String.format("权限编号：%s不存在", id));
@@ -111,18 +105,24 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     }
 
     @Override
-    public SysPermissionInfoVO getPermission(int id) {
-        SysPermission oriPermission = this.getById(id);
-        ApiAssert.notNull(oriPermission, String.format("权限编号：%s不存在", id));
-        return BeanCopyUtil.beanCopy(oriPermission, SysPermissionInfoVO.class);
-    }
-
-    @Override
     public List<SysPermissionTreeVO> treePermissions() {
         List<SysPermission> permissions = this.lambdaQuery()
                 .orderByAsc(SysPermission::getSort)
                 .list();
         return this.treePermissions(permissions, AdminConsts.SYS_PERMISSION_PARENT_ID);
+    }
+
+    @Override
+    public List<SysPermissionListVO> listPermissions(List<SysPermission> permissions, Integer parentId) {
+        List<SysPermissionListVO> result = new ArrayList<>();
+        permissions.forEach(permission -> {
+            if (parentId.equals(permission.getParentId())) {
+                SysPermissionListVO permissionVO = BeanCopyUtil.beanCopy(permission, SysPermissionListVO.class);
+                permissionVO.setChildren(this.listPermissions(permissions, permission.getId()));
+                result.add(permissionVO);
+            }
+        });
+        return result;
     }
 
     /**

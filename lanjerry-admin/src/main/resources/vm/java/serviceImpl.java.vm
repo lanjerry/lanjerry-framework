@@ -1,3 +1,6 @@
+#set($saveDTO = "SaveDTO")
+#set($updateDTO = "UpdateDTO")
+#set($saveOrUpdateDTO = "SaveOrUpdateDTO")
 package ${packageName}.service.${moduleName}.impl;
 
 #foreach ($import in $serviceImplImports)
@@ -23,8 +26,7 @@ import cn.hutool.core.util.StrUtil;
  */
 @Service
 public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${ClassName}> implements ${ClassName}Service {
-#foreach($function in $!{tplFunctions})
-#if($function=="pageList")
+#if(${tplFunctions.indexOf("pageList")}!=-1)
 
     @Override
     public IPage<${ClassName}PageVO> page${BusinessName}s(${ClassName}PageDTO dto) {
@@ -49,7 +51,17 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
             .page(new Page<>(dto.getPageNum(), dto.getPageSize()));
         return BeanCopyUtil.pageCopy(page, ${ClassName}.class, ${ClassName}PageVO.class);
     }
-#elseif($function=="add")
+#end
+#if(${tplFunctions.indexOf("update")}!=-1)
+
+    @Override
+    public ${ClassName}InfoVO get${BusinessName}(${pkJavaType} ${pkJavaField}) {
+        ${ClassName} ori${BusinessName} = this.getById(${pkJavaField});
+        ApiAssert.notNull(ori${BusinessName}, String.format("${pkComment}：%s不存在", ${pkJavaField}));
+        return BeanCopyUtil.beanCopy(ori${BusinessName}, ${ClassName}InfoVO.class);
+    }
+#end
+#if(${tplFunctions.indexOf("add")}!=-1)
 
     @Override
     public void save${BusinessName}(${ClassName}#if(${tplFunctions.indexOf("update")}!=-1)${saveOrUpdateDTO}#else${saveDTO}#end dto) {
@@ -60,14 +72,8 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
         ${ClassName} ${businessName} = BeanCopyUtil.beanCopy(dto, ${ClassName}.class);
         this.save(role);
     }
-#elseif($function=="update")
-
-    @Override
-    public ${ClassName}InfoVO get${BusinessName}(${pkJavaType} ${pkJavaField}) {
-        ${ClassName} ori${BusinessName} = this.getById(${pkJavaField});
-        ApiAssert.notNull(ori${BusinessName}, String.format("${pkComment}：%s不存在", ${pkJavaField}));
-        return BeanCopyUtil.beanCopy(ori${BusinessName}, ${ClassName}InfoVO.class);
-    }
+#end
+#if(${tplFunctions.indexOf("update")}!=-1)
 
     @Override
     public void update${BusinessName}(${pkJavaType} ${pkJavaField}, ${ClassName}#if(${tplFunctions.indexOf("add")}!=-1)${saveOrUpdateDTO}#else${updateDTO}#end dto)
@@ -81,7 +87,8 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
         ${businessName}.setId(${pkJavaField});
         this.updateById(${businessName});
     }
-#elseif($function=="delete")
+#end
+#if(${tplFunctions.indexOf("delete")}!=-1)
 
     @Override
     public void remove${BusinessName}s(${pkJavaType}[] ${pkJavaField}s) {
@@ -91,6 +98,5 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
             this.removeById(${pkJavaField});
         }
     }
-#end
 #end
 }

@@ -46,8 +46,6 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 
 /**
@@ -90,73 +88,6 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
         result.setInfo(info);
         result.setColumns(BeanCopyUtil.listCopy(genDetailService.list(Wrappers.<ToolGenDetail>lambdaQuery().eq(ToolGenDetail::getTableId, id)), ToolGenDetail.class, ToolGenColumnVO.class));
         return result;
-    }
-
-    @Override
-    public Map<String, String> preview(int id) {
-        ToolGen gen = this.getById(id);
-        ApiAssert.notNull(gen, String.format("表编号：%s不存在", id));
-        // 设置基本信息
-        ToolGenCodeVO genCode = BeanCopyUtil.beanCopy(gen, ToolGenCodeVO.class);
-        // 设置生成包基本路径
-        genCode.setBasePackage(StrUtil.subBefore(gen.getPackageName(), ".", true));
-        // 设置功能名称
-        genCode.setFunctionName(StrUtil.isNotBlank(gen.getFunctionName()) ? gen.getFunctionName() : "【请填写功能名称】");
-        if (StrUtil.isNotBlank(gen.getTplFunction())) {
-            genCode.setTplFunctions(Arrays.asList(gen.getTplFunction().split(",")));
-        }
-        // 设置主键信息
-        List<ToolGenDetail> details = genDetailService.list(Wrappers.<ToolGenDetail>lambdaQuery().eq(ToolGenDetail::getTableId, id));
-        Optional<ToolGenDetail> pkOptional = details.stream().filter(ToolGenDetail::getPkFlag).findFirst();
-        if (pkOptional.isPresent()) {
-            genCode.setPkComment(pkOptional.get().getColumnComment());
-            genCode.setPkJavaType(pkOptional.get().getJavaType());
-            genCode.setPkJavaField(pkOptional.get().getJavaField());
-        }
-        // 设置字段信息
-        List<ToolGenCodeColumnVO> columns = BeanCopyUtil.listCopy(details, ToolGenDetail.class, ToolGenCodeColumnVO.class);
-        columns.forEach(c -> {
-            // 设置查询方式
-            if (c.getQueryFlag()) {
-                c.setQueryType(StrUtil.isNotBlank(c.getQueryType()) ? c.getQueryType() : "【请填写查询方式】");
-            }
-            // 设置字段长度
-            c.setColumnLength(StrUtil.subBetween(c.getColumnType(), "(", ")"));
-            // 设置JAVA字段名首字母大写
-            c.setUpperFirstJavaField(StrUtil.upperFirst(c.getJavaField()));
-            // 设置字段例子
-            c.setColumnExample(getColumnExample(c));
-        });
-        genCode.setColumns(columns);
-        // 初始化vm模板
-        GeneratorCodeUtil.initVelocity();
-
-        // 设置模板信息
-        VelocityContext context = GeneratorCodeUtil.setVelocityContext(genCode);
-
-        // 获取模板列表
-        List<String> templates = GeneratorCodeUtil.getTemplates(genCode.getTplFunctions());
-
-        // 渲染模板
-        Map<String, String> result = new HashMap<>();
-        for (String template : templates) {
-            StringWriter sw = new StringWriter();
-            Template tpl = Velocity.getTemplate(template, "UTF-8");
-            tpl.merge(context, sw);
-            result.put(template, sw.toString());
-        }
-        return result;
-    }
-
-    @Override
-    public byte[] code(Integer[] ids) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        ZipOutputStream zip = new ZipOutputStream(outputStream);
-        for (Integer id : ids) {
-            generatorCode(id, zip);
-        }
-        IOUtils.closeQuietly(zip);
-        return outputStream.toByteArray();
     }
 
     @Override
@@ -218,7 +149,7 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
             tableColumns.forEach(c -> {
                 ToolGenDetail detail = BeanCopyUtil.beanCopy(c, ToolGenDetail.class);
                 detail.setTableId(toolGen.getId());
-                detail.setJavaType(this.getJavaType(detail.getColumnType()));
+                detail.setJavaType(GeneratorCodeUtil.getJavaType(detail.getColumnType()));
                 detail.setJavaField(StrUtil.toCamelCase(detail.getColumnName()));
                 detail.setFormFlag(false);
                 detail.setListFlag(false);
@@ -228,119 +159,105 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
         });
     }
 
-    /**
-     * 根据字段类型转换成java类型
-     *
-     * @author lanjerry
-     * @since 2020/2/23 0:56
-     * @param columnType 字段类型
-     */
-    private String getJavaType(String columnType) {
-        String dbType = StrUtil.subBefore(columnType, "(", false);
-        if (ArrayUtil.contains(AdminConsts.GEN_COLUMNTYPE_STR, dbType)) {
-            return AdminConsts.GEN_TYPE_STRING;
-        }
-        if (ArrayUtil.contains(AdminConsts.GEN_COLUMNTYPE_TIME, dbType)) {
-            return AdminConsts.GEN_TYPE_DATE;
-        }
-        if (ArrayUtil.contains(AdminConsts.GEN_COLUMNTYPE_NUMBER, dbType)) {
-            String result;
-            String[] dbLength = StrUtil.subBetween(columnType, "(", ")").split(",");
-            switch (dbType) {
-                case "tinyint":
-                    result = "1".equals(dbLength[0]) ? AdminConsts.GEN_TYPE_BOOLEAN : AdminConsts.GEN_TYPE_INTEGER;
-                    break;
-                case "bigint":
-                    result = AdminConsts.GEN_TYPE_LONG;
-                    break;
-                case "float":
-                    result = AdminConsts.GEN_TYPE_FLOAT;
-                    break;
-                case "double":
-                    result = AdminConsts.GEN_TYPE_DOUBLE;
-                    break;
-                case "decimal":
-                    result = AdminConsts.GEN_TYPE_BIGDECIMAL;
-                    break;
-                default:
-                    result = AdminConsts.GEN_TYPE_INTEGER;
-                    break;
-            }
-            return result;
-        }
-        return dbType;
-    }
+    @Override
+    public Map<String, String> preview(int id) {
+        ToolGenCodeVO genCode = this.initGenCode(id);
 
-    /**
-     * 根据java类型设置字段例子值
-     *
-     * @author lanjerry
-     * @since 2020/3/1 1:12
-     */
-    private String getColumnExample(ToolGenCodeColumnVO column) {
-        String result = column.getColumnComment();
-        switch (column.getJavaType()) {
-            case "String":
-                result = "测试" + column.getColumnComment();
-                break;
-            case "LocalDateTime":
-                result = DateUtil.today();
-                break;
-            case "Integer":
-                result = "1";
-                break;
-            case "Long":
-                result = "1L";
-                break;
-            case "Float":
-                result = "1.18";
-                break;
-            case "BigDecimal":
-                result = "1.18";
-                break;
-            case "Boolean":
-                result = "true";
-                break;
-        }
-        return result;
-    }
-
-    /**
-     * 代码生成
-     *
-     * @author lanjerry
-     * @since 2020/2/23 1:12
-     * @param id 表编号
-     * @param zip zip
-     */
-    private void generatorCode(int id, ZipOutputStream zip) {
-        ToolGen gen = this.getById(id);
-        ApiAssert.notNull(gen, String.format("表编号：%s不存在", id));
-        ToolGenCodeVO genCode = BeanCopyUtil.beanCopy(gen, ToolGenCodeVO.class);
-
-        // 初始化vm模板
-        GeneratorCodeUtil.initVelocity();
-
-        // 设置模板变量信息
+        // 设置模板信息
         VelocityContext context = GeneratorCodeUtil.setVelocityContext(genCode);
 
         // 获取模板列表
         List<String> templates = GeneratorCodeUtil.getTemplates(genCode.getTplFunctions());
 
         // 渲染模板
+        Map<String, String> result = new HashMap<>();
         for (String template : templates) {
-            try {
-                StringWriter sw = new StringWriter();
-                Template tpl = Velocity.getTemplate(template, "UTF-8");
-                tpl.merge(context, sw);
-                zip.putNextEntry(new ZipEntry(GeneratorCodeUtil.getFileName(template, gen)));
-                IOUtils.write(sw.toString(), zip, "UTF-8");
-                IOUtils.closeQuietly(sw);
-                zip.flush();
-                zip.closeEntry();
-            } catch (IOException e) {
-                e.printStackTrace();
+            StringWriter sw = new StringWriter();
+            Template tpl = Velocity.getTemplate(template, "UTF-8");
+            tpl.merge(context, sw);
+            result.put(template, sw.toString());
+        }
+        return result;
+    }
+
+    @Override
+    public byte[] code(Integer[] ids) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ZipOutputStream zip = new ZipOutputStream(outputStream);
+        for (Integer id : ids) {
+            ToolGenCodeVO genCode = this.initGenCode(id);
+
+            // 设置模板变量信息
+            VelocityContext context = GeneratorCodeUtil.setVelocityContext(genCode);
+
+            // 获取模板列表
+            List<String> templates = GeneratorCodeUtil.getTemplates(genCode.getTplFunctions());
+
+            // 渲染模板
+            for (String template : templates) {
+                try {
+                    StringWriter sw = new StringWriter();
+                    Template tpl = Velocity.getTemplate(template, "UTF-8");
+                    tpl.merge(context, sw);
+                    zip.putNextEntry(new ZipEntry(GeneratorCodeUtil.getFileName(template, genCode)));
+                    IOUtils.write(sw.toString(), zip, "UTF-8");
+                    IOUtils.closeQuietly(sw);
+                    zip.flush();
+                    zip.closeEntry();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
+        IOUtils.closeQuietly(zip);
+        return outputStream.toByteArray();
+    }
+
+    /**
+     * 初始化代码生成
+     *
+     * @author lanjerry
+     * @since 2020/2/23 1:12
+     * @param id 表编号
+     */
+    private ToolGenCodeVO initGenCode(int id){
+        ToolGen gen = this.getById(id);
+        ApiAssert.notNull(gen, String.format("表编号：%s不存在", id));
+        // 设置基本信息
+        ToolGenCodeVO result = BeanCopyUtil.beanCopy(gen, ToolGenCodeVO.class);
+        // 设置生成包基本路径
+        result.setBasePackage(StrUtil.subBefore(gen.getPackageName(), ".", true));
+        // 设置功能名称
+        result.setFunctionName(StrUtil.isNotBlank(gen.getFunctionName()) ? gen.getFunctionName() : "【请填写功能名称】");
+        if (StrUtil.isNotBlank(gen.getTplFunction())) {
+            result.setTplFunctions(Arrays.asList(gen.getTplFunction().split(",")));
+        }
+        // 设置主键信息
+        List<ToolGenDetail> details = genDetailService.list(Wrappers.<ToolGenDetail>lambdaQuery().eq(ToolGenDetail::getTableId, id));
+        Optional<ToolGenDetail> pkOptional = details.stream().filter(ToolGenDetail::getPkFlag).findFirst();
+        if (pkOptional.isPresent()) {
+            result.setPkComment(pkOptional.get().getColumnComment());
+            result.setPkJavaType(pkOptional.get().getJavaType());
+            result.setPkJavaField(pkOptional.get().getJavaField());
+        }
+        // 设置字段信息
+        List<ToolGenCodeColumnVO> columns = BeanCopyUtil.listCopy(details, ToolGenDetail.class, ToolGenCodeColumnVO.class);
+        columns.forEach(c -> {
+            // 设置查询方式
+            if (c.getQueryFlag()) {
+                c.setQueryType(StrUtil.isNotBlank(c.getQueryType()) ? c.getQueryType() : "【请填写查询方式】");
+            }
+            // 设置字段长度
+            c.setColumnLength(StrUtil.subBetween(c.getColumnType(), "(", ")"));
+            // 设置JAVA字段名首字母大写
+            c.setUpperFirstJavaField(StrUtil.upperFirst(c.getJavaField()));
+            // 设置字段例子
+            c.setColumnExample(GeneratorCodeUtil.getColumnExample(c));
+        });
+        result.setColumns(columns);
+
+        // 初始化vm模板
+        GeneratorCodeUtil.initVelocity();
+        return result;
     }
 }

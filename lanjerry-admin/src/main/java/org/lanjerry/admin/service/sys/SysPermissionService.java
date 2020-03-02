@@ -69,17 +69,6 @@ public interface SysPermissionService extends IService<SysPermission> {
     void removePermission(int id);
 
     /**
-     * 递归处理权限列表，重组成树形结构
-     *
-     * @author lanjerry
-     * @since 2019/12/18 13:57
-     * @param permissions 权限列表
-     * @param parentId 父级id
-     * @return java.util.List<org.lanjerry.admin.vo.sys.SysPermissionListVO>
-     */
-    List<SysPermissionListVO> listPermissions(List<SysPermission> permissions, Integer parentId);
-
-    /**
      * 启用或者停用系统权限
      *
      * @author lanjerry
@@ -97,4 +86,15 @@ public interface SysPermissionService extends IService<SysPermission> {
      * @return java.util.List<org.lanjerry.admin.vo.sys.SysPermissionTreeVO>
      */
     List<SysPermissionTreeVO> treePermissions();
+
+    /**
+     * 递归处理权限列表，重组成树形结构
+     *
+     * @author lanjerry
+     * @since 2019/12/18 13:57
+     * @param permissions 权限列表
+     * @param parentId 父级id
+     * @return java.util.List<org.lanjerry.admin.vo.sys.SysPermissionListVO>
+     */
+    List<SysPermissionListVO> listPermissions(List<SysPermission> permissions, Integer parentId);
 }

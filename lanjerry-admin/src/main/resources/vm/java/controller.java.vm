@@ -35,8 +35,7 @@ public class ${ClassName}Controller {
 
     private final ${ClassName}Service ${businessName}Service;
 #set($position = 0)
-#foreach($function in $!{tplFunctions})
-#if($function=="pageList")
+#if(${tplFunctions.indexOf("pageList")}!=-1)
 #set($position = $position + 10)
 
     @GetMapping("/page")
@@ -45,7 +44,17 @@ public class ${ClassName}Controller {
     public ApiResult<IPage<${ClassName}PageVO>> page${BusinessName}s(@ApiParam(value = "${functionName}列表查询参数", required = true) ${ClassName}PageDTO dto) {
         return ApiResult.success(${businessName}Service.page${BusinessName}s(dto));
     }
-#elseif($function=="add")
+#end
+#if(${tplFunctions.indexOf("update")}!=-1)
+#set($position = $position + 10)
+
+    @GetMapping("/{${pkJavaField}}")
+    @ApiOperation(value = "根据${pkComment}查询${functionName}信息", position = $position)
+    public ApiResult<${ClassName}InfoVO> get${BusinessName}(@PathVariable("${pkJavaField}") @ApiParam(value = "${pkComment}", required = true) ${pkJavaType} ${pkJavaField}) {
+        return ApiResult.success(${businessName}Service.get${BusinessName}(${pkJavaField}));
+    }
+#end
+#if(${tplFunctions.indexOf("add")}!=-1)
 #set($position = $position + 10)
 
     @PostMapping
@@ -56,14 +65,8 @@ public class ${ClassName}Controller {
         ${businessName}Service.save${BusinessName}(dto);
         return ApiResult.success();
     }
-#elseif($function=="update")
-#set($position = $position + 10)
-
-    @GetMapping("/{${pkJavaField}}")
-    @ApiOperation(value = "根据${pkComment}查询${functionName}信息", position = $position)
-    public ApiResult<${ClassName}InfoVO> get${BusinessName}(@PathVariable("${pkJavaField}") @ApiParam(value = "${pkComment}", required = true) ${pkJavaType} ${pkJavaField}) {
-        return ApiResult.success(${businessName}Service.get${BusinessName}(${pkJavaField}));
-    }
+#end
+#if(${tplFunctions.indexOf("update")}!=-1)
 #set($position = $position + 10)
 
     @PutMapping("/{${pkJavaField}}")
@@ -74,7 +77,8 @@ public class ${ClassName}Controller {
         ${businessName}Service.update${BusinessName}(${pkJavaField}, dto);
         return ApiResult.success();
     }
-#elseif($function=="delete")
+#end
+#if(${tplFunctions.indexOf("delete")}!=-1)
 #set($position = $position + 10)
 
     @DeleteMapping("/{${pkJavaField}s}")
@@ -85,6 +89,5 @@ public class ${ClassName}Controller {
         ${businessName}Service.remove${BusinessName}s(ids);
         return ApiResult.success();
     }
-#end
 #end
 }

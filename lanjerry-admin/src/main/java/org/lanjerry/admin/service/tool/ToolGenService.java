@@ -23,19 +23,80 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ToolGenService extends IService<ToolGen> {
 
+    /**
+     * 分页查询代码生成业务列表
+     *
+     * @author lanjerry
+     * @since 2020/3/2 11:11
+     * @param dto 代码生成业务列表查询参数
+     * @return com.baomidou.mybatisplus.core.metadata.IPage<org.lanjerry.admin.vo.tool.ToolGenPageVO>
+     */
     IPage<ToolGenPageVO> pageGens(ToolGenPageDTO dto);
 
+    /**
+     * 根据表编号查询代码生成业务信息
+     *
+     * @author lanjerry
+     * @since 2020/3/2 11:13
+     * @param id 表编号
+     * @return org.lanjerry.admin.vo.tool.ToolGenResultVO
+     */
     ToolGenResultVO getGen(int id);
 
-    Map<String, String> preview(int id);
-
-    byte[] code(Integer[] ids);
-
+    /**
+     * 更新代码生成业务
+     *
+     * @author lanjerry
+     * @since 2020/3/2 11:14
+     * @param id 表编号
+     * @param dto 代码生成业务更新参数
+     */
     void updateGen(int id, ToolGenUpdateDTO dto);
 
+    /**
+     * 删除代码生成业务
+     *
+     * @author lanjerry
+     * @since 2020/3/2 11:21
+     * @param ids 表编号数组
+     */
     void removeGens(Integer[] ids);
 
+    /**
+     * 分页查询数据库表
+     *
+     * @author lanjerry
+     * @since 2020/3/2 11:22
+     * @param dto 数据库表查询参数
+     * @return com.baomidou.mybatisplus.core.metadata.IPage<org.lanjerry.admin.vo.tool.ToolGenDbTableVO>
+     */
     IPage<ToolGenDbTableVO> pageDbTables(ToolGenDbTableDTO dto);
 
+    /**
+     * 导入数据库表
+     *
+     * @author lanjerry
+     * @since 2020/3/2 11:24
+     * @param tableNames 数据库表数组
+     */
     void importDbTables(String[] tableNames);
+
+    /**
+     * 预览代码生成
+     *
+     * @author lanjerry
+     * @since 2020/3/2 11:24
+     * @param id 表编号
+     * @return java.util.Map<java.lang.String,java.lang.String>
+     */
+    Map<String, String> preview(int id);
+
+    /**
+     * 代码生成
+     *
+     * @author lanjerry
+     * @since 2020/3/2 11:25
+     * @param ids 表编号数组
+     */
+    byte[] code(Integer[] ids);
 }

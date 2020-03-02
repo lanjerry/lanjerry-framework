@@ -9,6 +9,7 @@ import org.lanjerry.admin.util.AdminConsts;
 import org.lanjerry.admin.vo.sys.SysLogInfoVO;
 import org.lanjerry.admin.vo.sys.SysLogPageVO;
 import org.lanjerry.common.core.entity.sys.SysLog;
+import org.lanjerry.common.core.util.ApiAssert;
 import org.lanjerry.common.core.util.BeanCopyUtil;
 import org.springframework.stereotype.Service;
 
@@ -45,8 +46,10 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
     }
 
     @Override
-    public SysLogInfoVO getInfoById(int id) {
-        return BeanCopyUtil.beanCopy(this.getById(id), SysLogInfoVO.class);
+    public SysLogInfoVO getLog(int id) {
+        SysLog oriLog = this.getById(id);
+        ApiAssert.notNull(oriLog, String.format("日志编号：%s不存在", id));
+        return BeanCopyUtil.beanCopy(oriLog, SysLogInfoVO.class);
     }
 
     @Override

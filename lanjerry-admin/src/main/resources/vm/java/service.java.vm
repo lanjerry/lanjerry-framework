@@ -1,3 +1,6 @@
+#set($saveDTO = "SaveDTO")
+#set($updateDTO = "UpdateDTO")
+#set($saveOrUpdateDTO = "SaveOrUpdateDTO")
 package ${packageName}.service.${moduleName};
 
 #foreach ($import in $serviceImports)
@@ -16,8 +19,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since ${date}
  */
 public interface ${ClassName}Service extends IService<${ClassName}> {
-#foreach($function in $!{tplFunctions})
-#if($function=="pageList")
+#if(${tplFunctions.indexOf("pageList")}!=-1)
 
     /**
      * 分页查询${functionName}列表
@@ -28,7 +30,20 @@ public interface ${ClassName}Service extends IService<${ClassName}> {
      * @return com.baomidou.mybatisplus.core.metadata.IPage<${packageName}.vo.${moduleName}.${ClassName}PageVO>
      */
     IPage<${ClassName}PageVO> page${BusinessName}s(${ClassName}PageDTO dto);
-#elseif($function=="add")
+#end
+#if(${tplFunctions.indexOf("update")}!=-1)
+
+    /**
+     * 根据${pkComment}查询${functionName}信息
+     *
+     * @author ${author}
+     * @since ${datetime}
+     * @param ${pkJavaField} ${pkComment}
+     * @return ${packageName}.vo.${moduleName}.${ClassName}InfoVO
+     */
+    ${ClassName}InfoVO get${BusinessName}(${pkJavaType} ${pkJavaField});
+#end
+#if(${tplFunctions.indexOf("add")}!=-1)
 
     /**
      * 新增${functionName}
@@ -38,17 +53,8 @@ public interface ${ClassName}Service extends IService<${ClassName}> {
      * @param dto ${functionName}新增参数
      */
     void save${BusinessName}(${ClassName}#if(${tplFunctions.indexOf("update")}!=-1)${saveOrUpdateDTO}#else${saveDTO}#end dto);
-#elseif($function=="update")
-
-    /**
-      * 根据${pkComment}查询${functionName}信息
-      *
-      * @author ${author}
-      * @since ${datetime}
-      * @param ${pkJavaField} ${pkComment}
-      * @return ${packageName}.vo.${moduleName}.${ClassName}InfoVO
-      */
-    ${ClassName}InfoVO get${BusinessName}(${pkJavaType} ${pkJavaField});
+#end
+#if(${tplFunctions.indexOf("update")}!=-1)
 
     /**
      * 更新${functionName}
@@ -59,7 +65,8 @@ public interface ${ClassName}Service extends IService<${ClassName}> {
      * @param dto ${functionName}更新参数
      */
     void update${BusinessName}(${pkJavaType} ${pkJavaField}, ${ClassName}#if(${tplFunctions.indexOf("add")}!=-1)${saveOrUpdateDTO}#else${updateDTO}#end dto);
-#elseif($function=="delete")
+#end
+#if(${tplFunctions.indexOf("delete")}!=-1)
 
     /**
      * 删除${functionName}
@@ -69,6 +76,5 @@ public interface ${ClassName}Service extends IService<${ClassName}> {
      * @param ${pkJavaField}s ${pkComment}数组
      */
     void remove${BusinessName}s(${pkJavaType}[] ${pkJavaField}s);
-#end
 #end
 }

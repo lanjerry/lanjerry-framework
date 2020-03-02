@@ -44,8 +44,8 @@ public class SysLogController {
 
     @GetMapping("/{id}")
     @ApiOperation(value = "根据日志编号查询日志信息", position = 20)
-    public ApiResult<SysLogInfoVO> getInfoById(@PathVariable("id") @ApiParam(value = "日志编号", required = true) Integer id) {
-        return ApiResult.success(logService.getInfoById(id));
+    public ApiResult<SysLogInfoVO> getLog(@PathVariable("id") @ApiParam(value = "日志编号", required = true) Integer id) {
+        return ApiResult.success(logService.getLog(id));
     }
 
     @DeleteMapping("/{id}")

@@ -36,7 +36,7 @@ public interface SysLogService extends IService<SysLog> {
      * @param id 日志编号
      * @return org.lanjerry.admin.vo.sys.SysLogInfoVO
      */
-    SysLogInfoVO getInfoById(int id);
+    SysLogInfoVO getLog(int id);
 
     /**
      * 删除系统日志
