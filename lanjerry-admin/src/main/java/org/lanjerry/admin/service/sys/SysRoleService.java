@@ -66,7 +66,7 @@ public interface SysRoleService extends IService<SysRole> {
      *
      * @author lanjerry
      * @since 2019/9/5 11:55
-     * @param ids 角色编号集
+     * @param ids 角色编号数组
      */
     void removeRoles(Integer[] ids);
 

@@ -162,40 +162,40 @@ public class GeneratorCodeUtil {
         String javaPath = AdminConsts.GEN_PROJECT_PATH + "/" + StrUtil.replace(gen.getPackageName(), ".", "/");
         switch (template) {
             case "vm/java/controller.java.vm":
-                result = StrUtil.format("{}/controller/{}Controller.java", javaPath, gen.getClassName());
+                result = StrUtil.format("{}/controller/{}/{}Controller.java", javaPath, gen.getModuleName(), gen.getClassName());
                 break;
             case "vm/java/entity.java.vm":
-                result = StrUtil.format("{}/entity/{}.java", javaPath, gen.getClassName());
+                result = StrUtil.format("{}/entity/{}/{}.java", javaPath, gen.getModuleName(), gen.getClassName());
                 break;
             case "vm/java/infoVO.java.vm":
-                result = StrUtil.format("{}/vo/{}InfoVO.java", javaPath, gen.getClassName());
+                result = StrUtil.format("{}/vo/{}/{}InfoVO.java", javaPath, gen.getModuleName(), gen.getClassName());
                 break;
             case "vm/java/mapper.java.vm":
-                result = StrUtil.format("{}/mapper/{}Mapper.java", javaPath, gen.getClassName());
+                result = StrUtil.format("{}/mapper/{}/{}Mapper.java", javaPath, gen.getModuleName(), gen.getClassName());
                 break;
             case "vm/java/pageDTO.java.vm":
-                result = StrUtil.format("{}/dto/{}PageDTO.java", javaPath, gen.getClassName());
+                result = StrUtil.format("{}/dto/{}/{}PageDTO.java", javaPath, gen.getModuleName(), gen.getClassName());
                 break;
             case "vm/java/pageVO.java.vm":
-                result = StrUtil.format("{}/vo/{}PageVO.java", javaPath, gen.getClassName());
+                result = StrUtil.format("{}/vo/{}/{}PageVO.java", javaPath, gen.getModuleName(), gen.getClassName());
                 break;
             case "vm/java/saveDTO.java.vm":
-                result = StrUtil.format("{}/dto/{}SaveDTO.java", javaPath, gen.getClassName());
+                result = StrUtil.format("{}/dto/{}/{}SaveDTO.java", javaPath, gen.getModuleName(), gen.getClassName());
                 break;
             case "vm/java/saveOrUpdateDTO.java.vm":
-                result = StrUtil.format("{}/dto/{}SaveOrUpdateDTO.java", javaPath, gen.getClassName());
+                result = StrUtil.format("{}/dto/{}/{}SaveOrUpdateDTO.java", javaPath, gen.getModuleName(), gen.getClassName());
                 break;
             case "vm/java/service.java.vm":
-                result = StrUtil.format("{}/service/{}Service.java", javaPath, gen.getClassName());
+                result = StrUtil.format("{}/service/{}/{}Service.java", javaPath, gen.getModuleName(), gen.getClassName());
                 break;
             case "vm/java/serviceImpl.java.vm":
                 result = StrUtil.format("{}/service/impl/{}ServiceImpl.java", javaPath, gen.getClassName());
                 break;
             case "vm/java/updateDTO.java.vm":
-                result = StrUtil.format("{}/dto/{}UpdateDTO.java", javaPath, gen.getClassName());
+                result = StrUtil.format("{}/dto/{}/{}UpdateDTO.java", javaPath, gen.getModuleName(), gen.getClassName());
                 break;
             case "vm/xml/mapper.xml.vm":
-                result = StrUtil.format("{}/{}Mapper.xml", javaPath, gen.getClassName());
+                result = StrUtil.format("{}/{}/{}Mapper.xml", javaPath, gen.getModuleName(), gen.getClassName());
                 break;
         }
         return result;

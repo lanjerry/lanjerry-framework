@@ -43,7 +43,7 @@ public interface SysLogService extends IService<SysLog> {
      *
      * @author lanjerry
      * @since 2019/12/19 17:37
-     * @param ids 日志编号集
+     * @param ids 日志编号数组
      */
     void removeLogs(Integer[] ids);
 }

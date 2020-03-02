@@ -48,10 +48,10 @@ public class SysLogController {
         return ApiResult.success(logService.getLog(id));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{ids}")
     @RequiresPermissions("sys:log:remove")
     @ApiOperation(value = "删除系统日志", position = 30)
-    public ApiResult removeLogs(@PathVariable("id") @ApiParam(value = "日志编号", required = true) Integer[] ids) {
+    public ApiResult removeLogs(@PathVariable("ids") @ApiParam(value = "日志编号数组", required = true) Integer[] ids) {
         logService.removeLogs(ids);
         return ApiResult.success();
     }

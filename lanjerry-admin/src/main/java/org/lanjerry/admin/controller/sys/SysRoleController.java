@@ -75,11 +75,11 @@ public class SysRoleController {
         return ApiResult.success();
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{ids}")
     @RequiresPermissions("sys:role:remove")
     @SysLog("删除系统角色")
     @ApiOperation(value = "删除系统角色", position = 50)
-    public ApiResult removeRoles(@PathVariable("id") @ApiParam(value = "角色编号", required = true) Integer[] ids) {
+    public ApiResult removeRoles(@PathVariable("ids") @ApiParam(value = "角色编号数组", required = true) Integer[] ids) {
         roleService.removeRoles(ids);
         return ApiResult.success();
     }
