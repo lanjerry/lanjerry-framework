@@ -1,0 +1,44 @@
+import request from '@/utils/request'
+
+// 分页查询${functionName}列表
+export function page${BusinessName}s(query) {
+  return request({
+    url: '/${moduleName}/${businessName}/page',
+    method: 'get',
+    params: query
+  })
+}
+
+// 根据${pkComment}查询${functionName}信息
+export function get${BusinessName}(${pkJavaField}) {
+  return request({
+    url: '/${moduleName}/${businessName}/' + ${pkJavaField},
+    method: 'get'
+  })
+}
+
+// 新增${functionName}
+export function save${BusinessName}(data) {
+  return request({
+    url: '/${moduleName}/${businessName}/',
+    method: 'post',
+    data: data
+  })
+}
+
+// 更新${functionName}
+export function update${BusinessName}(${pkJavaField}, data) {
+  return request({
+    url: '/${moduleName}/${businessName}/' + ${pkJavaField},
+    method: 'put',
+    data: data
+  })
+}
+
+// 删除${functionName}
+export function remove${BusinessName}s(${pkJavaField}s) {
+  return request({
+    url: '/${moduleName}/${businessName}/' + ${pkJavaField}s,
+    method: 'delete'
+  })
+}

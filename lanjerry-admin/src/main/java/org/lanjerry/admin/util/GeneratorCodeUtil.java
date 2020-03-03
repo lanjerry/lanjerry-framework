@@ -131,6 +131,8 @@ public class GeneratorCodeUtil {
         result.add("vm/java/controller.java.vm");
         result.add("vm/xml/mapper.xml.vm");
         result.add("vm/sql/sql.vm");
+        result.add("vm/js/api.js.vm");
+        result.add("vm/html/searchForm.vue.vm");
         if (CollectionUtil.isNotEmpty(tplFunctions)) {
             if (tplFunctions.indexOf("pageList") != -1) {
                 result.add("vm/java/pageDTO.java.vm");
