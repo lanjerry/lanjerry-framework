@@ -41,7 +41,7 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
 #if($column.queryType=="between"&&$column.javaType.indexOf("Time")!=-1)
 #set($columnTimeStart = "dto.get"+$column.upperFirstJavaField+"Start()")
 #set($columnTimeEnd = "dto.get"+$column.upperFirstJavaField+"End()")
-            .ge(StrUtil.isNotBlank($columnTimeStart), ${ClassName}::get$column.upperFirstJavaField, $columnTimeEnd + AdminConsts.START_TIME)
+            .ge(StrUtil.isNotBlank($columnTimeStart), ${ClassName}::get$column.upperFirstJavaField, $columnTimeStart + AdminConsts.START_TIME)
             .le(StrUtil.isNotBlank($columnTimeEnd), ${ClassName}::get$column.upperFirstJavaField, $columnTimeEnd + AdminConsts.END_TIME)
 #else
             .$columnQueryType($columnJudge, ${ClassName}::get$column.upperFirstJavaField, dto.$columnJavaField)

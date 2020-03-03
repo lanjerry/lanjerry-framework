@@ -9,6 +9,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
 import org.apache.ibatis.exceptions.PersistenceException;
+import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.lanjerry.common.core.bean.ApiResult;
 import org.lanjerry.common.core.enums.global.ApiResultCodeEnum;
@@ -97,6 +98,11 @@ public class GlobalExceptionHandler {
         if (ex.getCause() instanceof PersistenceException && ex.getCause().getCause() instanceof ApiException) {
             ApiException apiException = (ApiException) ex.getCause().getCause();
             return ApiResult.systemError(apiException.getMsg());
+        }
+
+        // 处理权限不足的异常，应用场景：shiro放行了该方法，但是方法却使用了@RequiresPermissions
+        if (ex.getCause() instanceof AuthorizationException) {
+            return new ApiResult().setCode(ApiResultCodeEnum.UN_AUTHORIZED.value).setMsg(ApiResultCodeEnum.UN_AUTHORIZED.text);
         }
 
         log.error("BusinessExceptionHandler:" + ex.getMessage());

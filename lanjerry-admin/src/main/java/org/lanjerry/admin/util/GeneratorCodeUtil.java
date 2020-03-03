@@ -257,7 +257,7 @@ public class GeneratorCodeUtil {
                 result = "测试" + column.getColumnComment();
                 break;
             case "LocalDateTime":
-                result = DateUtil.today();
+                result = DateUtil.date().toString();
                 break;
             case "Integer":
                 result = "1";
@@ -419,13 +419,13 @@ public class GeneratorCodeUtil {
         if (columns.stream().anyMatch(c -> c.getJavaType().equals("LocalDateTime"))) {
             result.add("java.time.LocalDateTime;");
         }
-        if (columns.stream().anyMatch(c -> CollectionUtil.contains(Arrays.asList("String", "Integer"), c.getJavaType()))) {
+        if (columns.stream().anyMatch(c -> c.getJavaType().equals("String"))) {
             result.add("javax.validation.constraints.Size;");
         }
-        if (columns.stream().anyMatch(c -> c.getJavaField().contains("mail"))) {
+        if(columns.stream().anyMatch(c -> c.getJavaField().contains("mail") || c.getJavaField().contains("Mail"))){
             result.add("javax.validation.constraints.Email;");
         }
-        if (columns.stream().anyMatch(c -> c.getJavaField().contains("phone"))) {
+        if(columns.stream().anyMatch(c -> c.getJavaField().contains("phone") || c.getJavaField().contains("Phone"))){
             result.add("javax.validation.constraints.Pattern;");
         }
         if (columns.stream().anyMatch(c -> c.getRequiredFlag() && c.getJavaType().equals("String"))) {
