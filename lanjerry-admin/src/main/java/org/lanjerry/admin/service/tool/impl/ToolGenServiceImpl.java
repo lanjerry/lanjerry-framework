@@ -270,8 +270,6 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
             result.setPermissionParentId(0);
             result.setPermissionSort(99);
         }
-        // 设置
-
         // 初始化vm模板
         GeneratorCodeUtil.initVelocity();
         return result;
