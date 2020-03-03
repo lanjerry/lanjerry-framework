@@ -1,0 +1,22 @@
+INSERT INTO `sys_permission`(`name`, `parent_id`, `type`, `path`, `component`, `permission`, `icon`, `sort`, `created_time`)
+VALUES ('${functionName}管理', ${permissionParentId}, 1, '${businessName}', '${moduleName}/${businessName}', '${permissionPrefix}', '#', ${permissionSort}, '${datetime}');
+
+-- 父菜单ID
+SELECT @parentId := LAST_INSERT_ID();
+
+-- 权限 SQL
+#set($sort = 10)
+INSERT INTO `sys_permission`(`name`, `parent_id`, `type`, `path`, `component`, `permission`, `icon`, `sort`, `created_time`)
+VALUES ('分页查询${functionName}列表', @parentId, 2, NULL, NULL, '${permissionPrefix}:page', '#', ${sort}, '${datetime}');
+#set($sort = $sort + 10)
+
+INSERT INTO `sys_permission`(`name`, `parent_id`, `type`, `path`, `component`, `permission`, `icon`, `sort`, `created_time`)
+VALUES ('新增${functionName}', @parentId, 2, NULL, NULL, '${permissionPrefix}:save', '#', ${sort}, '${datetime}');
+#set($sort = $sort + 10)
+
+INSERT INTO `sys_permission`(`name`, `parent_id`, `type`, `path`, `component`, `permission`, `icon`, `sort`, `created_time`)
+VALUES ('更新${functionName}', @parentId, 2, NULL, NULL, '${permissionPrefix}:update', '#', ${sort}, '${datetime}');
+#set($sort = $sort + 10)
+
+INSERT INTO `sys_permission`(`name`, `parent_id`, `type`, `path`, `component`, `permission`, `icon`, `sort`, `created_time`)
+VALUES ('删除${functionName}', @parentId, 2, NULL, NULL, '${permissionPrefix}:remove', '#', ${sort}, '${datetime}');

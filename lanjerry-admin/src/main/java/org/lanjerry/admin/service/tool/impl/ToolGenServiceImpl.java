@@ -21,6 +21,7 @@ import org.lanjerry.admin.dto.tool.ToolGenPageDTO;
 import org.lanjerry.admin.dto.tool.ToolGenUpdateDTO;
 import org.lanjerry.admin.mapper.tool.ToolGenDetailMapper;
 import org.lanjerry.admin.mapper.tool.ToolGenMapper;
+import org.lanjerry.admin.service.sys.SysPermissionService;
 import org.lanjerry.admin.service.tool.ToolGenDetailService;
 import org.lanjerry.admin.service.tool.ToolGenService;
 import org.lanjerry.admin.util.AdminConsts;
@@ -33,6 +34,7 @@ import org.lanjerry.admin.vo.tool.ToolGenDbTableVO;
 import org.lanjerry.admin.vo.tool.ToolGenInfoVO;
 import org.lanjerry.admin.vo.tool.ToolGenPageVO;
 import org.lanjerry.admin.vo.tool.ToolGenResultVO;
+import org.lanjerry.common.core.entity.sys.SysPermission;
 import org.lanjerry.common.core.entity.tool.ToolGen;
 import org.lanjerry.common.core.entity.tool.ToolGenDetail;
 import org.lanjerry.common.core.util.ApiAssert;
@@ -64,6 +66,9 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
 
     @Autowired
     private ToolGenDetailService genDetailService;
+
+    @Autowired
+    private SysPermissionService permissionService;
 
     @Override
     public IPage<ToolGenPageVO> pageGens(ToolGenPageDTO dto) {
@@ -220,7 +225,7 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
      * @since 2020/2/23 1:12
      * @param id 表编号
      */
-    private ToolGenCodeVO initGenCode(int id){
+    private ToolGenCodeVO initGenCode(int id) {
         ToolGen gen = this.getById(id);
         ApiAssert.notNull(gen, String.format("表编号：%s不存在", id));
         // 设置基本信息
@@ -255,6 +260,17 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
             c.setColumnExample(GeneratorCodeUtil.getColumnExample(c));
         });
         result.setColumns(columns);
+        // 设置父级权限编号和权限排序
+        SysPermission permission = permissionService.getOne(Wrappers.<SysPermission>lambdaQuery().select(SysPermission::getId).eq(SysPermission::getPath, gen.getModuleName()).last("limit 1"));
+        if (permission != null) {
+            result.setPermissionParentId(permission.getId());
+            SysPermission lastPermission = permissionService.getOne(Wrappers.<SysPermission>lambdaQuery().select(SysPermission::getSort).eq(SysPermission::getParentId, permission.getId()).last("order by sort desc limit 1"));
+            result.setPermissionSort(lastPermission != null ? lastPermission.getSort() + 10 : 99);
+        } else {
+            result.setPermissionParentId(0);
+            result.setPermissionSort(99);
+        }
+        // 设置
 
         // 初始化vm模板
         GeneratorCodeUtil.initVelocity();

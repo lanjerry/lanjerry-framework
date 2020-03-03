@@ -70,6 +70,8 @@ public class GeneratorCodeUtil {
         velocityContext.put("date", DateUtil.today());
         velocityContext.put("datetime", DateUtil.now());
         velocityContext.put("permissionPrefix", String.format("%s:%s", gen.getModuleName(), gen.getBusinessName()));
+        velocityContext.put("permissionParentId", gen.getPermissionParentId());
+        velocityContext.put("permissionSort", gen.getPermissionSort());
         velocityContext.put("columns", gen.getColumns());
 
         // 列表字段
@@ -128,6 +130,7 @@ public class GeneratorCodeUtil {
         result.add("vm/java/serviceImpl.java.vm");
         result.add("vm/java/controller.java.vm");
         result.add("vm/xml/mapper.xml.vm");
+        result.add("vm/sql/sql.vm");
         if (CollectionUtil.isNotEmpty(tplFunctions)) {
             if (tplFunctions.indexOf("pageList") != -1) {
                 result.add("vm/java/pageDTO.java.vm");

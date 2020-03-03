@@ -88,4 +88,14 @@ public class ToolGenCodeVO extends BaseEntity {
      * 表字段集
      */
     private List<ToolGenCodeColumnVO> columns;
+
+    /**
+     * 父级权限编号
+     */
+    private int permissionParentId;
+
+    /**
+     * 权限顺序
+     */
+    private int permissionSort;
 }
