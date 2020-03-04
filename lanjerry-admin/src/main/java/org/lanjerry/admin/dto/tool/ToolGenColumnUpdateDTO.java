@@ -38,42 +38,48 @@ public class ToolGenColumnUpdateDTO extends BaseEntity {
     /**
      * 是否必填 0.否 1.是
      */
-    @ApiModelProperty(value = "是否必填 0.否 1.是", example = "是", position = 70)
+    @ApiModelProperty(value = "是否必填 0.否 1.是", example = "是", position = 30)
     private Boolean requiredFlag;
 
     /**
      * 是否唯一 0.否 1.是
      */
-    @ApiModelProperty(value = "是否唯一 0.否 1.是", example = "是", position = 70)
+    @ApiModelProperty(value = "是否唯一 0.否 1.是", example = "是", position = 40)
     private Boolean onlyFlag;
-
-    /**
-     * 是否表单字段 0.否 1.是
-     */
-    @ApiModelProperty(value = "是否表单字段 0.否 1.是", example = "是", position = 80)
-    private Boolean formFlag;
 
     /**
      * 是否列表字段 0.否 1.是
      */
-    @ApiModelProperty(value = "是否列表字段 0.否 1.是", example = "是", position = 90)
+    @ApiModelProperty(value = "是否列表字段 0.否 1.是", example = "是", position = 50)
     private Boolean listFlag;
+
+    /**
+     * 是否表单字段 0.否 1.是
+     */
+    @ApiModelProperty(value = "是否表单字段 0.否 1.是", example = "是", position = 60)
+    private Boolean formFlag;
+
+    /**
+     * 表单显示类型
+     */
+    @ApiModelProperty(value = "表单显示类型", example = "input", position = 70)
+    private String formHtmlType;
 
     /**
      * 是否查询字段 0.否 1.是
      */
-    @ApiModelProperty(value = "是否查询字段 0.否 1.是", example = "是", position = 100)
+    @ApiModelProperty(value = "是否查询字段 0.否 1.是", example = "是", position = 80)
     private Boolean queryFlag;
 
     /**
      * 查询方式
      */
-    @ApiModelProperty(value = "查询方式", example = "eq", position = 110)
+    @ApiModelProperty(value = "查询方式", example = "eq", position = 90)
     private String queryType;
 
     /**
-     * 显示类型
+     * 查询显示类型
      */
-    @ApiModelProperty(value = "显示类型", example = "input", position = 120)
-    private String htmlType;
+    @ApiModelProperty(value = "查询显示类型", example = "input", position = 100)
+    private String queryHtmlType;
 }

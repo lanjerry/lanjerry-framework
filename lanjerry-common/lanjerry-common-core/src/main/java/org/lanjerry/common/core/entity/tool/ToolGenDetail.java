@@ -83,14 +83,19 @@ public class ToolGenDetail extends BaseEntity {
     private Boolean onlyFlag;
 
     /**
+     * 是否列表字段 0.否 1.是
+     */
+    private Boolean listFlag;
+
+    /**
      * 是否表单字段 0.否 1.是
      */
     private Boolean formFlag;
 
     /**
-     * 是否列表字段 0.否 1.是
+     * 表单显示类型
      */
-    private Boolean listFlag;
+    private String formHtmlType;
 
     /**
      * 是否查询字段 0.否 1.是
@@ -103,9 +108,9 @@ public class ToolGenDetail extends BaseEntity {
     private String queryType;
 
     /**
-     * 显示类型
+     * 查询显示类型
      */
-    private String htmlType;
+    private String queryHtmlType;
 
     /**
      * 创建人id

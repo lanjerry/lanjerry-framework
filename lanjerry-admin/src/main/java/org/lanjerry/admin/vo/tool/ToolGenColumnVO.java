@@ -63,14 +63,8 @@ public class ToolGenColumnVO extends BaseEntity {
     /**
      * 是否唯一 0.否 1.是
      */
-    @ApiModelProperty(value = "是否唯一 0.否 1.是", example = "是", position = 70)
+    @ApiModelProperty(value = "是否唯一 0.否 1.是", example = "是", position = 80)
     private Boolean onlyFlag;
-
-    /**
-     * 是否表单字段 0.否 1.是
-     */
-    @ApiModelProperty(value = "是否表单字段 0.否 1.是", example = "是", position = 80)
-    private Boolean formFlag;
 
     /**
      * 是否列表字段 0.否 1.是
@@ -79,20 +73,32 @@ public class ToolGenColumnVO extends BaseEntity {
     private Boolean listFlag;
 
     /**
+     * 是否表单字段 0.否 1.是
+     */
+    @ApiModelProperty(value = "是否表单字段 0.否 1.是", example = "是", position = 100)
+    private Boolean formFlag;
+
+    /**
+     * 表单显示类型
+     */
+    @ApiModelProperty(value = "表单显示类型", example = "input", position = 110)
+    private String formHtmlType;
+
+    /**
      * 是否查询字段 0.否 1.是
      */
-    @ApiModelProperty(value = "是否查询字段 0.否 1.是", example = "是", position = 100)
+    @ApiModelProperty(value = "是否查询字段 0.否 1.是", example = "是", position = 120)
     private Boolean queryFlag;
 
     /**
      * 查询方式
      */
-    @ApiModelProperty(value = "查询方式", example = "eq", position = 110)
+    @ApiModelProperty(value = "查询方式", example = "eq", position = 130)
     private String queryType;
 
     /**
-     * 显示类型
+     * 查询显示类型
      */
-    @ApiModelProperty(value = "显示类型", example = "input", position = 120)
-    private String htmlType;
+    @ApiModelProperty(value = "查询显示类型", example = "input", position = 140)
+    private String queryHtmlType;
 }

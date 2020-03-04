@@ -1,19 +1,36 @@
+#set($dateRangeFlag = false)
 <template>
   <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="68px">
 #foreach ($column in $queryColumns)
     <el-form-item label="$column.columnComment" prop="$column.javaField">
-#if($column.htmlType=="input")
+#if($column.queryHtmlType=="input")
       <el-input
         v-model="queryParams.$column.javaField"
         placeholder="请输入$column.columnComment"
+#if($column.javaType=="String")
+        maxlength="$column.columnLength"
+#end
         clearable
         size="small"
         style="width: 200px"
         @keyup.enter.native="handleQuery"
       />
 #end
-#if($column.htmlType=="datetime")
+#if($column.queryHtmlType=="select")
+      <el-select
+        v-model="queryParams.$column.javaField"
+        placeholder="请选择$column.columnComment"
+        clearable
+        size="small"
+        style="width: 200px"
+        @change="handleQuery"
+      >
+        <el-option label="请选择$column.columnComment" :value="null"></el-option>
+      </el-select>
+#end
+#if($column.queryHtmlType=="datetime")
 #if($column.queryType=="between")
+#set($dateRangeFlag = true)
       <el-date-picker
         v-model="dateRange"
         size="small"
@@ -25,6 +42,15 @@
         end-placeholder="结束日期"
       ></el-date-picker>
 #else
+      <el-date-picker
+        v-model="queryParams.$column.javaField"
+        type="date"
+        placeholder="请选择$column.columnComment"
+        clearable
+        size="small"
+        style="width: 200px"
+      >
+      </el-date-picker>
 #end
 #end
     </el-form-item>
@@ -45,8 +71,14 @@
         queryParams: {
 #foreach ($column in $queryColumns)
           $column.javaField: undefined#if($velocityCount != $queryColumns.size()),#end
+
 #end
-        }
+        }#if($dateRangeFlag),#end
+
+#if($dateRangeFlag)
+        // 日期范围
+        dateRange: []
+#end
       }
     },
     methods: {
@@ -56,6 +88,9 @@
       },
       // 重置按钮操作
       resetQuery() {
+#if($dateRangeFlag)
+        this.dateRange = []
+#end
         this.resetForm('queryForm')
         this.$emit('handleQuery')
       }

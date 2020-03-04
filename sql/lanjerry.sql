@@ -243,7 +243,7 @@ CREATE TABLE `tool_gen_detail`  (
   `list_flag` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否列表字段 0.否 1.是',
   `query_flag` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否查询字段 0.否 1.是',
   `query_type` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '查询方式',
-  `html_type` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '显示类型',
+  `html_type` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '查询显示类型',
   `creator_id` int(11) NULL DEFAULT NULL COMMENT '创建人id',
   `creator_name` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '创建人',
   `created_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',

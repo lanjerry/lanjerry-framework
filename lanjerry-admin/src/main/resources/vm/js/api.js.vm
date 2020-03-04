@@ -1,5 +1,6 @@
 import request from '@/utils/request'
 
+#if(${tplFunctions.indexOf("pageList")}!=-1)
 // 分页查询${functionName}列表
 export function page${BusinessName}s(query) {
   return request({
@@ -8,7 +9,9 @@ export function page${BusinessName}s(query) {
     params: query
   })
 }
+#end
 
+#if(${tplFunctions.indexOf("update")}!=-1)
 // 根据${pkComment}查询${functionName}信息
 export function get${BusinessName}(${pkJavaField}) {
   return request({
@@ -16,7 +19,9 @@ export function get${BusinessName}(${pkJavaField}) {
     method: 'get'
   })
 }
+#end
 
+#if(${tplFunctions.indexOf("add")}!=-1)
 // 新增${functionName}
 export function save${BusinessName}(data) {
   return request({
@@ -25,7 +30,9 @@ export function save${BusinessName}(data) {
     data: data
   })
 }
+#end
 
+#if(${tplFunctions.indexOf("update")}!=-1)
 // 更新${functionName}
 export function update${BusinessName}(${pkJavaField}, data) {
   return request({
@@ -34,7 +41,9 @@ export function update${BusinessName}(${pkJavaField}, data) {
     data: data
   })
 }
+#end
 
+#if(${tplFunctions.indexOf("delete")}!=-1)
 // 删除${functionName}
 export function remove${BusinessName}s(${pkJavaField}s) {
   return request({
@@ -42,3 +51,4 @@ export function remove${BusinessName}s(${pkJavaField}s) {
     method: 'delete'
   })
 }
+#end
