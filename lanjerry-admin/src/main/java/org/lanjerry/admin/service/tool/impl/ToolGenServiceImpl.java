@@ -48,6 +48,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 
 /**
@@ -100,6 +101,7 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
     public void updateGen(int id, ToolGenUpdateDTO dto) {
         ToolGen oriGen = this.getById(id);
         ApiAssert.notNull(oriGen, String.format("表编号：%s不存在", id));
+        ApiAssert.isTrue(dto.getInfo().getTplFunctions().stream().filter(c -> CollectionUtil.contains(Arrays.asList("pageList", "list"), c)).count() <= 1, "模板功能的分页列表和列表只能选择一个");
         ToolGen gen = BeanCopyUtil.beanCopy(dto.getInfo(), ToolGen.class);
         gen.setTplFunction(String.join(",", dto.getInfo().getTplFunctions()));
         gen.setId(id);
