@@ -2,7 +2,7 @@ package org.lanjerry.admin.controller.tool;
 
 
 import java.io.IOException;
-import java.util.Map;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -14,6 +14,7 @@ import org.lanjerry.admin.dto.tool.ToolGenUpdateDTO;
 import org.lanjerry.admin.service.tool.ToolGenService;
 import org.lanjerry.admin.vo.tool.ToolGenDbTableVO;
 import org.lanjerry.admin.vo.tool.ToolGenPageVO;
+import org.lanjerry.admin.vo.tool.ToolGenPreviewVO;
 import org.lanjerry.admin.vo.tool.ToolGenResultVO;
 import org.lanjerry.common.core.bean.ApiResult;
 import org.lanjerry.common.log.annotation.SysLog;
@@ -97,7 +98,7 @@ public class ToolGenController {
     @GetMapping("/preview/{id}")
     @RequiresPermissions("tool:gen:preview")
     @ApiOperation(value = "预览代码生成", position = 70)
-    public ApiResult<Map<String, String>> preview(@PathVariable("id") @ApiParam(value = "表编号", required = true) Integer id) {
+    public ApiResult<List<ToolGenPreviewVO>> preview(@PathVariable("id") @ApiParam(value = "表编号", required = true) Integer id) {
         return ApiResult.success(genService.preview(id));
     }
 

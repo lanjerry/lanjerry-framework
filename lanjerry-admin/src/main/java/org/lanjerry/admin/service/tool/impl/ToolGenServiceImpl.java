@@ -3,10 +3,9 @@ package org.lanjerry.admin.service.tool.impl;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -33,6 +32,7 @@ import org.lanjerry.admin.vo.tool.ToolGenDbTableColumnVO;
 import org.lanjerry.admin.vo.tool.ToolGenDbTableVO;
 import org.lanjerry.admin.vo.tool.ToolGenInfoVO;
 import org.lanjerry.admin.vo.tool.ToolGenPageVO;
+import org.lanjerry.admin.vo.tool.ToolGenPreviewVO;
 import org.lanjerry.admin.vo.tool.ToolGenResultVO;
 import org.lanjerry.common.core.entity.sys.SysPermission;
 import org.lanjerry.common.core.entity.tool.ToolGen;
@@ -165,7 +165,7 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
     }
 
     @Override
-    public Map<String, String> preview(int id) {
+    public List<ToolGenPreviewVO> preview(int id) {
         ToolGenCodeVO genCode = this.initGenCode(id);
 
         // 设置模板信息
@@ -175,12 +175,15 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
         List<String> templates = GeneratorCodeUtil.getTemplates(genCode.getTplFunctions());
 
         // 渲染模板
-        Map<String, String> result = new HashMap<>();
+        List<ToolGenPreviewVO> result = new ArrayList<>();
         for (String template : templates) {
             StringWriter sw = new StringWriter();
             Template tpl = Velocity.getTemplate(template, "UTF-8");
             tpl.merge(context, sw);
-            result.put(template, sw.toString());
+            ToolGenPreviewVO preview = new ToolGenPreviewVO();
+            preview.setTitle(template);
+            preview.setContent(sw.toString());
+            result.add(preview);
         }
         return result;
     }

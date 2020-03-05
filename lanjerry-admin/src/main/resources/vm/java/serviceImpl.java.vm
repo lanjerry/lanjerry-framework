@@ -9,12 +9,7 @@ import $import
 
 import org.springframework.stereotype.Service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-
-import cn.hutool.core.util.StrUtil;
 
 /**
  * <p>
@@ -26,6 +21,7 @@ import cn.hutool.core.util.StrUtil;
  */
 @Service
 public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${ClassName}> implements ${ClassName}Service {
+#if($!{tplFunctions})
 #if(${tplFunctions.indexOf("pageList")}!=-1)
 
     @Override
@@ -124,5 +120,6 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
             this.removeById(${pkJavaField});
         }
     }
+#end
 #end
 }

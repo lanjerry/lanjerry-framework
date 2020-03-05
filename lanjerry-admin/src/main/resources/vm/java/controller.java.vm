@@ -32,6 +32,7 @@ import lombok.AllArgsConstructor;
 public class ${ClassName}Controller {
 
     private final ${ClassName}Service ${businessName}Service;
+#if($!{tplFunctions})
 #set($position = 0)
 #if(${tplFunctions.indexOf("pageList")}!=-1)
 #set($position = $position + 10)
@@ -97,5 +98,6 @@ public class ${ClassName}Controller {
         ${businessName}Service.remove${BusinessName}s(ids);
         return ApiResult.success();
     }
+#end
 #end
 }

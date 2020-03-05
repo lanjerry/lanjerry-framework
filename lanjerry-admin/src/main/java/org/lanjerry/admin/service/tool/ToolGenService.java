@@ -1,12 +1,13 @@
 package org.lanjerry.admin.service.tool;
 
-import java.util.Map;
+import java.util.List;
 
 import org.lanjerry.admin.dto.tool.ToolGenDbTableDTO;
 import org.lanjerry.admin.dto.tool.ToolGenPageDTO;
 import org.lanjerry.admin.dto.tool.ToolGenUpdateDTO;
 import org.lanjerry.admin.vo.tool.ToolGenDbTableVO;
 import org.lanjerry.admin.vo.tool.ToolGenPageVO;
+import org.lanjerry.admin.vo.tool.ToolGenPreviewVO;
 import org.lanjerry.admin.vo.tool.ToolGenResultVO;
 import org.lanjerry.common.core.entity.tool.ToolGen;
 
@@ -85,11 +86,11 @@ public interface ToolGenService extends IService<ToolGen> {
      * 预览代码生成
      *
      * @author lanjerry
-     * @since 2020/3/2 11:24
+     * @since 2020/3/5 18:23
      * @param id 表编号
-     * @return java.util.Map<java.lang.String,java.lang.String>
+     * @return java.util.List<org.lanjerry.admin.vo.tool.ToolGenPreviewVO>
      */
-    Map<String, String> preview(int id);
+    List<ToolGenPreviewVO> preview(int id);
 
     /**
      * 代码生成

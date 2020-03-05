@@ -127,16 +127,12 @@ public class GeneratorCodeUtil {
     public static List<String> getTemplates(List<String> tplFunctions) {
         List<String> result = new ArrayList<>();
         result.add("vm/java/entity.java.vm");
-        result.add("vm/java/mapper.java.vm");
+        result.add("vm/java/controller.java.vm");
         result.add("vm/java/service.java.vm");
         result.add("vm/java/serviceImpl.java.vm");
-        result.add("vm/java/controller.java.vm");
+        result.add("vm/java/mapper.java.vm");
         result.add("vm/xml/mapper.xml.vm");
         result.add("vm/sql/sql.vm");
-        result.add("vm/js/api.js.vm");
-        result.add("vm/html/searchForm.vue.vm");
-        result.add("vm/html/modifyDialog.vue.vm");
-        result.add("vm/html/index.vue.vm");
         if (CollectionUtil.isNotEmpty(tplFunctions)) {
             if (tplFunctions.indexOf("pageList") != -1) {
                 result.add("vm/java/pageDTO.java.vm");
@@ -161,6 +157,14 @@ public class GeneratorCodeUtil {
             }
             if (tplFunctions.indexOf("update") != -1 && tplFunctions.indexOf("add") == -1) {
                 result.add("vm/java/updateDTO.java.vm");
+            }
+            result.add("vm/js/api.js.vm");
+            result.add("vm/html/index.vue.vm");
+            if (tplFunctions.indexOf("pageList") != -1 || tplFunctions.indexOf("list") != -1) {
+                result.add("vm/html/searchForm.vue.vm");
+            }
+            if (tplFunctions.indexOf("add") != -1 && tplFunctions.indexOf("update") != -1) {
+                result.add("vm/html/modifyDialog.vue.vm");
             }
         }
         return result;
@@ -406,6 +410,8 @@ public class GeneratorCodeUtil {
             result.add(StrUtil.format("{}.util.AdminConsts;", gen.getPackageName()));
             result.add(StrUtil.format("{}.common.core.util.ApiAssert;", gen.getBasePackage()));
             result.add(StrUtil.format("{}.common.core.util.BeanCopyUtil;", gen.getBasePackage()));
+            result.add("com.baomidou.mybatisplus.core.toolkit.Wrappers;");
+            result.add("cn.hutool.core.util.StrUtil;");
             if (gen.getTplFunctions().indexOf("pageList") != -1) {
                 result.add("com.baomidou.mybatisplus.core.metadata.IPage;");
                 result.add("com.baomidou.mybatisplus.extension.plugins.pagination.Page;");

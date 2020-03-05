@@ -1,6 +1,7 @@
 INSERT INTO `sys_permission`(`name`, `parent_id`, `type`, `path`, `component`, `permission`, `icon`, `sort`, `created_time`)
 VALUES ('${functionName}管理', ${permissionParentId}, 1, '${businessName}', '${moduleName}/${businessName}', '${permissionPrefix}', '#', ${permissionSort}, '${datetime}');
 
+#if($!{tplFunctions})
 -- 父菜单ID
 SELECT @parentId := LAST_INSERT_ID();
 
@@ -28,4 +29,5 @@ VALUES ('更新${functionName}', @parentId, 2, NULL, NULL, '${permissionPrefix}:
 #set($sort = $sort + 10)
 INSERT INTO `sys_permission`(`name`, `parent_id`, `type`, `path`, `component`, `permission`, `icon`, `sort`, `created_time`)
 VALUES ('删除${functionName}', @parentId, 2, NULL, NULL, '${permissionPrefix}:remove', '#', ${sort}, '${datetime}');
+#end
 #end

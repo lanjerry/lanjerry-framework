@@ -1,5 +1,6 @@
 import request from '@/utils/request'
 
+#if($!{tplFunctions})
 #if(${tplFunctions.indexOf("pageList")}!=-1)
 // 分页查询${functionName}列表
 export function page${BusinessName}s(query) {
@@ -51,4 +52,5 @@ export function remove${BusinessName}s(${pkJavaField}s) {
     method: 'delete'
   })
 }
+#end
 #end
