@@ -1,0 +1,240 @@
+<template>
+  <div class="app-container">
+#if(${tplFunctions.indexOf("pageList")}!=-1||${tplFunctions.indexOf("list")}!=-1)
+    <!-- 查询条件 -->
+    <${moduleName}-${businessName}-search-form ref="searchForm" @handleQuery="handleQuery"/>
+#end
+
+#if(${tplFunctions.indexOf("add")}!=-1||${tplFunctions.indexOf("update")}!=-1||${tplFunctions.indexOf("delete")}!=-1)
+    <!-- 操作栏 -->
+    <el-row :gutter="10" class="mb8">
+#if(${tplFunctions.indexOf("add")}!=-1)
+      <el-col :span="1.5">
+        <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAdd" v-hasPermi="${businessName}.save">新增</el-button>
+      </el-col>
+#end
+#if(${tplFunctions.indexOf("update")}!=-1)
+      <el-col :span="1.5">
+        <el-button type="success" icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate" v-hasPermi="${businessName}.update">修改</el-button>
+      </el-col>
+#end
+#if(${tplFunctions.indexOf("delete")}!=-1)
+      <el-col :span="1.5">
+        <el-button type="danger" icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete" v-hasPermi="${businessName}.remove">删除</el-button>
+      </el-col>
+#end
+    </el-row>
+#end
+
+    <!-- 表格 -->
+#if(${tplFunctions.indexOf("pageList")}!=-1||${tplFunctions.indexOf("list")}!=-1)
+    <el-table v-loading="loading" :data="list" #if(${tplFunctions.indexOf("update")}!=-1||${tplFunctions.indexOf("delete")}!=-1)@selection-change="handleSelectionChange"#end>
+#if(${tplFunctions.indexOf("update")}!=-1||${tplFunctions.indexOf("delete")}!=-1)
+      <el-table-column type="selection"/>
+#end
+#foreach ($column in $listColumns)
+      <el-table-column prop="$column.javaField" label="$column.columnComment" #if($column.javaType=='LocalDateTime')width="155"#end />
+#end
+#if(${tplFunctions.indexOf("update")}!=-1||${tplFunctions.indexOf("delete")}!=-1)
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <template slot-scope="scope">
+#if(${tplFunctions.indexOf("update")}!=-1)
+          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)" v-hasPermi="${businessName}.update">修改</el-button>
+#end
+#if(${tplFunctions.indexOf("delete")}!=-1)
+          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)" v-hasPermi="${businessName}.remove">删除</el-button>
+#end
+        </template>
+      </el-table-column>
+#end
+    </el-table>
+#end
+#if(${tplFunctions.indexOf("pageList")}!=-1)
+    <common-pagination v-show="total>0" :total="total" :page.sync="page" :size.sync="size" @pagination="fetchData"/>
+#end
+
+#if(${tplFunctions.indexOf("add")}!=-1||${tplFunctions.indexOf("update")}!=-1)
+    <!-- 添加或修改${functionName}弹出层 -->
+    <${moduleName}-${businessName}-modify-dialog #if(${tplFunctions.indexOf("update")}!=-1):id="id"#end :title="title" v-model="showModifyDialog" @success="fetchData"/>
+#end
+  </div>
+</template>
+
+<script>
+#if(${tplFunctions.indexOf("pageList")}!=-1||${tplFunctions.indexOf("list")}!=-1)
+  import mixin from '@/mixin'
+#end
+#if(${tplFunctions.indexOf("pageList")}!=-1&&${tplFunctions.indexOf("delete")}!=-1)
+  import { page${BusinessName}s, remove${BusinessName}s } from '@/api/${moduleName}/${businessName}'
+#end
+#if(${tplFunctions.indexOf("list")}!=-1&&${tplFunctions.indexOf("delete")}!=-1)
+  import { list${BusinessName}s, remove${BusinessName}s } from '@/api/${moduleName}/${businessName}'
+#end
+#if(${tplFunctions.indexOf("pageList")}!=-1&&${tplFunctions.indexOf("delete")}==-1)
+  import { page${BusinessName}s } from '@/api/${moduleName}/${businessName}'
+#end
+#if(${tplFunctions.indexOf("list")}!=-1&&${tplFunctions.indexOf("delete")}==-1)
+  import { list${BusinessName}s } from '@/api/${moduleName}/${businessName}'
+#end
+#if(${tplFunctions.indexOf("pageList")}!=-1||${tplFunctions.indexOf("list")}!=-1)
+  import ${ClassName}SearchForm from '@/components/${moduleName}/${businessName}/${ClassName}SearchForm'
+#end
+#if(${tplFunctions.indexOf("add")}!=-1||${tplFunctions.indexOf("update")}!=-1)
+  import ${ClassName}ModifyDialog from '@/components/${moduleName}/${businessName}/${ClassName}ModifyDialog'
+#end
+
+  export default {
+    name: '${ClassName}',
+#if((${tplFunctions.indexOf("pageList")}!=-1||${tplFunctions.indexOf("list")}!=-1)&&(${tplFunctions.indexOf("add")}!=-1||${tplFunctions.indexOf("update")}!=-1))
+    components: { ${ClassName}SearchForm, ${ClassName}ModifyDialog },
+#end
+#if((${tplFunctions.indexOf("pageList")}!=-1||${tplFunctions.indexOf("list")}!=-1)&&(${tplFunctions.indexOf("add")}==-1&&${tplFunctions.indexOf("update")}==-1))
+    components: { ${ClassName}SearchForm },
+#end
+#if(${tplFunctions.indexOf("pageList")}!=-1||${tplFunctions.indexOf("list")}!=-1)
+    mixins: [
+      mixin.search,
+#if(${tplFunctions.indexOf("pageList")}!=-1)
+      mixin.pager
+#end
+    ],
+#end
+    data() {
+      return {
+        // 遮罩层
+        loading: false,
+#if(${tplFunctions.indexOf("update")}!=-1||${tplFunctions.indexOf("delete")}!=-1)
+        // 选中数组
+        ${pkJavaField}s: [],
+#end
+#if(${tplFunctions.indexOf("update")}!=-1)
+        // 非单个禁用
+        single: true,
+#end
+#if(${tplFunctions.indexOf("delete")}!=-1)
+        // 非多个禁用
+        multiple: true,
+#end
+#if(${tplFunctions.indexOf("add")}!=-1||${tplFunctions.indexOf("update")}!=-1||${tplFunctions.indexOf("delete")}!=-1)
+        // 权限标识
+        ${businessName}: {
+#if(${tplFunctions.indexOf("add")}!=-1)
+          save: ['${permissionPrefix}:save'],
+#end
+#if(${tplFunctions.indexOf("update")}!=-1)
+          update: ['${permissionPrefix}:update'],
+#end
+#if(${tplFunctions.indexOf("delete")}!=-1)
+          remove: ['${permissionPrefix}:remove']
+#end
+        },
+#end
+#if(${tplFunctions.indexOf("pageList")}!=-1||${tplFunctions.indexOf("list")}!=-1)
+        // 表格数据
+        list: [],
+#end
+#if(${tplFunctions.indexOf("update")}!=-1)
+        // ${pkComment}
+        ${pkJavaField}: '',
+#end
+#if(${tplFunctions.indexOf("add")}!=-1||${tplFunctions.indexOf("update")}!=-1)
+#if(${tplFunctions.indexOf("add")}!=-1&&${tplFunctions.indexOf("update")}!=-1)
+#set($dialogNote = "新增或者修改")
+#elseif(${tplFunctions.indexOf("add")}!=-1)
+#set($dialogNote = "新增")
+#else
+#set($dialogNote = "修改")
+#end
+        // 弹出层标题
+        title: '',
+        // 是否显示$dialogNote的弹出层
+        showModifyDialog: false
+#end
+      }
+    },
+#if(${tplFunctions.indexOf("pageList")}!=-1||${tplFunctions.indexOf("list")}!=-1)
+    mounted() {
+      this.fetchData()
+    },
+#end
+    methods: {
+#if(${tplFunctions.indexOf("pageList")}!=-1||${tplFunctions.indexOf("list")}!=-1)
+#if(${tplFunctions.indexOf("pageList")}!=-1)
+#set($pageListNote = "分页")
+#end
+      // $pageListNote查询${functionName}列表
+      fetchData() {
+        this.loading = true
+#if(${tplFunctions.indexOf("pageList")}!=-1)
+        const { page: pageNum, size: pageSize } = this
+        const params = Object.assign(this.$refs.searchForm.queryParams, { pageNum, pageSize })
+#else
+        const params = this.$refs.searchForm.queryParams)
+#end
+        page${BusinessName}s(params).then(res => {
+#if(${tplFunctions.indexOf("pageList")}!=-1)
+          this.list = res.data.records
+          this.total = res.data.total
+#else
+          this.list = res.data
+#end
+        }).catch(() => {
+          this.list = []
+#if(${tplFunctions.indexOf("pageList")}!=-1)
+          this.total = 0
+#end
+        }).then(() => {
+          this.loading = false
+        })
+      },
+#end
+#if(${tplFunctions.indexOf("update")}!=-1||${tplFunctions.indexOf("delete")}!=-1)
+      // 多选框选中数据
+      handleSelectionChange(selection) {
+        this.ids = selection.map(item => item.id)
+#if(${tplFunctions.indexOf("update")}!=-1)
+        this.single = selection.length != 1
+#end
+#if(${tplFunctions.indexOf("delete")}!=-1)
+        this.multiple = !selection.length
+#end
+      },
+#end
+#if(${tplFunctions.indexOf("delete")}!=-1)
+      // 新增按钮操作
+      handleAdd() {
+#if(${tplFunctions.indexOf("update")}!=-1)
+        this.id = ''
+#end
+        this.showModifyDialog = true
+        this.title = '添加${functionName}'
+      },
+#end
+#if(${tplFunctions.indexOf("update")}!=-1)
+      // 修改按钮操作
+      handleUpdate(row) {
+        this.id = row.id || (this.ids ? this.ids[0] : '')
+        this.showModifyDialog = true
+        this.title = '修改${functionName}'
+      },
+#end
+#if(${tplFunctions.indexOf("update")}!=-1)
+      // 删除按钮操作
+      handleDelete(row) {
+        const ${pkJavaField}s = row.${pkJavaField} || this.${pkJavaField}s
+        this.$confirm('是否确认删除${pkComment}为"' + ${pkJavaField}s + '"的数据项?', '警告', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(function() {
+          return remove${BusinessName}s(${pkJavaField}s)
+        }).then(() => {
+          this.msgSuccess('删除成功')
+          this.fetchData()
+        }).catch(() => {
+        })
+      }
+#end
+    }
+  }
+</script>

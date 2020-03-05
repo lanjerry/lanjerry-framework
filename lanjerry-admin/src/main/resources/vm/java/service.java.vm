@@ -7,7 +7,6 @@ package ${packageName}.service.${moduleName};
 import $import
 #end
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -30,6 +29,18 @@ public interface ${ClassName}Service extends IService<${ClassName}> {
      * @return com.baomidou.mybatisplus.core.metadata.IPage<${packageName}.vo.${moduleName}.${ClassName}PageVO>
      */
     IPage<${ClassName}PageVO> page${BusinessName}s(${ClassName}PageDTO dto);
+#end
+#if(${tplFunctions.indexOf("pageList")}!=-1)
+
+    /**
+     * 查询${functionName}列表
+     *
+     * @author ${author}
+     * @since ${datetime}
+     * @param dto ${functionName}列表查询参数
+     * @return java.util.List<${packageName}.vo.${moduleName}.${ClassName}ListVO>
+     */
+    List<${ClassName}ListVO> list${BusinessName}s(${ClassName}ListDTO dto);
 #end
 #if(${tplFunctions.indexOf("update")}!=-1)
 

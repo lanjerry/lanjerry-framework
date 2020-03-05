@@ -55,11 +55,12 @@
       title: {
         type: String,
         required: true
-      },
-      id: {
+      }#if(${tplFunctions.indexOf("update")}!=-1),
+      ${pkJavaField}: {
         type: [String, Number],
         required: true
-      }
+      }#end
+
     },
     data() {
       return {
@@ -112,71 +113,93 @@
         this.resetForm('form')
         return {
 #foreach ($column in $formColumns)
-#set($initValue = '')
+#set($initValue = "''")
 #if($column.javaType=="Integer"||$column.javaType=="BigDecimal")
 #set($initValue = 0)
-#if($column.javaType=="LocalDateTime")
-#set($initValue = null)
+#elseif($column.javaType=="LocalDateTime")
+#set($initValue = "null")
 #end
           $column.javaField: $initValue#if($velocityCount != $formColumns.size()),#end
 
 #end
         }
       },
-            // 打开弹出层
-            open() {
-                this.loading = true
-                listRole().then(res => {
-                    // 初始化系统角色列表
-                    this.roleOptions = res.data
-                if (this.id) {
-                    // 查询系统角色信息
-                    getUser(this.id).then(res => {
-                        this.form = res.data
-                    this.form.sex = res.data.sex.value
-                    this.form.status = res.data.status.value
-                })
-                }
-            }).catch(() => {
-                    this.form = this.initForm()
-            }).then(() => {
-                    this.loading = false
+      // 打开弹出层
+      open() {
+#if(${tplFunctions.indexOf("update")}!=-1)
+        this.loading = true
+          if (this.${pkJavaField}) {
+            // 查询${functionName}信息
+            get${BusinessName}(this.${pkJavaField}).then(res => {
+              this.form = res.data
             })
-            },
-            // 关闭弹出层
-            closed() {
-                this.$refs.form.clearValidate()
-                this.$emit('input', false)
-                this.$emit('closed')
-                this.form = this.initForm()
-            },
-            // 保存按钮操作
-            handleSave() {
-                this.$refs['form'].validate(valid => {
-                if (valid) {
-                this.button.save = true
-                if (this.id) {
-                updateUser(this.id, this.form).then(res => {
+          }).catch(() => {
+            this.form = this.initForm()
+          }).then(() => {
+            this.loading = false
+          })
+#else
+        this.form = this.initForm()
+#end
+      },
+      // 关闭弹出层
+      closed() {
+        this.$refs.form.clearValidate()
+        this.$emit('input', false)
+        this.$emit('closed')
+        this.form = this.initForm()
+      },
+      // 保存按钮操作
+      handleSave() {
+        this.#[[$]]#refs["form"].validate(valid => {
+          if (valid) {
+            this.button.save = true
+#if(${tplFunctions.indexOf("update")}!=-1&&${tplFunctions.indexOf("add")}!=-1)
+            if (this.${pkJavaField}) {
+              update${BusinessName}(this.${pkJavaField}, this.form).then(res => {
                 this.msgSuccess('修改成功')
                 this.closed()
                 this.$emit('success')
-                }).catch(() => {
-                }).then(() => {
+              }).catch(() => {
+              }).then(() => {
                 this.clearButtonStatus()
-                })
-                } else {
-                saveUser(this.form).then(res => {
+              })
+            } else {
+              save${BusinessName}(this.form).then(res => {
                 this.msgSuccess('新增成功')
                 this.closed()
                 this.$emit('success')
-                }).catch(() => {
-                }).then(() => {
+              }).catch(() => {
+              }).then(() => {
                 this.clearButtonStatus()
-                })
-                }
-                }
-                })
+              })
             }
-        }
+#end
+#if(${tplFunctions.indexOf("update")}!=-1&&${tplFunctions.indexOf("add")}==-1)
+            if (this.${pkJavaField}) {
+              update${BusinessName}(this.${pkJavaField}, this.form).then(res => {
+                this.msgSuccess('修改成功')
+                this.closed()
+                this.$emit('success')
+              }).catch(() => {
+              }).then(() => {
+                this.clearButtonStatus()
+              })
+            }
+#end
+#if(${tplFunctions.indexOf("update")}==-1&&${tplFunctions.indexOf("add")}!=-1)
+            save${BusinessName}(this.form).then(res => {
+              this.msgSuccess('新增成功')
+              this.closed()
+              this.$emit('success')
+            }).catch(() => {
+            }).then(() => {
+              this.clearButtonStatus()
+            })
+#end
+          }
+        })
+      }
     }
+  }
 </script>

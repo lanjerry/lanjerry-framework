@@ -11,6 +11,8 @@ import org.apache.velocity.app.Velocity;
 import org.lanjerry.admin.vo.tool.ToolGenCodeColumnVO;
 import org.lanjerry.admin.vo.tool.ToolGenCodeVO;
 
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ArrayUtil;
@@ -102,14 +104,14 @@ public class GeneratorCodeUtil {
         // entity导入包
         velocityContext.put("entityImports", getEntityImports(gen.getColumns()));
 
-        // pageVO导入包
-        velocityContext.put("pageVOImports", getVOorPageDTOImports(listColumns));
+        // selectVO导入包
+        velocityContext.put("selectVOImports", getVOorSelectDTOImports(listColumns));
 
         // infoVO导入包
-        velocityContext.put("infoVOImports", getVOorPageDTOImports(formColumns));
+        velocityContext.put("infoVOImports", getVOorSelectDTOImports(formColumns));
 
-        // pageDTO导入包
-        velocityContext.put("pageDTOImports", getVOorPageDTOImports(queryColumns));
+        // selectDTO导入包
+        velocityContext.put("selectDTOImports", getVOorSelectDTOImports(queryColumns));
 
         // saveOrUpdateDTO导入包
         velocityContext.put("saveOrUpdateDTOImports", getSaveOrUpdateDTOImports(formColumns));
@@ -133,12 +135,20 @@ public class GeneratorCodeUtil {
         result.add("vm/sql/sql.vm");
         result.add("vm/js/api.js.vm");
         result.add("vm/html/searchForm.vue.vm");
+        result.add("vm/html/modifyDialog.vue.vm");
+        result.add("vm/html/index.vue.vm");
         if (CollectionUtil.isNotEmpty(tplFunctions)) {
             if (tplFunctions.indexOf("pageList") != -1) {
                 result.add("vm/java/pageDTO.java.vm");
             }
+            if (tplFunctions.indexOf("list") != -1) {
+                result.add("vm/java/listDTO.java.vm");
+            }
             if (tplFunctions.indexOf("pageList") != -1) {
                 result.add("vm/java/pageVO.java.vm");
+            }
+            if (tplFunctions.indexOf("list") != -1) {
+                result.add("vm/java/listVO.java.vm");
             }
             if (tplFunctions.indexOf("update") != -1) {
                 result.add("vm/java/infoVO.java.vm");
@@ -165,6 +175,7 @@ public class GeneratorCodeUtil {
     public static String getFileName(String template, ToolGenCodeVO gen) {
         String result = "";
         String javaPath = AdminConsts.GEN_PROJECT_PATH + "/" + StrUtil.replace(gen.getPackageName(), ".", "/");
+        String vuePath = "vue";
         switch (template) {
             case "vm/java/controller.java.vm":
                 result = StrUtil.format("{}/controller/{}/{}Controller.java", javaPath, gen.getModuleName(), gen.getClassName());
@@ -181,8 +192,14 @@ public class GeneratorCodeUtil {
             case "vm/java/pageDTO.java.vm":
                 result = StrUtil.format("{}/dto/{}/{}PageDTO.java", javaPath, gen.getModuleName(), gen.getClassName());
                 break;
+            case "vm/java/listDTO.java.vm":
+                result = StrUtil.format("{}/dto/{}/{}ListDTO.java", javaPath, gen.getModuleName(), gen.getClassName());
+                break;
             case "vm/java/pageVO.java.vm":
                 result = StrUtil.format("{}/vo/{}/{}PageVO.java", javaPath, gen.getModuleName(), gen.getClassName());
+                break;
+            case "vm/java/listVO.java.vm":
+                result = StrUtil.format("{}/vo/{}/{}ListVO.java", javaPath, gen.getModuleName(), gen.getClassName());
                 break;
             case "vm/java/saveDTO.java.vm":
                 result = StrUtil.format("{}/dto/{}/{}SaveDTO.java", javaPath, gen.getModuleName(), gen.getClassName());
@@ -201,6 +218,18 @@ public class GeneratorCodeUtil {
                 break;
             case "vm/xml/mapper.xml.vm":
                 result = StrUtil.format("{}/{}/{}Mapper.xml", javaPath, gen.getModuleName(), gen.getClassName());
+                break;
+            case "vm/js/api.js.vm":
+                result = StringUtils.format("{}/api/{}/{}.js", vuePath, gen.getModuleName(), gen.getBusinessName());
+                break;
+            case "vm/html/index.vue.vm":
+                result = StringUtils.format("{}/views/{}/{}.vue", vuePath, gen.getModuleName(), gen.getBusinessName());
+                break;
+            case "vm/html/modifyDialog.vue.vue.vm":
+                result = StringUtils.format("{}/components/{}/{}/{}SearchForm.vue", vuePath, gen.getModuleName(), gen.getBusinessName(), gen.getClassName());
+                break;
+            case "vm/html/searchForm.vue.vue.vm":
+                result = StringUtils.format("{}/components/{}/{}/{}ModifyDialog.vue", vuePath, gen.getModuleName(), gen.getBusinessName(), gen.getClassName());
                 break;
         }
         return result;
@@ -290,7 +319,12 @@ public class GeneratorCodeUtil {
             result.add(StrUtil.format("{}.common.core.bean.ApiResult;", gen.getBasePackage()));
             result.add(StrUtil.format("{}.common.log.annotation.SysLog;", gen.getBasePackage()));
             if (gen.getTplFunctions().indexOf("pageList") != -1) {
+                result.add("com.baomidou.mybatisplus.core.metadata.IPage;");
                 result.add(StrUtil.format("{}.dto.{}.{}PageDTO;", gen.getPackageName(), gen.getModuleName(), gen.getClassName()));
+            }
+            if (gen.getTplFunctions().indexOf("list") != -1) {
+                result.add("java.util.List;");
+                result.add(StrUtil.format("{}.dto.{}.{}ListDTO;", gen.getPackageName(), gen.getModuleName(), gen.getClassName()));
             }
             if (gen.getTplFunctions().indexOf("add") != -1 && gen.getTplFunctions().indexOf("update") != -1) {
                 result.add(StrUtil.format(" {}.dto.{}.{}SaveOrUpdateDTO;", gen.getPackageName(), gen.getModuleName(), gen.getClassName()));
@@ -306,6 +340,9 @@ public class GeneratorCodeUtil {
             }
             if (gen.getTplFunctions().indexOf("pageList") != -1) {
                 result.add(StrUtil.format("{}.vo.{}.{}PageVO;", gen.getPackageName(), gen.getModuleName(), gen.getClassName()));
+            }
+            if (gen.getTplFunctions().indexOf("list") != -1) {
+                result.add(StrUtil.format("{}.vo.{}.{}ListVO;", gen.getPackageName(), gen.getModuleName(), gen.getClassName()));
             }
             if (gen.getTplFunctions().indexOf("delete") != -1) {
                 result.add("org.springframework.web.bind.annotation.DeleteMapping;");
@@ -331,7 +368,12 @@ public class GeneratorCodeUtil {
         result.add(StrUtil.format("{}.common.core.entity.{}.{};", gen.getBasePackage(), gen.getModuleName(), gen.getClassName()));
         if (CollectionUtil.isNotEmpty(gen.getTplFunctions())) {
             if (gen.getTplFunctions().indexOf("pageList") != -1) {
+                result.add("com.baomidou.mybatisplus.core.metadata.IPage;");
                 result.add(StrUtil.format("{}.dto.{}.{}PageDTO;", gen.getPackageName(), gen.getModuleName(), gen.getClassName()));
+            }
+            if (gen.getTplFunctions().indexOf("list") != -1) {
+                result.add("java.util.List;");
+                result.add(StrUtil.format("{}.dto.{}.{}ListDTO;", gen.getPackageName(), gen.getModuleName(), gen.getClassName()));
             }
             if (gen.getTplFunctions().indexOf("add") != -1 && gen.getTplFunctions().indexOf("update") != -1) {
                 result.add(StrUtil.format(" {}.dto.{}.{}SaveOrUpdateDTO;", gen.getPackageName(), gen.getModuleName(), gen.getClassName()));
@@ -347,6 +389,9 @@ public class GeneratorCodeUtil {
             }
             if (gen.getTplFunctions().indexOf("pageList") != -1) {
                 result.add(StrUtil.format("{}.vo.{}.{}PageVO;", gen.getPackageName(), gen.getModuleName(), gen.getClassName()));
+            }
+            if (gen.getTplFunctions().indexOf("list") != -1) {
+                result.add(StrUtil.format("{}.vo.{}.{}ListVO;", gen.getPackageName(), gen.getModuleName(), gen.getClassName()));
             }
         }
         return result;
@@ -362,7 +407,13 @@ public class GeneratorCodeUtil {
             result.add(StrUtil.format("{}.common.core.util.ApiAssert;", gen.getBasePackage()));
             result.add(StrUtil.format("{}.common.core.util.BeanCopyUtil;", gen.getBasePackage()));
             if (gen.getTplFunctions().indexOf("pageList") != -1) {
+                result.add("com.baomidou.mybatisplus.core.metadata.IPage;");
+                result.add("com.baomidou.mybatisplus.extension.plugins.pagination.Page;");
                 result.add(StrUtil.format("{}.dto.{}.{}PageDTO;", gen.getPackageName(), gen.getModuleName(), gen.getClassName()));
+            }
+            if (gen.getTplFunctions().indexOf("list") != -1) {
+                result.add("java.util.List;");
+                result.add(StrUtil.format("{}.dto.{}.{}ListDTO;", gen.getPackageName(), gen.getModuleName(), gen.getClassName()));
             }
             if (gen.getTplFunctions().indexOf("add") != -1 && gen.getTplFunctions().indexOf("update") != -1) {
                 result.add(StrUtil.format(" {}.dto.{}.{}SaveOrUpdateDTO;", gen.getPackageName(), gen.getModuleName(), gen.getClassName()));
@@ -378,6 +429,9 @@ public class GeneratorCodeUtil {
             }
             if (gen.getTplFunctions().indexOf("pageList") != -1) {
                 result.add(StrUtil.format("{}.vo.{}.{}PageVO;", gen.getPackageName(), gen.getModuleName(), gen.getClassName()));
+            }
+            if (gen.getTplFunctions().indexOf("list") != -1) {
+                result.add(StrUtil.format("{}.vo.{}.{}ListVO;", gen.getPackageName(), gen.getModuleName(), gen.getClassName()));
             }
         }
         return result;
@@ -405,7 +459,7 @@ public class GeneratorCodeUtil {
         return result;
     }
 
-    private static List<String> getVOorPageDTOImports(List<ToolGenCodeColumnVO> columns) {
+    private static List<String> getVOorSelectDTOImports(List<ToolGenCodeColumnVO> columns) {
         List<String> result = new ArrayList<>();
         if (columns.stream().anyMatch(c -> c.getJavaType().equals("BigDecimal"))) {
             result.add("java.math.BigDecimal;");
@@ -427,10 +481,10 @@ public class GeneratorCodeUtil {
         if (columns.stream().anyMatch(c -> c.getJavaType().equals("String"))) {
             result.add("javax.validation.constraints.Size;");
         }
-        if(columns.stream().anyMatch(c -> c.getJavaField().contains("mail") || c.getJavaField().contains("Mail"))){
+        if (columns.stream().anyMatch(c -> c.getJavaField().contains("mail") || c.getJavaField().contains("Mail"))) {
             result.add("javax.validation.constraints.Email;");
         }
-        if(columns.stream().anyMatch(c -> c.getJavaField().contains("phone") || c.getJavaField().contains("Phone"))){
+        if (columns.stream().anyMatch(c -> c.getJavaField().contains("phone") || c.getJavaField().contains("Phone"))) {
             result.add("javax.validation.constraints.Pattern;");
         }
         if (columns.stream().anyMatch(c -> c.getRequiredFlag() && c.getJavaType().equals("String"))) {

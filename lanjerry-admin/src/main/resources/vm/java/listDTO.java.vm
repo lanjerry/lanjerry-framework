@@ -4,7 +4,7 @@ package ${packageName}.dto.${moduleName};
 import $import
 #end
 
-import ${basePackage}.common.core.bean.SplitPage;
+import ${basePackage}.common.core.bean.BaseEntity;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * ${functionName}分页查询DTO
+ * ${functionName}查询DTO
  * </p>
  *
  * @author ${author}
@@ -20,7 +20,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ${ClassName}PageDTO extends SplitPage {
+public class ${ClassName}ListDTO extends BaseEntity {
 #set($position = 0)
 #foreach ($column in $queryColumns)
 #set($position = $position + 10)
