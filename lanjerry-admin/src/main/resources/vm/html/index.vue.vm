@@ -54,7 +54,14 @@
 #end
 
 #if(${tplFunctions.indexOf("add")}!=-1||${tplFunctions.indexOf("update")}!=-1)
-    <!-- 添加或修改${functionName}弹出层 -->
+#if(${tplFunctions.indexOf("add")}!=-1&&${tplFunctions.indexOf("update")}!=-1)
+#set($dialogNote = "新增或者修改")
+#elseif(${tplFunctions.indexOf("add")}!=-1)
+#set($dialogNote = "新增")
+#else
+#set($dialogNote = "修改")
+#end
+    <!-- $dialogNote${functionName}弹出层 -->
     <${moduleName}-${businessName}-modify-dialog #if(${tplFunctions.indexOf("update")}!=-1):id="id"#end :title="title" v-model="showModifyDialog" @success="fetchData"/>
 #end
   </div>
@@ -159,6 +166,7 @@
 #end
     methods: {
 #if(${tplFunctions.indexOf("pageList")}!=-1||${tplFunctions.indexOf("list")}!=-1)
+#set($pageListNote = "")
 #if(${tplFunctions.indexOf("pageList")}!=-1)
 #set($pageListNote = "分页")
 #end
@@ -169,13 +177,14 @@
         const { page: pageNum, size: pageSize } = this
         const params = Object.assign(this.$refs.searchForm.queryParams, { pageNum, pageSize })
 #else
-        const params = this.$refs.searchForm.queryParams)
+        const params = this.$refs.searchForm.queryParams
 #end
-        page${BusinessName}s(params).then(res => {
 #if(${tplFunctions.indexOf("pageList")}!=-1)
+        page${BusinessName}s(params).then(res => {
           this.list = res.data.records
           this.total = res.data.total
 #else
+        list${BusinessName}s(params).then(res => {
           this.list = res.data
 #end
         }).catch(() => {
@@ -200,7 +209,7 @@
 #end
       },
 #end
-#if(${tplFunctions.indexOf("delete")}!=-1)
+#if(${tplFunctions.indexOf("add")}!=-1)
       // 新增按钮操作
       handleAdd() {
 #if(${tplFunctions.indexOf("update")}!=-1)
@@ -218,7 +227,7 @@
         this.title = '修改${functionName}'
       },
 #end
-#if(${tplFunctions.indexOf("update")}!=-1)
+#if(${tplFunctions.indexOf("delete")}!=-1)
       // 删除按钮操作
       handleDelete(row) {
         const ${pkJavaField}s = row.${pkJavaField} || this.${pkJavaField}s

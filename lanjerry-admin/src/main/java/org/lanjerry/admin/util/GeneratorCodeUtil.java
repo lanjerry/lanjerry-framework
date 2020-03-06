@@ -161,7 +161,7 @@ public class GeneratorCodeUtil {
             if (tplFunctions.indexOf("pageList") != -1 || tplFunctions.indexOf("list") != -1) {
                 result.add("vm/html/searchForm.vue.vm");
             }
-            if (tplFunctions.indexOf("add") != -1 && tplFunctions.indexOf("update") != -1) {
+            if (tplFunctions.indexOf("add") != -1 || tplFunctions.indexOf("update") != -1) {
                 result.add("vm/html/modifyDialog.vue.vm");
             }
         }

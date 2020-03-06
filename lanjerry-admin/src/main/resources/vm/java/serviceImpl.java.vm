@@ -53,24 +53,24 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
     @Override
     public List<${ClassName}ListVO> list${BusinessName}s(${ClassName}ListDTO dto) {
         List<${ClassName}> list = this.lambdaQuery().orderByDesc(${ClassName}::get${PkJavaField})
-        #foreach($column in $!{queryColumns})
-            #set($columnQueryType = $column.queryType)
-            #set($columnJavaField = "get"+$column.upperFirstJavaField+"()")
-            #set($columnJudge = "dto."+$columnJavaField+ "!= null")
-            #if($column.javaType=="String")
-                #set($columnJudge ="StrUtil.isNotBlank(dto."+$columnJavaField+")")
-            #end
-            #if($column.queryType=="between"&&$column.javaType=="LocalDateTime")
-                #set($columnTimeStart = "dto.get"+$column.upperFirstJavaField+"Start()")
-                #set($columnTimeEnd = "dto.get"+$column.upperFirstJavaField+"End()")
-                .ge(StrUtil.isNotBlank($columnTimeStart), ${ClassName}::get$column.upperFirstJavaField, $columnTimeStart + AdminConsts.START_TIME)
-        .le(StrUtil.isNotBlank($columnTimeEnd), ${ClassName}::get$column.upperFirstJavaField, $columnTimeEnd + AdminConsts.END_TIME)
-            #else
-                .$columnQueryType($columnJudge, ${ClassName}::get$column.upperFirstJavaField, dto.$columnJavaField)
-            #end
-            #set($columnQueryType = "")
-        #end
-        .list();
+#foreach($column in $!{queryColumns})
+#set($columnQueryType = $column.queryType)
+#set($columnJavaField = "get"+$column.upperFirstJavaField+"()")
+#set($columnJudge = "dto."+$columnJavaField+ "!= null")
+#if($column.javaType=="String")
+#set($columnJudge ="StrUtil.isNotBlank(dto."+$columnJavaField+")")
+#end
+#if($column.queryType=="between"&&$column.javaType=="LocalDateTime")
+#set($columnTimeStart = "dto.get"+$column.upperFirstJavaField+"Start()")
+#set($columnTimeEnd = "dto.get"+$column.upperFirstJavaField+"End()")
+            .ge(StrUtil.isNotBlank($columnTimeStart), ${ClassName}::get$column.upperFirstJavaField, $columnTimeStart + AdminConsts.START_TIME)
+            .le(StrUtil.isNotBlank($columnTimeEnd), ${ClassName}::get$column.upperFirstJavaField, $columnTimeEnd + AdminConsts.END_TIME)
+#else
+            .$columnQueryType($columnJudge, ${ClassName}::get$column.upperFirstJavaField, dto.$columnJavaField)
+#end
+#set($columnQueryType = "")
+#end
+            .list();
         return BeanCopyUtil.listCopy(list, ${ClassName}.class, ${ClassName}ListVO.class);
     }
 #end
