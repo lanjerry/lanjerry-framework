@@ -31,7 +31,7 @@ public interface ${ClassName}Service extends IService<${ClassName}> {
      */
     IPage<${ClassName}PageVO> page${BusinessName}s(${ClassName}PageDTO dto);
 #end
-#if(${tplFunctions.indexOf("pageList")}!=-1)
+#if(${tplFunctions.indexOf("list")}!=-1)
 
     /**
      * 查询${functionName}列表

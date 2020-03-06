@@ -26,7 +26,7 @@ export function get${BusinessName}(${pkJavaField}) {
 // 新增${functionName}
 export function save${BusinessName}(data) {
   return request({
-    url: '/${moduleName}/${businessName}/',
+    url: '/${moduleName}/${businessName}',
     method: 'post',
     data: data
   })

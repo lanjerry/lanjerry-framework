@@ -263,6 +263,10 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
             c.setUpperFirstJavaField(StrUtil.upperFirst(c.getJavaField()));
             // 设置字段例子
             c.setColumnExample(GeneratorCodeUtil.getColumnExample(c));
+            // 设置字段查询初始值
+            c.setQueryInitValue(GeneratorCodeUtil.getColumnQueryInitValue(c));
+            // 设置字段表单初始值
+            c.setFormInitValue(GeneratorCodeUtil.getColumnFormInitValue(c));
         });
         result.setColumns(columns);
         // 设置父级权限编号和权限排序

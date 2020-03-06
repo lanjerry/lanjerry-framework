@@ -11,8 +11,6 @@ import org.apache.velocity.app.Velocity;
 import org.lanjerry.admin.vo.tool.ToolGenCodeColumnVO;
 import org.lanjerry.admin.vo.tool.ToolGenCodeVO;
 
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ArrayUtil;
@@ -179,37 +177,13 @@ public class GeneratorCodeUtil {
     public static String getFileName(String template, ToolGenCodeVO gen) {
         String result = "";
         String javaPath = AdminConsts.GEN_PROJECT_PATH + "/" + StrUtil.replace(gen.getPackageName(), ".", "/");
-        String vuePath = "vue";
+        String vuePath = "vue/src/";
         switch (template) {
+            case "vm/java/entity.java.vm":
+                result = StrUtil.format("{}/common/core/entity/{}/{}.java", AdminConsts.GEN_PROJECT_PATH + "/" + StrUtil.replace(gen.getBasePackage(), ".", "/"), gen.getModuleName(), gen.getClassName());
+                break;
             case "vm/java/controller.java.vm":
                 result = StrUtil.format("{}/controller/{}/{}Controller.java", javaPath, gen.getModuleName(), gen.getClassName());
-                break;
-            case "vm/java/entity.java.vm":
-                result = StrUtil.format("{}/entity/{}/{}.java", javaPath, gen.getModuleName(), gen.getClassName());
-                break;
-            case "vm/java/infoVO.java.vm":
-                result = StrUtil.format("{}/vo/{}/{}InfoVO.java", javaPath, gen.getModuleName(), gen.getClassName());
-                break;
-            case "vm/java/mapper.java.vm":
-                result = StrUtil.format("{}/mapper/{}/{}Mapper.java", javaPath, gen.getModuleName(), gen.getClassName());
-                break;
-            case "vm/java/pageDTO.java.vm":
-                result = StrUtil.format("{}/dto/{}/{}PageDTO.java", javaPath, gen.getModuleName(), gen.getClassName());
-                break;
-            case "vm/java/listDTO.java.vm":
-                result = StrUtil.format("{}/dto/{}/{}ListDTO.java", javaPath, gen.getModuleName(), gen.getClassName());
-                break;
-            case "vm/java/pageVO.java.vm":
-                result = StrUtil.format("{}/vo/{}/{}PageVO.java", javaPath, gen.getModuleName(), gen.getClassName());
-                break;
-            case "vm/java/listVO.java.vm":
-                result = StrUtil.format("{}/vo/{}/{}ListVO.java", javaPath, gen.getModuleName(), gen.getClassName());
-                break;
-            case "vm/java/saveDTO.java.vm":
-                result = StrUtil.format("{}/dto/{}/{}SaveDTO.java", javaPath, gen.getModuleName(), gen.getClassName());
-                break;
-            case "vm/java/saveOrUpdateDTO.java.vm":
-                result = StrUtil.format("{}/dto/{}/{}SaveOrUpdateDTO.java", javaPath, gen.getModuleName(), gen.getClassName());
                 break;
             case "vm/java/service.java.vm":
                 result = StrUtil.format("{}/service/{}/{}Service.java", javaPath, gen.getModuleName(), gen.getClassName());
@@ -217,23 +191,50 @@ public class GeneratorCodeUtil {
             case "vm/java/serviceImpl.java.vm":
                 result = StrUtil.format("{}/service/{}/impl/{}ServiceImpl.java", javaPath, gen.getModuleName(), gen.getClassName());
                 break;
+            case "vm/java/mapper.java.vm":
+                result = StrUtil.format("{}/mapper/{}/{}Mapper.java", javaPath, gen.getModuleName(), gen.getClassName());
+                break;
+            case "vm/xml/mapper.xml.vm":
+                result = StrUtil.format("main/resources/mapper/{}/{}Mapper.xml", gen.getModuleName(), gen.getClassName());
+                break;
+            case "vm/sql/sql.vm":
+                result = StrUtil.format("sql/{}.sql", gen.getTableName());
+                break;
+            case "vm/java/pageDTO.java.vm":
+                result = StrUtil.format("{}/dto/{}/{}PageDTO.java", javaPath, gen.getModuleName(), gen.getClassName());
+                break;
+            case "vm/java/pageVO.java.vm":
+                result = StrUtil.format("{}/vo/{}/{}PageVO.java", javaPath, gen.getModuleName(), gen.getClassName());
+                break;
+            case "vm/java/listDTO.java.vm":
+                result = StrUtil.format("{}/dto/{}/{}ListDTO.java", javaPath, gen.getModuleName(), gen.getClassName());
+                break;
+            case "vm/java/listVO.java.vm":
+                result = StrUtil.format("{}/vo/{}/{}ListVO.java", javaPath, gen.getModuleName(), gen.getClassName());
+                break;
+            case "vm/java/infoVO.java.vm":
+                result = StrUtil.format("{}/vo/{}/{}InfoVO.java", javaPath, gen.getModuleName(), gen.getClassName());
+                break;
+            case "vm/java/saveDTO.java.vm":
+                result = StrUtil.format("{}/dto/{}/{}SaveDTO.java", javaPath, gen.getModuleName(), gen.getClassName());
+                break;
             case "vm/java/updateDTO.java.vm":
                 result = StrUtil.format("{}/dto/{}/{}UpdateDTO.java", javaPath, gen.getModuleName(), gen.getClassName());
                 break;
-            case "vm/xml/mapper.xml.vm":
-                result = StrUtil.format("{}/{}/{}Mapper.xml", javaPath, gen.getModuleName(), gen.getClassName());
+            case "vm/java/saveOrUpdateDTO.java.vm":
+                result = StrUtil.format("{}/dto/{}/{}SaveOrUpdateDTO.java", javaPath, gen.getModuleName(), gen.getClassName());
                 break;
             case "vm/js/api.js.vm":
-                result = StringUtils.format("{}/api/{}/{}.js", vuePath, gen.getModuleName(), gen.getBusinessName());
+                result = StrUtil.format("{}/api/{}/{}.js", vuePath, gen.getModuleName(), gen.getBusinessName());
                 break;
             case "vm/html/index.vue.vm":
-                result = StringUtils.format("{}/views/{}/{}.vue", vuePath, gen.getModuleName(), gen.getBusinessName());
+                result = StrUtil.format("{}/views/{}/{}.vue", vuePath, gen.getModuleName(), gen.getBusinessName());
                 break;
-            case "vm/html/modifyDialog.vue.vue.vm":
-                result = StringUtils.format("{}/components/{}/{}/{}SearchForm.vue", vuePath, gen.getModuleName(), gen.getBusinessName(), gen.getClassName());
+            case "vm/html/searchForm.vue.vm":
+                result = StrUtil.format("{}/components/{}/{}/{}SearchForm.vue", vuePath, gen.getModuleName(), gen.getBusinessName(), gen.getClassName());
                 break;
-            case "vm/html/searchForm.vue.vue.vm":
-                result = StringUtils.format("{}/components/{}/{}/{}ModifyDialog.vue", vuePath, gen.getModuleName(), gen.getBusinessName(), gen.getClassName());
+            case "vm/html/modifyDialog.vue.vm":
+                result = StrUtil.format("{}/components/{}/{}/{}ModifyDialog.vue", vuePath, gen.getModuleName(), gen.getBusinessName(), gen.getClassName());
                 break;
         }
         return result;
@@ -312,6 +313,22 @@ public class GeneratorCodeUtil {
             case "Boolean":
                 result = "true";
                 break;
+        }
+        return result;
+    }
+
+    public static String getColumnQueryInitValue(ToolGenCodeColumnVO column) {
+        String result = "undefined";
+        if (CollectionUtil.contains(Arrays.asList("Integer", "BigDecimal", "LocalDateTime"), column.getJavaType())) {
+            result = "null";
+        }
+        return result;
+    }
+
+    public static String getColumnFormInitValue(ToolGenCodeColumnVO column) {
+        String result = "''";
+        if (CollectionUtil.contains(Arrays.asList("Integer", "BigDecimal", "LocalDateTime"), column.getJavaType())) {
+            result = "null";
         }
         return result;
     }

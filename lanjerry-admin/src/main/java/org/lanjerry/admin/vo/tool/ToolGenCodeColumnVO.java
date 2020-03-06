@@ -93,6 +93,11 @@ public class ToolGenCodeColumnVO extends BaseEntity {
     private String formHtmlType;
 
     /**
+     * 表单字段初始值
+     */
+    private String formInitValue;
+
+    /**
      * 是否查询字段 0.否 1.是
      */
     private Boolean queryFlag;
@@ -106,4 +111,9 @@ public class ToolGenCodeColumnVO extends BaseEntity {
      * 查询显示类型
      */
     private String queryHtmlType;
+
+    /**
+     * 查询字段初始值
+     */
+    private String queryInitValue;
 }

@@ -30,14 +30,14 @@ public class ${ClassName}PageDTO extends SplitPage {
     * $column.columnComment始
     */
     @ApiModelProperty(value = "$column.columnComment始", example = "$date", position = $position)
-    private String createdTimeStart;
+    private String ${column.javaField}Start;
 #set($position = $position + 10)
 
     /**
      * $column.columnComment止
      */
     @ApiModelProperty(value = "$column.columnComment止", example = "$date", position = $position)
-    private String createdTimeEnd;
+    private String ${column.javaField}End;
 #else
 
     /**

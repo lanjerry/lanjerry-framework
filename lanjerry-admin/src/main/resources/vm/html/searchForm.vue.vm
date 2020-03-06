@@ -1,6 +1,6 @@
 #set($dateRangeFlag = false)
 <template>
-  <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="68px">
+  <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="90px">
 #foreach ($column in $queryColumns)
     <el-form-item label="$column.columnComment" prop="$column.javaField">
 #if($column.queryHtmlType=="input")
@@ -70,8 +70,10 @@
         // 查询参数
         queryParams: {
 #foreach ($column in $queryColumns)
-          $column.javaField: undefined#if($velocityCount != $queryColumns.size()),#end
+#if($column.queryHtmlType!="datetime"&&$column.queryType!="between")
+          $column.javaField: $column.queryInitValue#if($velocityCount != $queryColumns.size()),#end
 
+#end
 #end
         }#if($dateRangeFlag),#end
 

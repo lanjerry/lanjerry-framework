@@ -1,6 +1,6 @@
-<template
+<template>
   <el-dialog :title="title" :visible.sync="visible" @open="open" @closed="closed" width="600px">
-    <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+    <el-form ref="form" :model="form" :rules="rules" label-width="90px">
 #foreach ($column in $formColumns)
       <el-form-item label="$column.columnComment" prop="$column.javaField">
 #if($column.formHtmlType=="input")
@@ -12,7 +12,7 @@
         </el-select>
 #end
 #if($column.formHtmlType=="datetime")
-        <el-date-picker v-model="form.$column.javaField" type="date" placeholder="请选择$column.columnComment" clearable></el-date-picker>
+        <el-date-picker v-model="form.$column.javaField" placeholder="请选择$column.columnComment" type="datetime" format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" style="width: 200px;" clearable></el-date-picker>
 #end
 #if($column.formHtmlType=="radio")
         <el-radio-group v-model="form.$column.javaField">
@@ -114,12 +114,7 @@
         return {
 #foreach ($column in $formColumns)
 #set($initValue = "''")
-#if($column.javaType=="Integer"||$column.javaType=="BigDecimal")
-#set($initValue = 0)
-#elseif($column.javaType=="LocalDateTime")
-#set($initValue = "null")
-#end
-          $column.javaField: $initValue#if($velocityCount != $formColumns.size()),#end
+          $column.javaField: $column.formInitValue#if($velocityCount != $formColumns.size()),#end
 
 #end
         }
@@ -128,16 +123,16 @@
       open() {
 #if(${tplFunctions.indexOf("update")}!=-1)
         this.loading = true
-          if (this.${pkJavaField}) {
-            // 查询${functionName}信息
-            get${BusinessName}(this.${pkJavaField}).then(res => {
-              this.form = res.data
-            })
+        if (this.${pkJavaField}) {
+          // 查询${functionName}信息
+          get${BusinessName}(this.${pkJavaField}).then(res => {
+            this.form = res.data
           }).catch(() => {
             this.form = this.initForm()
           }).then(() => {
             this.loading = false
           })
+        }
 #else
         this.form = this.initForm()
 #end
