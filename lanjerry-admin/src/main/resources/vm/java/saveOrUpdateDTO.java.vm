@@ -34,7 +34,7 @@ public class ${ClassName}SaveOrUpdateDTO extends BaseEntity {
 #if($column.javaField.indexOf("mail")!=-1 || $column.javaField.indexOf("Mail")!=-1)
     @Email(message = "$column.columnComment格式不正确")
 #end
-#if($column.javaField.indexOf("phone")!=-1 || $column.javaField.indexOf("Phone")!=-1)
+#if(($column.javaField.indexOf("phone")!=-1 || $column.javaField.indexOf("Phone")!=-1)&&$column.requiredFlag)
     @Pattern(regexp = "^[1](([3|5|8][\\d])|([4][5,6,7,8,9])|([6][5,6])|([7][3,4,5,6,7,8])|([9][8,9]))[\\d]{8}$", message = "$column.columnComment格式不正确")
 #end
 #if($column.requiredFlag)
