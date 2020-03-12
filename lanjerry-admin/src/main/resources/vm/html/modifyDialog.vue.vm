@@ -7,7 +7,7 @@
         <el-input v-model="form.$column.javaField" placeholder="请输入$column.columnComment" #if($column.javaType=="String")maxlength="$column.columnLength"#end clearable />
 #end
 #if($column.formHtmlType=="select")
-        <el-select v-model="form.$column.javaField" placeholder="请输入$column.columnComment" clearable>
+        <el-select v-model="form.$column.javaField" placeholder="请选择$column.columnComment" filterable clearable>
           <el-option label="请选择$column.columnComment" :value="null"></el-option>
         </el-select>
 #end

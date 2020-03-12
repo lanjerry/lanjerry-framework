@@ -21,12 +21,12 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("${tableName}")
-public class ${ClassName} extends BaseEntity{
+public class ${ClassName} extends BaseEntity {
 #foreach ($column in $columns)
 
     /**
-    * $column.columnComment
-    */
+     * $column.columnComment
+     */
 #if($column.pkFlag)
     @TableId(value = "$column.javaField", type = IdType.AUTO)
 #end

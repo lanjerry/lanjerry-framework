@@ -27,8 +27,8 @@ public class ${ClassName}PageDTO extends SplitPage {
 #if($column.queryType=="between"&&$column.javaType=="LocalDateTime")
 
     /**
-    * $column.columnComment始
-    */
+     * $column.columnComment始
+     */
     @ApiModelProperty(value = "$column.columnComment始", example = "$date", position = $position)
     private String ${column.javaField}Start;
 #set($position = $position + 10)
