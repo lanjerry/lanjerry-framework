@@ -113,7 +113,6 @@
         this.resetForm('form')
         return {
 #foreach ($column in $formColumns)
-#set($initValue = "''")
           $column.javaField: $column.formInitValue#if($velocityCount != $formColumns.size()),#end
 
 #end
