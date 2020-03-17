@@ -71,7 +71,7 @@
         // 表单校验
         rules: {
 #foreach ($column in $formColumns)
-#if($column.requiredFlag&&$column.javaField.indexOf("mail")==-1&&$column.javaField.indexOf("Mail")==-1)
+#if($column.requiredFlag&&$column.javaField.indexOf("mail")==-1&&$column.javaField.indexOf("Mail")==-1&&$column.javaField.indexOf("phone")==-1&&$column.javaField.indexOf("Phone")==-1)
           $column.javaField: [
             { required: true, message: '$column.columnComment不能为空', trigger: #if($column.formHtmlType=="input"||$column.formHtmlType=="textarea")'blur'#else'change'#end }
           ]#if($velocityCount != $formColumns.size()),#end
