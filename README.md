@@ -12,7 +12,7 @@
 
 ## 特性
 1. 使用MyBatis-Plus作为持久层框架，代码优雅、简化开发、提高效率
-2. 使用Shiro+JWT作为sso，抛弃传统session的做法
+2. 使用Shiro+JWT作为sso，抛弃传统session的做法 
 3. 抽离日志模块，实现可插拔配置，使用EnableLog注解开启
 4. 抽离权限模块，实现可插拔配置，使用EnableShiro注解开启
 
