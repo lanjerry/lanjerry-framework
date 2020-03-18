@@ -8,7 +8,7 @@
 [https://xxxx(待完善)](https://xxxx) 
 
 - 账号：admin
-- 密码：admin
+- 密码：admin 
 
 ## 特性
 1. 使用MyBatis-Plus作为持久层框架，代码优雅、简化开发、提高效率
