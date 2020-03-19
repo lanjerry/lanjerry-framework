@@ -48,10 +48,10 @@ SQL分析打印 | P6spy | 3.8.5
 3. 确认application-dev.properties 配置是否正确；
 4. 启动项目
 
+> 后端已经配置了允许跨域访问，无跨域问题。
+
 **前端项目链接：** 
 https://gitee.com/lanjerry/lanjerry-admin-webapp
-
-> 后端已经配置了允许跨域访问，无跨域问题。
 
 ## 项目结构
 
