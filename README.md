@@ -32,7 +32,7 @@ SQL分析打印 | P6spy | 3.8.5
 工具包| HuTool | 4.5.16
 接口文档 | Swagger | 2.9.2
 接口文档UI | SwaggerBootstrapUI | 1.9.3
-前端框架 | 待完善 | 1.0.0 
+前端框架 | vue | 1.0.0 
 
 ## 导入项目
 
