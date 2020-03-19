@@ -5,10 +5,10 @@
 
 ## 在线演示
 
-[https://xxxx(待完善)](https://xxxx) 
+[https://vue.lanjerry.com](https://vue.lanjerry.com) 
 
 - 账号：admin
-- 密码：admin 
+- 密码：123456 
 
 ## 特性
 1. 使用MyBatis-Plus作为持久层框架，代码优雅、简化开发、提高效率
@@ -46,7 +46,7 @@ SQL分析打印 | P6spy | 3.8.5
 2. 使用 IDEA 选择 Open 导入项目；
 2. 导入数据库到MySQL中，sql文件位于根目录的sql文件夹里面；
 3. 确认application-dev.properties 配置是否正确；
-4. 启动项目，浏览器访问 [http://localhost:8088/](http://localhost:8088/) 
+4. 启动项目
 
 > 后端已经配置了允许跨域访问，无跨域问题。
 
