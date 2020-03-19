@@ -10,6 +10,13 @@
 - 账号：admin
 - 密码：123456 
 
+## 项目源码
+
+|     |   后端源码  |   前端源码  |
+|---  |--- | --- |
+|  github   |  https://github.com/lanjerry/lanjerry-framework   |  https://github.com/lanjerry/lanjerry-admin-webapp   |
+|  码云   |  https://gitee.com/lanjerry/lanjerry-framework   |  https://gitee.com/lanjerry/lanjerry-admin-webapp   |
+
 ## 特性
 1. 使用MyBatis-Plus作为持久层框架，代码优雅、简化开发、提高效率
 2. 使用Shiro+JWT作为sso，抛弃传统session的做法 
@@ -82,3 +89,7 @@ https://gitee.com/lanjerry/lanjerry-admin-webapp
 |   |    |-lanjerry-common-log                 // 日志模块
 |   |    |-lanjerry-common-redis               // redis模块
 ```
+
+## 联系我
+
+- 邮箱：38046851@qq.com
