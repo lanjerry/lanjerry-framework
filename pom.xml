@@ -8,7 +8,10 @@
     <artifactId>lanjerry-framework</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
+
     <name>lanjerry-framework</name>
+    <url>https://www.lanjerry.com</url>
+    <description>后台管理系统</description>
 
     <modules>
         <module>lanjerry-common</module>
