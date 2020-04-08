@@ -4,7 +4,7 @@
 #foreach ($column in $formColumns)
       <el-form-item label="$column.columnComment" prop="$column.javaField">
 #if($column.formHtmlType=="input")
-        <el-input v-model="form.$column.javaField" placeholder="请输入$column.columnComment" #if($column.javaType=="String")maxlength="$column.columnLength"#end clearable />
+        <el-input v-model.trim="form.$column.javaField" placeholder="请输入$column.columnComment" #if($column.javaType=="String")maxlength="$column.columnLength"#end clearable />
 #end
 #if($column.formHtmlType=="select")
         <el-select v-model="form.$column.javaField" placeholder="请选择$column.columnComment" filterable clearable>

@@ -5,7 +5,7 @@
     <el-form-item label="$column.columnComment" prop="$column.javaField">
 #if($column.queryHtmlType=="input")
       <el-input
-        v-model="queryParams.$column.javaField"
+        v-model.trim="queryParams.$column.javaField"
         placeholder="请输入$column.columnComment"
 #if($column.javaType=="String")
         maxlength="$column.columnLength"
