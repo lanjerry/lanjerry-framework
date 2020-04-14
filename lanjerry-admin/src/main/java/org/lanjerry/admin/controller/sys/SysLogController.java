@@ -1,6 +1,9 @@
 package org.lanjerry.admin.controller.sys;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.lanjerry.admin.dto.sys.SysLogExportDTO;
 import org.lanjerry.admin.dto.sys.SysLogPageDTO;
 import org.lanjerry.admin.service.sys.SysLogService;
 import org.lanjerry.admin.vo.sys.SysLogInfoVO;
@@ -9,6 +12,8 @@ import org.lanjerry.common.core.bean.ApiResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -54,5 +59,11 @@ public class SysLogController {
     public ApiResult removeLogs(@PathVariable("ids") @ApiParam(value = "日志编号数组", required = true) Integer[] ids) {
         logService.removeLogs(ids);
         return ApiResult.success();
+    }
+
+    @PostMapping("/export")
+    @ApiOperation(value = "导出系统日志", position = 40)
+    public void exportLogs(@RequestBody @ApiParam(value = "系统日志列表导出参数", required = true) SysLogExportDTO dto, HttpServletResponse response) {
+        logService.exportLogs(dto, response);
     }
 }

@@ -94,6 +94,11 @@
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity</artifactId>
         </dependency>
+        <!--easyExcel-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+        </dependency>
         <!--lombok插件-->
         <dependency>
             <groupId>org.projectlombok</groupId>

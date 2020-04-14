@@ -44,6 +44,7 @@
         <p6spy.version>3.8.5</p6spy.version>
         <commons-io.version>2.5</commons-io.version>
         <velocity.version>1.7</velocity.version>
+        <easyexcel.version>2.1.7</easyexcel.version>
     </properties>
 
     <dependencyManagement>
@@ -135,6 +136,12 @@
                 <groupId>org.apache.velocity</groupId>
                 <artifactId>velocity</artifactId>
                 <version>${velocity.version}</version>
+            </dependency>
+            <!--easyExcel-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>easyexcel</artifactId>
+                <version>${easyexcel.version}</version>
             </dependency>
             <!--lombok插件-->
             <dependency>

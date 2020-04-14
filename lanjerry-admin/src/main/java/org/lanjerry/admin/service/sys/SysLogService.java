@@ -1,5 +1,8 @@
 package org.lanjerry.admin.service.sys;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.lanjerry.admin.dto.sys.SysLogExportDTO;
 import org.lanjerry.admin.dto.sys.SysLogPageDTO;
 import org.lanjerry.admin.vo.sys.SysLogInfoVO;
 import org.lanjerry.admin.vo.sys.SysLogPageVO;
@@ -46,4 +49,14 @@ public interface SysLogService extends IService<SysLog> {
      * @param ids 日志编号数组
      */
     void removeLogs(Integer[] ids);
+
+    /**
+     * 导出系统日志
+     *
+     * @author lanjerry
+     * @since 2020/4/14 15:13
+     * @param dto 系统日志导出查询DTO
+     * @param response 输出流
+     */
+    void exportLogs(SysLogExportDTO dto, HttpServletResponse response);
 }
