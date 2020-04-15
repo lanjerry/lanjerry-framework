@@ -23,6 +23,7 @@ import org.lanjerry.common.core.util.BeanCopyUtil;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -93,7 +94,7 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
         try {
             response.setContentType("application/vnd.ms-excel;charset=utf-8");
             response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("系统日志.xlsx", "UTF-8"));
-            EasyExcel.write(response.getOutputStream(), SysLogExportVO.class).sheet("系统日志").doWrite(result);
+            EasyExcel.write(response.getOutputStream(), SysLogExportVO.class).registerWriteHandler(new LongestMatchColumnWidthStyleStrategy()).sheet("系统日志").doWrite(result);
         } catch (IOException ignored) {
             throw new RuntimeException(ignored);
         }
