@@ -101,4 +101,10 @@ public class ToolGenColumnVO extends BaseEntity {
      */
     @ApiModelProperty(value = "查询显示类型", example = "input", position = 140)
     private String queryHtmlType;
+
+    /**
+     * 是否导出字段 0.否 1.是
+     */
+    @ApiModelProperty(value = "是否导出字段 0.否 1.是", example = "是", position = 150)
+    private Boolean exportFlag;
 }

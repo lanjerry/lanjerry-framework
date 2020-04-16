@@ -4,7 +4,7 @@ package ${packageName}.dto.${moduleName};
 import $import
 #end
 
-import ${basePackage}.common.core.bean.BaseEntity;
+import ${basePackage}.common.core.bean.SplitPage;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * ${functionName}查询DTO
+ * ${functionName}导出查询DTO
  * </p>
  *
  * @author ${author}
@@ -20,7 +20,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ${ClassName}ListDTO extends BaseEntity {
+public class ${ClassName}ExportDTO extends BaseEntity {
 #set($position = 0)
 #foreach ($column in $queryColumns)
 #set($position = $position + 10)
@@ -47,4 +47,11 @@ public class ${ClassName}ListDTO extends BaseEntity {
     private $column.javaType $column.javaField;
 #end
 #end
+
+#set($position = $position + 10)
+    /**
+     * ${pkComment}数组
+     */
+    @ApiModelProperty(value = "${pkComment}数组", example = "[1,2,3]", position = $position)
+    private List<${pkJavaType}> ${pkJavaField}s;
 }

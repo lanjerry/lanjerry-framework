@@ -95,8 +95,19 @@ public class ${ClassName}Controller {
     @SysLog("删除${functionName}")
     @ApiOperation(value = "删除${functionName}", position = $position)
     public ApiResult remove${BusinessName}s(@PathVariable("${pkJavaField}s") @ApiParam(value = "${pkComment}数组", required = true) ${pkJavaType}[] ${pkJavaField}s) {
-        ${businessName}Service.remove${BusinessName}s(ids);
+        ${businessName}Service.remove${BusinessName}s(${pkJavaField}s);
         return ApiResult.success();
+    }
+#end
+#if(${tplFunctions.indexOf("export")}!=-1)
+#set($position = $position + 10)
+
+    @PostMapping("/export")
+    @RequiresPermissions("${permissionPrefix}:export")
+    @SysLog("导出${functionName}")
+    @ApiOperation(value = "导出${functionName}", position = $position)
+    public void export${BusinessName}s(@RequestBody @ApiParam(value = "${functionName}列表导出参数", required = true) ${ClassName}ExportDTO dto, HttpServletResponse response) {
+        ${businessName}Service.export${BusinessName}s(dto, response);
     }
 #end
 #end

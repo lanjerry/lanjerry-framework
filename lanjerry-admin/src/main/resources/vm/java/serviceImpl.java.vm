@@ -121,5 +121,40 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
         }
     }
 #end
+#if(${tplFunctions.indexOf("export")}!=-1)
+
+    @Override
+    public void export${BusinessName}s(${ClassName}ExportDTO dto, HttpServletResponse response) {
+        List<${ClassName}> list = this.lambdaQuery().orderByDesc(${ClassName}::get${PkJavaField})
+            .in(CollUtil.isNotEmpty(dto.get${PkJavaField}s()), ${ClassName}::get${PkJavaField}, dto.get${PkJavaField}s())
+#foreach($column in $!{queryColumns})
+#set($columnQueryType = $column.queryType)
+#set($columnJavaField = "get"+$column.upperFirstJavaField+"()")
+#set($columnJudge = "dto."+$columnJavaField+ "!= null")
+#if($column.javaType=="String")
+#set($columnJudge ="StrUtil.isNotBlank(dto."+$columnJavaField+")")
+#end
+#if($column.queryType=="between"&&$column.javaType=="LocalDateTime")
+#set($columnTimeStart = "dto.get"+$column.upperFirstJavaField+"Start()")
+#set($columnTimeEnd = "dto.get"+$column.upperFirstJavaField+"End()")
+            .ge(StrUtil.isNotBlank($columnTimeStart), ${ClassName}::get$column.upperFirstJavaField, $columnTimeStart + AdminConsts.START_TIME)
+            .le(StrUtil.isNotBlank($columnTimeEnd), ${ClassName}::get$column.upperFirstJavaField, $columnTimeEnd + AdminConsts.END_TIME)
+#else
+            .$columnQueryType($columnJudge, ${ClassName}::get$column.upperFirstJavaField, dto.$columnJavaField)
+#end
+#set($columnQueryType = "")
+#end
+            .list();
+
+        List<${ClassName}ExportVO> result = BeanCopyUtil.listCopy(list, ${ClassName}.class, ${ClassName}ExportVO.class);
+        try {
+            response.setContentType("application/vnd.ms-excel;charset=utf-8");
+            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("${functionName}.xlsx", "UTF-8"));
+            EasyExcel.write(response.getOutputStream(), SysLogExportVO.class).registerWriteHandler(new LongestMatchColumnWidthStyleStrategy()).sheet("${functionName}").doWrite(result);
+        } catch (IOException ignored) {
+            throw new RuntimeException(ignored);
+        }
+    }
+#end
 #end
 }

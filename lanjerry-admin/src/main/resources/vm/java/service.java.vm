@@ -89,5 +89,17 @@ public interface ${ClassName}Service extends IService<${ClassName}> {
      */
     void remove${BusinessName}s(${pkJavaType}[] ${pkJavaField}s);
 #end
+#if(${tplFunctions.indexOf("export")}!=-1)
+
+    /**
+     * 导出${functionName}
+     *
+     * @author ${author}
+     * @since ${datetime}
+     * @param dto ${functionName}列表导出参数
+     * @param response 输出流
+     */
+    void export${BusinessName}s(${ClassName}ExportDTO dto, HttpServletResponse response);
+#end
 #end
 }

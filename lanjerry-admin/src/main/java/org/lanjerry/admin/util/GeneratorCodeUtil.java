@@ -86,6 +86,10 @@ public class GeneratorCodeUtil {
         List<ToolGenCodeColumnVO> queryColumns = gen.getColumns().stream().filter(ToolGenCodeColumnVO::getQueryFlag).collect(Collectors.toList());
         velocityContext.put("queryColumns", queryColumns);
 
+        // 导出字段
+        List<ToolGenCodeColumnVO> exportColumns = gen.getColumns().stream().filter(ToolGenCodeColumnVO::getExportFlag).collect(Collectors.toList());
+        velocityContext.put("exportColumns", exportColumns);
+
         // 唯一字段
         List<ToolGenCodeColumnVO> onlyColumns = gen.getColumns().stream().filter(ToolGenCodeColumnVO::getOnlyFlag).collect(Collectors.toList());
         velocityContext.put("onlyColumns", onlyColumns);
@@ -155,6 +159,10 @@ public class GeneratorCodeUtil {
             }
             if (tplFunctions.indexOf("update") != -1 && tplFunctions.indexOf("add") == -1) {
                 result.add("vm/java/updateDTO.java.vm");
+            }
+            if (tplFunctions.indexOf("export") != -1) {
+                result.add("vm/java/exportDTO.java.vm");
+                result.add("vm/java/exportVO.java.vm");
             }
             result.add("vm/js/api.js.vm");
             result.add("vm/html/index.vue.vm");

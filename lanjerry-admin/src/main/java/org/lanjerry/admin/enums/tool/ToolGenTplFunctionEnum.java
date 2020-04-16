@@ -12,7 +12,7 @@ import org.lanjerry.common.core.bean.BaseEnum;
  */
 public enum ToolGenTplFunctionEnum implements BaseEnum<String> {
     PAGE_LIST("pageList", "分页列表"),
-    LIST("list", "不分页列表"),
+    LIST("list", "列表"),
     ADD("add", "新增"),
     UPDATE("update", "修改"),
     DELETE("delete", "删除"),

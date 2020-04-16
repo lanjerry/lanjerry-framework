@@ -64,4 +64,16 @@ export function remove${BusinessName}s(${pkJavaField}s) {
   })
 }
 #end
+#if(${tplFunctions.indexOf("export")}!=-1)
+
+// 导出${functionName}
+export function export${BusinessName}s(data) {
+  return request({
+    responseType: 'blob',
+    url: '/${moduleName}/${businessName}/export',
+    method: 'post',
+    data: data
+  })
+}
+#end
 #end

@@ -29,5 +29,12 @@ VALUES ('更新${functionName}', @parentId, 2, NULL, NULL, '${permissionPrefix}:
 #set($sort = $sort + 10)
 INSERT INTO `sys_permission`(`name`, `parent_id`, `type`, `path`, `component`, `permission`, `icon`, `sort`, `created_time`)
 VALUES ('删除${functionName}', @parentId, 2, NULL, NULL, '${permissionPrefix}:remove', '#', ${sort}, '${datetime}');
+
+#end
+#if(${tplFunctions.indexOf("export")}!=-1)
+#set($sort = $sort + 10)
+INSERT INTO `sys_permission`(`name`, `parent_id`, `type`, `path`, `component`, `permission`, `icon`, `sort`, `created_time`)
+VALUES ('导出${functionName}', @parentId, 2, NULL, NULL, '${permissionPrefix}:export', '#', ${sort}, '${datetime}');
+
 #end
 #end

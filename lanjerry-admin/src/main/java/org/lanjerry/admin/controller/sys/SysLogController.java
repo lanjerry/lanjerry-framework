@@ -62,6 +62,7 @@ public class SysLogController {
     }
 
     @PostMapping("/export")
+    @RequiresPermissions("sys:log:export")
     @ApiOperation(value = "导出系统日志", position = 40)
     public void exportLogs(@RequestBody @ApiParam(value = "系统日志列表导出参数", required = true) SysLogExportDTO dto, HttpServletResponse response) {
         logService.exportLogs(dto, response);

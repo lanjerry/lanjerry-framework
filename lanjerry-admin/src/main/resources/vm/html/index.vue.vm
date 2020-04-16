@@ -23,6 +23,11 @@
         <el-button type="danger" icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete" v-hasPermi="${businessName}.remove">删除</el-button>
       </el-col>
 #end
+#if(${tplFunctions.indexOf("export")}!=-1)
+      <el-col :span="1.5">
+        <el-button type="warning" icon="el-icon-download" size="mini" @click="handleExport" v-hasPermi="${businessName}.export">导出</el-button>
+      </el-col>
+#end
     </el-row>
 #end
 
@@ -71,16 +76,22 @@
 #if(${tplFunctions.indexOf("pageList")}!=-1||${tplFunctions.indexOf("list")}!=-1)
   import mixin from '@/mixin'
 #end
-#if(${tplFunctions.indexOf("pageList")}!=-1&&${tplFunctions.indexOf("delete")}!=-1)
+#if(${tplFunctions.indexOf("pageList")}!=-1&&${tplFunctions.indexOf("delete")}!=-1&&${tplFunctions.indexOf("export")}!=-1)
+  import { page${BusinessName}s, remove${BusinessName}s, export${BusinessName}s } from '@/api/${moduleName}/${businessName}'
+#end
+#if(${tplFunctions.indexOf("pageList")}!=-1&&${tplFunctions.indexOf("delete")}!=-1&&${tplFunctions.indexOf("export")}==-1)
   import { page${BusinessName}s, remove${BusinessName}s } from '@/api/${moduleName}/${businessName}'
 #end
-#if(${tplFunctions.indexOf("list")}!=-1&&${tplFunctions.indexOf("delete")}!=-1)
+#if(${tplFunctions.indexOf("list")}!=-1&&${tplFunctions.indexOf("delete")}!=-1&&${tplFunctions.indexOf("export")}!=-1)
+  import { list${BusinessName}s, remove${BusinessName}s, export${BusinessName}s } from '@/api/${moduleName}/${businessName}'
+#end
+#if(${tplFunctions.indexOf("list")}!=-1&&${tplFunctions.indexOf("delete")}!=-1&&${tplFunctions.indexOf("export")}==-1)
   import { list${BusinessName}s, remove${BusinessName}s } from '@/api/${moduleName}/${businessName}'
 #end
-#if(${tplFunctions.indexOf("pageList")}!=-1&&${tplFunctions.indexOf("delete")}==-1)
+#if(${tplFunctions.indexOf("pageList")}!=-1&&${tplFunctions.indexOf("delete")}==-1&&${tplFunctions.indexOf("export")}==-1)
   import { page${BusinessName}s } from '@/api/${moduleName}/${businessName}'
 #end
-#if(${tplFunctions.indexOf("list")}!=-1&&${tplFunctions.indexOf("delete")}==-1)
+#if(${tplFunctions.indexOf("list")}!=-1&&${tplFunctions.indexOf("delete")}==-1&&${tplFunctions.indexOf("export")}==-1)
   import { list${BusinessName}s } from '@/api/${moduleName}/${businessName}'
 #end
 #if(${tplFunctions.indexOf("pageList")}!=-1||${tplFunctions.indexOf("list")}!=-1)
@@ -132,7 +143,10 @@
           update: ['${permissionPrefix}:update'],
 #end
 #if(${tplFunctions.indexOf("delete")}!=-1)
-          remove: ['${permissionPrefix}:remove']
+          remove: ['${permissionPrefix}:remove'],
+#end
+#if(${tplFunctions.indexOf("export")}!=-1)
+          export: ['${permissionPrefix}:export']
 #end
         },
 #end
@@ -241,6 +255,33 @@
           this.msgSuccess('删除成功')
           this.fetchData()
         }).catch(() => {
+        })
+      },
+#end
+#if(${tplFunctions.indexOf("export")}!=-1)
+      // 导出按钮操作
+      handleExport() {
+        const ${pkJavaField}s = this.${pkJavaField}s
+        const params = Object.assign(this.$refs.searchForm.queryParams, { ${pkJavaField}s })
+        this.$confirm('是否确认导出${functionName}的数据项?', '警告', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(async function() {
+          await exportLogs(params).then(res => {
+            let link = document.createElement('a')
+            link.style.display = 'none'
+            link.href = window.URL.createObjectURL(new Blob([res]))
+            link.setAttribute('download', '${functionName}.xls')
+            document.body.appendChild(link)
+            link.click()
+            document.body.removeChild(link)
+          })
+        }).then(() => {
+          this.msgSuccess('导出成功')
+          delete params.ids // 移除ids参数
+        }).catch((res) => {
+          this.msgError('导出失败：' + res)
         })
       }
 #end

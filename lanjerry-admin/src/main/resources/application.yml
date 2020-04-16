@@ -40,4 +40,4 @@ gen:
 
 # 演示模式配置
 demo:
-  enable: false
+  enable: true

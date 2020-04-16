@@ -2,8 +2,9 @@ package org.lanjerry.admin.vo.sys;
 
 import java.math.BigDecimal;
 
+import org.lanjerry.common.core.bean.BaseEntity;
+
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.alibaba.excel.metadata.BaseRowModel;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -19,7 +20,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class SysLogExportVO extends BaseRowModel {
+public class SysLogExportVO extends BaseEntity {
 
     /**
      * 日志编号

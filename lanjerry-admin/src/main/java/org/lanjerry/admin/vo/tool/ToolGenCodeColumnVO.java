@@ -116,4 +116,9 @@ public class ToolGenCodeColumnVO extends BaseEntity {
      * 查询字段初始值
      */
     private String queryInitValue;
+
+    /**
+     * 是否导出字段 0.否 1.是
+     */
+    private Boolean exportFlag;
 }

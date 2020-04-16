@@ -113,6 +113,11 @@ public class ToolGenDetail extends BaseEntity {
     private String queryHtmlType;
 
     /**
+     * 是否导出字段 0.否 1.是
+     */
+    private Boolean exportFlag;
+
+    /**
      * 创建人id
      */
     @TableField(fill = FieldFill.INSERT)
