@@ -6,6 +6,8 @@ import $import
 
 import ${basePackage}.common.core.bean.BaseEntity;
 
+import com.alibaba.excel.annotation.ExcelProperty;
+
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

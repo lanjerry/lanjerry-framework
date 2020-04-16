@@ -232,6 +232,12 @@ public class GeneratorCodeUtil {
             case "vm/java/saveOrUpdateDTO.java.vm":
                 result = StrUtil.format("{}/dto/{}/{}SaveOrUpdateDTO.java", javaPath, gen.getModuleName(), gen.getClassName());
                 break;
+            case "vm/java/exportDTO.java.vm":
+                result = StrUtil.format("{}/dto/{}/{}ExportDTO.java", javaPath, gen.getModuleName(), gen.getClassName());
+                break;
+            case "vm/java/exportVO.java.vm":
+                result = StrUtil.format("{}/vo/{}/{}ExportVO.java", javaPath, gen.getModuleName(), gen.getClassName());
+                break;
             case "vm/js/api.js.vm":
                 result = StrUtil.format("{}/api/{}/{}.js", vuePath, gen.getModuleName(), gen.getBusinessName());
                 break;
@@ -422,6 +428,10 @@ public class GeneratorCodeUtil {
             if (gen.getTplFunctions().indexOf("list") != -1) {
                 result.add(StrUtil.format("{}.vo.{}.{}ListVO;", gen.getPackageName(), gen.getModuleName(), gen.getClassName()));
             }
+            if (gen.getTplFunctions().indexOf("export") != -1) {
+                result.add("javax.servlet.http.HttpServletResponse;");
+                result.add(StrUtil.format("{}.dto.{}.{}ExportDTO;", gen.getPackageName(), gen.getModuleName(), gen.getClassName()));
+            }
         }
         return result;
     }
@@ -463,6 +473,13 @@ public class GeneratorCodeUtil {
             }
             if (gen.getTplFunctions().indexOf("list") != -1) {
                 result.add(StrUtil.format("{}.vo.{}.{}ListVO;", gen.getPackageName(), gen.getModuleName(), gen.getClassName()));
+            }
+            if (gen.getTplFunctions().indexOf("export") != -1) {
+                result.add("java.io.IOException;");
+                result.add("java.net.URLEncoder;");
+                result.add("javax.servlet.http.HttpServletResponse;");
+                result.add(StrUtil.format("{}.dto.{}.{}ExportDTO;", gen.getPackageName(), gen.getModuleName(), gen.getClassName()));
+                result.add(StrUtil.format("{}.vo.{}.{}ExportVO;", gen.getPackageName(), gen.getModuleName(), gen.getClassName()));
             }
         }
         return result;

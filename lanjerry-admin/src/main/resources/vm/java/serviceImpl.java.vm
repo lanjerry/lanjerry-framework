@@ -150,7 +150,7 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
         try {
             response.setContentType("application/vnd.ms-excel;charset=utf-8");
             response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("${functionName}.xlsx", "UTF-8"));
-            EasyExcel.write(response.getOutputStream(), SysLogExportVO.class).registerWriteHandler(new LongestMatchColumnWidthStyleStrategy()).sheet("${functionName}").doWrite(result);
+            EasyExcel.write(response.getOutputStream(), ${ClassName}ExportVO.class).registerWriteHandler(new LongestMatchColumnWidthStyleStrategy()).sheet("${functionName}").doWrite(result);
         } catch (IOException ignored) {
             throw new RuntimeException(ignored);
         }

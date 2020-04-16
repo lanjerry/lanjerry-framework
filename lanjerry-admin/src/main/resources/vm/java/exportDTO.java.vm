@@ -1,5 +1,7 @@
 package ${packageName}.dto.${moduleName};
 
+import java.util.List;
+
 #foreach ($import in $selectDTOImports)
 import $import
 #end

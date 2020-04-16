@@ -268,7 +268,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(async function() {
-          await exportLogs(params).then(res => {
+          await export${BusinessName}s(params).then(res => {
             let link = document.createElement('a')
             link.style.display = 'none'
             link.href = window.URL.createObjectURL(new Blob([res]))
