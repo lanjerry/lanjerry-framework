@@ -281,7 +281,9 @@
           this.msgSuccess('导出成功')
           delete params.ids // 移除ids参数
         }).catch((res) => {
-          this.msgError('导出失败：' + res)
+          if (res != 'cancel') {
+            this.msgError('导出失败：' + res)
+          }
         })
       }
 #end
