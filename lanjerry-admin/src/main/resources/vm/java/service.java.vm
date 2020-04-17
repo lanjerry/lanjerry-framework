@@ -1,10 +1,7 @@
-#set($saveDTO = "SaveDTO")
-#set($updateDTO = "UpdateDTO")
-#set($saveOrUpdateDTO = "SaveOrUpdateDTO")
 package ${packageName}.service.${moduleName};
 
-#foreach ($import in $serviceImports)
-import $import
+#foreach ($import in ${serviceImports})
+import ${import}
 #end
 
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -19,6 +16,17 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ${ClassName}Service extends IService<${ClassName}> {
 #if($!{tplFunctions})
+## 设置新增获取修改的DTO的名称
+#if(${tplFunctions.indexOf("add")}!=-1||${tplFunctions.indexOf("update")}!=-1)
+#set($saveOrUpdateDTOName = "")
+#if(${tplFunctions.indexOf("add")}!=-1&&${tplFunctions.indexOf("update")}!=-1)
+#set($saveOrUpdateDTOName = "SaveOrUpdateDTO")
+#elseif(${tplFunctions.indexOf("add")}!=-1)
+#set($saveOrUpdateDTOName = "SaveDTO")
+#else
+#set($saveOrUpdateDTOName = "UpdateDTO")
+#end
+#end
 #if(${tplFunctions.indexOf("pageList")}!=-1)
 
     /**
@@ -64,7 +72,7 @@ public interface ${ClassName}Service extends IService<${ClassName}> {
      * @since ${datetime}
      * @param dto ${functionName}新增参数
      */
-    void save${BusinessName}(${ClassName}#if(${tplFunctions.indexOf("update")}!=-1)${saveOrUpdateDTO}#else${saveDTO}#end dto);
+    void save${BusinessName}(${ClassName}${saveOrUpdateDTOName} dto);
 #end
 #if(${tplFunctions.indexOf("update")}!=-1)
 
@@ -76,7 +84,7 @@ public interface ${ClassName}Service extends IService<${ClassName}> {
      * @param ${pkJavaField} ${pkComment}
      * @param dto ${functionName}更新参数
      */
-    void update${BusinessName}(${pkJavaType} ${pkJavaField}, ${ClassName}#if(${tplFunctions.indexOf("add")}!=-1)${saveOrUpdateDTO}#else${updateDTO}#end dto);
+    void update${BusinessName}(${pkJavaType} ${pkJavaField}, ${ClassName}${saveOrUpdateDTOName} dto);
 #end
 #if(${tplFunctions.indexOf("delete")}!=-1)
 

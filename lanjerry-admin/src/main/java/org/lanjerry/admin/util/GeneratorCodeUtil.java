@@ -115,6 +115,9 @@ public class GeneratorCodeUtil {
         // selectDTO导入包
         velocityContext.put("selectDTOImports", getVOorSelectDTOImports(queryColumns));
 
+        // exportVO导入包
+        velocityContext.put("exportVOImports", getVOorSelectDTOImports(exportColumns));
+
         // saveOrUpdateDTO导入包
         velocityContext.put("saveOrUpdateDTOImports", getSaveOrUpdateDTOImports(formColumns));
         return velocityContext;

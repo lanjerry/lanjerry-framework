@@ -1,27 +1,27 @@
 <template>
   <el-dialog :title="title" :visible.sync="visible" @open="open" @closed="closed" width="600px">
     <el-form ref="form" :model="form" :rules="rules" label-width="90px">
-#foreach ($column in $formColumns)
-      <el-form-item label="$column.columnComment" prop="$column.javaField">
-#if($column.formHtmlType=="input")
-        <el-input v-model.trim="form.$column.javaField" placeholder="请输入$column.columnComment" #if($column.javaType=="String")maxlength="$column.columnLength"#end clearable />
+#foreach ($column in ${formColumns})
+      <el-form-item label="${column.columnComment}" prop="${column.javaField}">
+#if(${column.formHtmlType}=="input")
+        <el-input v-model.trim="form.${column.javaField}" placeholder="请输入${column.columnComment}" #if(${column.javaType}=="String")maxlength="${column.columnLength}"#end clearable />
 #end
-#if($column.formHtmlType=="select")
-        <el-select v-model="form.$column.javaField" placeholder="请选择$column.columnComment" filterable clearable>
-          <el-option label="请选择$column.columnComment" :value="null"></el-option>
+#if(${column.formHtmlType}=="select")
+        <el-select v-model="form.${column.javaField}" placeholder="请选择${column.columnComment}" filterable clearable>
+          <el-option label="请选择${column.columnComment}" :value="null"></el-option>
         </el-select>
 #end
-#if($column.formHtmlType=="datetime")
-        <el-date-picker v-model="form.$column.javaField" placeholder="请选择$column.columnComment" type="datetime" format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" style="width: 200px;" clearable></el-date-picker>
+#if(${column.formHtmlType}=="datetime")
+        <el-date-picker v-model="form.${column.javaField}" placeholder="请选择${column.columnComment}" type="datetime" format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" style="width: 200px;" clearable></el-date-picker>
 #end
-#if($column.formHtmlType=="radio")
-        <el-radio-group v-model="form.$column.javaField">
+#if(${column.formHtmlType}=="radio")
+        <el-radio-group v-model="form.${column.javaField}">
           <el-radio :key="false" :label="false">否</el-radio>
             <el-radio :key="true" :label="true">是</el-radio>
         </el-radio-group>
 #end
-#if($column.formHtmlType=="textarea")
-        <el-input v-model="form.$column.javaField" type="textarea" placeholder="请输入$column.columnComment" maxlength="$column.columnLength" show-word-limit />
+#if(${column.formHtmlType}=="textarea")
+        <el-input v-model="form.${column.javaField}" type="textarea" placeholder="请输入${column.columnComment}" maxlength="${column.columnLength}" show-word-limit />
 #end
       </el-form-item>
 #end
@@ -70,37 +70,37 @@
         form: this.initForm(),
         // 表单校验
         rules: {
-#foreach ($column in $formColumns)
-#if($column.requiredFlag&&$column.javaField.indexOf("mail")==-1&&$column.javaField.indexOf("Mail")==-1&&$column.javaField.indexOf("phone")==-1&&$column.javaField.indexOf("Phone")==-1)
-          $column.javaField: [
-            { required: true, message: '$column.columnComment不能为空', trigger: #if($column.formHtmlType=="input"||$column.formHtmlType=="textarea")'blur'#else'change'#end }
-          ]#if($velocityCount != $formColumns.size()),#end
+#foreach ($column in ${formColumns})
+#if(${column.requiredFlag}&&${column.javaField.indexOf("mail")}==-1&&${column.javaField.indexOf("Mail")}==-1&&${column.javaField.indexOf("phone")}==-1&&${column.javaField.indexOf("Phone")}==-1)
+          ${column.javaField}: [
+            { required: true, message: '${column.columnComment}不能为空', trigger: #if(${column.formHtmlType}=="input"||${column.formHtmlType}=="textarea")'blur'#else'change'#end }
+          ]#if(${velocityCount} != ${formColumns.size()}),#end
 
 #end
-#if($column.javaField.indexOf("mail")!=-1 || $column.javaField.indexOf("Mail")!=-1)
-          $column.javaField: [
+#if(${column.javaField.indexOf("mail")}!=-1 || ${column.javaField.indexOf("Mail")}!=-1)
+          ${column.javaField}: [
             {
-#if($column.requiredFlag)
+#if(${column.requiredFlag})
               required: true,
 #end
               type: 'email',
-              message: '\'请输入正确的$column.columnComment',
+              message: '\'请输入正确的${column.columnComment}',
               trigger: ['blur', 'change']
             }
-          ]#if($velocityCount != $formColumns.size()),#end
+          ]#if(${velocityCount} != ${formColumns.size()}),#end
 
 #end
-#if($column.javaField.indexOf("phone")!=-1 || $column.javaField.indexOf("Phone")!=-1)
-          $column.javaField: [
+#if(${column.javaField.indexOf("phone")}!=-1 || ${column.javaField.indexOf("Phone")}!=-1)
+          ${column.javaField}: [
             {
-#if($column.requiredFlag)
+#if(${column.requiredFlag})
               required: true,
 #end
               pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
-              message: '请输入正确的$column.columnComment',
+              message: '请输入正确的${column.columnComment}',
               trigger: 'blur'
             }
-          ]#if($velocityCount != $formColumns.size()),#end
+          ]#if(${velocityCount} != ${formColumns.size()}),#end
 
 #end
 #end
@@ -112,8 +112,8 @@
       initForm() {
         this.resetForm('form')
         return {
-#foreach ($column in $formColumns)
-          $column.javaField: $column.formInitValue#if($velocityCount != $formColumns.size()),#end
+#foreach ($column in ${formColumns})
+          ${column.javaField}: ${column.formInitValue}#if(${velocityCount} != ${formColumns.size()}),#end
 
 #end
         }

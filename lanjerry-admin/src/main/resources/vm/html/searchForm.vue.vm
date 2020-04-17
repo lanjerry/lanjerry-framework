@@ -1,14 +1,14 @@
 #set($dateRangeFlag = false)
 <template>
   <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="90px">
-#foreach ($column in $queryColumns)
-    <el-form-item label="$column.columnComment" prop="$column.javaField">
-#if($column.queryHtmlType=="input")
+#foreach ($column in ${queryColumns})
+    <el-form-item label="${column.columnComment}" prop="${column.javaField}">
+#if(${column.queryHtmlType}=="input")
       <el-input
-        v-model.trim="queryParams.$column.javaField"
-        placeholder="请输入$column.columnComment"
-#if($column.javaType=="String")
-        maxlength="$column.columnLength"
+        v-model.trim="queryParams.${column.javaField}"
+        placeholder="请输入${column.columnComment}"
+#if(${column.javaType}=="String")
+        maxlength="${column.columnLength}"
 #end
         clearable
         size="small"
@@ -16,20 +16,20 @@
         @keyup.enter.native="handleQuery"
       />
 #end
-#if($column.queryHtmlType=="select")
+#if(${column.queryHtmlType}=="select")
       <el-select
-        v-model="queryParams.$column.javaField"
-        placeholder="请选择$column.columnComment"
+        v-model="queryParams.${column.javaField}"
+        placeholder="请选择${column.columnComment}"
         clearable
         size="small"
         style="width: 200px"
         @change="handleQuery"
       >
-        <el-option label="请选择$column.columnComment" :value="null"></el-option>
+        <el-option label="请选择${column.columnComment}" :value="null"></el-option>
       </el-select>
 #end
-#if($column.queryHtmlType=="datetime")
-#if($column.queryType=="between")
+#if(${column.queryHtmlType}=="datetime")
+#if(${column.queryType}=="between")
 #set($dateRangeFlag = true)
       <el-date-picker
         v-model="dateRange"
@@ -43,9 +43,9 @@
       ></el-date-picker>
 #else
       <el-date-picker
-        v-model="queryParams.$column.javaField"
+        v-model="queryParams.${column.javaField}"
         type="date"
-        placeholder="请选择$column.columnComment"
+        placeholder="请选择${column.columnComment}"
         clearable
         size="small"
         style="width: 200px"
@@ -69,15 +69,15 @@
       return {
         // 查询参数
         queryParams: {
-#foreach ($column in $queryColumns)
-#if($column.queryHtmlType!="datetime"&&$column.queryType!="between")
-          $column.javaField: $column.queryInitValue#if($velocityCount != $queryColumns.size()),#end
+#foreach ($column in ${queryColumns})
+#if(${column.queryHtmlType}!="datetime"&&${column.queryType}!="between")
+          ${column.javaField}: ${column.queryInitValue}#if($velocityCount != ${queryColumns.size()}),#end
 
 #end
 #end
-        }#if($dateRangeFlag),#end
+        }#if(${dateRangeFlag}),#end
 
-#if($dateRangeFlag)
+#if(${dateRangeFlag})
         // 日期范围
         dateRange: []
 #end
@@ -90,7 +90,7 @@
       },
       // 重置按钮操作
       resetQuery() {
-#if($dateRangeFlag)
+#if(${dateRangeFlag})
         this.dateRange = []
 #end
         this.resetForm('queryForm')

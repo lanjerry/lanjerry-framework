@@ -1,10 +1,7 @@
-#set($saveDTO = "SaveDTO")
-#set($updateDTO = "UpdateDTO")
-#set($saveOrUpdateDTO = "SaveOrUpdateDTO")
 package ${packageName}.service.${moduleName}.impl;
 
-#foreach ($import in $serviceImplImports)
-import $import
+#foreach ($import in ${serviceImplImports})
+import ${import}
 #end
 
 import org.springframework.stereotype.Service;
@@ -22,25 +19,36 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 @Service
 public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${ClassName}> implements ${ClassName}Service {
 #if($!{tplFunctions})
+## 设置新增获取修改的DTO的名称
+#if(${tplFunctions.indexOf("add")}!=-1||${tplFunctions.indexOf("update")}!=-1)
+#set($saveOrUpdateDTOName = "")
+#if(${tplFunctions.indexOf("add")}!=-1&&${tplFunctions.indexOf("update")}!=-1)
+#set($saveOrUpdateDTOName = "SaveOrUpdateDTO")
+#elseif(${tplFunctions.indexOf("add")}!=-1)
+#set($saveOrUpdateDTOName = "SaveDTO")
+#else
+#set($saveOrUpdateDTOName = "UpdateDTO")
+#end
+#end
 #if(${tplFunctions.indexOf("pageList")}!=-1)
 
     @Override
     public IPage<${ClassName}PageVO> page${BusinessName}s(${ClassName}PageDTO dto) {
         IPage<${ClassName}> page = this.lambdaQuery().orderByDesc(${ClassName}::get${PkJavaField})
 #foreach($column in $!{queryColumns})
-#set($columnQueryType = $column.queryType)
-#set($columnJavaField = "get"+$column.upperFirstJavaField+"()")
-#set($columnJudge = "dto."+$columnJavaField+ "!= null")
-#if($column.javaType=="String")
-#set($columnJudge ="StrUtil.isNotBlank(dto."+$columnJavaField+")")
+#set($columnQueryType = ${column.queryType})
+#set($columnJavaField = "get"+${column.upperFirstJavaField}+"()")
+#set($columnJudge = "dto."+${columnJavaField}+ "!= null")
+#if(${column.javaType}=="String")
+#set($columnJudge ="StrUtil.isNotBlank(dto."+${columnJavaField}+")")
 #end
-#if($column.queryType=="between"&&$column.javaType=="LocalDateTime")
-#set($columnTimeStart = "dto.get"+$column.upperFirstJavaField+"Start()")
-#set($columnTimeEnd = "dto.get"+$column.upperFirstJavaField+"End()")
-            .ge(StrUtil.isNotBlank($columnTimeStart), ${ClassName}::get$column.upperFirstJavaField, $columnTimeStart + AdminConsts.START_TIME)
-            .le(StrUtil.isNotBlank($columnTimeEnd), ${ClassName}::get$column.upperFirstJavaField, $columnTimeEnd + AdminConsts.END_TIME)
+#if(${column.queryType}=="between"&&${column.javaType}=="LocalDateTime")
+#set($columnTimeStart = "dto.get"+${column.upperFirstJavaField}+"Start()")
+#set($columnTimeEnd = "dto.get"+${column.upperFirstJavaField}+"End()")
+            .ge(StrUtil.isNotBlank(${columnTimeStart}), ${ClassName}::get${column.upperFirstJavaField}, ${columnTimeStart} + AdminConsts.START_TIME)
+            .le(StrUtil.isNotBlank(${columnTimeEnd}), ${ClassName}::get${column.upperFirstJavaField}, ${columnTimeEnd} + AdminConsts.END_TIME)
 #else
-            .$columnQueryType($columnJudge, ${ClassName}::get$column.upperFirstJavaField, dto.$columnJavaField)
+            .${columnQueryType}(${columnJudge}, ${ClassName}::get${column.upperFirstJavaField}, dto.${columnJavaField})
 #end
 #set($columnQueryType = "")
 #end
@@ -54,19 +62,19 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
     public List<${ClassName}ListVO> list${BusinessName}s(${ClassName}ListDTO dto) {
         List<${ClassName}> list = this.lambdaQuery().orderByDesc(${ClassName}::get${PkJavaField})
 #foreach($column in $!{queryColumns})
-#set($columnQueryType = $column.queryType)
-#set($columnJavaField = "get"+$column.upperFirstJavaField+"()")
-#set($columnJudge = "dto."+$columnJavaField+ "!= null")
-#if($column.javaType=="String")
-#set($columnJudge ="StrUtil.isNotBlank(dto."+$columnJavaField+")")
+#set($columnQueryType = ${column.queryType})
+#set($columnJavaField = "get"+${column.upperFirstJavaField}+"()")
+#set($columnJudge = "dto."+${columnJavaField}+ "!= null")
+#if(${column.javaType}=="String")
+#set($columnJudge ="StrUtil.isNotBlank(dto."+${columnJavaField}+")")
 #end
-#if($column.queryType=="between"&&$column.javaType=="LocalDateTime")
-#set($columnTimeStart = "dto.get"+$column.upperFirstJavaField+"Start()")
-#set($columnTimeEnd = "dto.get"+$column.upperFirstJavaField+"End()")
-            .ge(StrUtil.isNotBlank($columnTimeStart), ${ClassName}::get$column.upperFirstJavaField, $columnTimeStart + AdminConsts.START_TIME)
-            .le(StrUtil.isNotBlank($columnTimeEnd), ${ClassName}::get$column.upperFirstJavaField, $columnTimeEnd + AdminConsts.END_TIME)
+#if(${column.queryType}=="between"&&${column.javaType}=="LocalDateTime")
+#set($columnTimeStart = "dto.get"+${column.upperFirstJavaField}+"Start()")
+#set($columnTimeEnd = "dto.get"+${column.upperFirstJavaField}+"End()")
+            .ge(StrUtil.isNotBlank(${columnTimeStart}), ${ClassName}::get${column.upperFirstJavaField}, ${columnTimeStart} + AdminConsts.START_TIME)
+            .le(StrUtil.isNotBlank(${columnTimeEnd}), ${ClassName}::get${column.upperFirstJavaField}, ${columnTimeEnd} + AdminConsts.END_TIME)
 #else
-            .$columnQueryType($columnJudge, ${ClassName}::get$column.upperFirstJavaField, dto.$columnJavaField)
+            .${columnQueryType}(${columnJudge}, ${ClassName}::get${column.upperFirstJavaField}, dto.${columnJavaField})
 #end
 #set($columnQueryType = "")
 #end
@@ -86,10 +94,10 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
 #if(${tplFunctions.indexOf("add")}!=-1)
 
     @Override
-    public void save${BusinessName}(${ClassName}#if(${tplFunctions.indexOf("update")}!=-1)${saveOrUpdateDTO}#else${saveDTO}#end dto) {
+    public void save${BusinessName}(${ClassName}${saveOrUpdateDTOName} dto) {
 #foreach($column in $!{onlyColumns})
-#set($columnJavaField = "get"+$column.upperFirstJavaField+"()")
-        ApiAssert.isTrue(this.count(Wrappers.<${ClassName}>lambdaQuery().eq(${ClassName}::get$column.upperFirstJavaField, dto.$columnJavaField)) == 0, String.format("$column.columnComment：%s已存在", dto.$columnJavaField));
+#set($columnJavaField = "get"+${column.upperFirstJavaField}+"()")
+        ApiAssert.isTrue(this.count(Wrappers.<${ClassName}>lambdaQuery().eq(${ClassName}::get${column.upperFirstJavaField}, dto.${columnJavaField})) == 0, String.format("${column.columnComment}：%s已存在", dto.${columnJavaField}));
 #end
         ${ClassName} ${businessName} = BeanCopyUtil.beanCopy(dto, ${ClassName}.class);
         this.save(${businessName});
@@ -98,12 +106,12 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
 #if(${tplFunctions.indexOf("update")}!=-1)
 
     @Override
-    public void update${BusinessName}(${pkJavaType} ${pkJavaField}, ${ClassName}#if(${tplFunctions.indexOf("add")}!=-1)${saveOrUpdateDTO}#else${updateDTO}#end dto) {
+    public void update${BusinessName}(${pkJavaType} ${pkJavaField}, ${ClassName}${saveOrUpdateDTOName} dto) {
         ${ClassName} ori${BusinessName} = this.getById(${pkJavaField});
         ApiAssert.notNull(ori${BusinessName}, String.format("${pkComment}：%s不存在", ${pkJavaField}));
 #foreach($column in $!{onlyColumns})
-#set($columnJavaField = "get"+$column.upperFirstJavaField+"()")
-        ApiAssert.isTrue(this.count(Wrappers.<${ClassName}>lambdaQuery().ne(${ClassName}::get${PkJavaField}, ${pkJavaField}).eq(${ClassName}::get$column.upperFirstJavaField, dto.$columnJavaField)) == 0, String.format("$column.columnComment：%s已存在", dto.$columnJavaField));
+#set($columnJavaField = "get"+${column.upperFirstJavaField}+"()")
+        ApiAssert.isTrue(this.count(Wrappers.<${ClassName}>lambdaQuery().ne(${ClassName}::get${PkJavaField}, ${pkJavaField}).eq(${ClassName}::get${column.upperFirstJavaField}, dto.${columnJavaField})) == 0, String.format("${column.columnComment}：%s已存在", dto.${columnJavaField}));
 #end
         ${ClassName} ${businessName} = BeanCopyUtil.beanCopy(dto, ${ClassName}.class);
         ${businessName}.setId(${pkJavaField});
@@ -128,19 +136,19 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
         List<${ClassName}> list = this.lambdaQuery().orderByDesc(${ClassName}::get${PkJavaField})
             .in(CollUtil.isNotEmpty(dto.get${PkJavaField}s()), ${ClassName}::get${PkJavaField}, dto.get${PkJavaField}s())
 #foreach($column in $!{queryColumns})
-#set($columnQueryType = $column.queryType)
-#set($columnJavaField = "get"+$column.upperFirstJavaField+"()")
-#set($columnJudge = "dto."+$columnJavaField+ "!= null")
-#if($column.javaType=="String")
-#set($columnJudge ="StrUtil.isNotBlank(dto."+$columnJavaField+")")
+#set($columnQueryType = ${column.queryType})
+#set($columnJavaField = "get"+${column.upperFirstJavaField}+"()")
+#set($columnJudge = "dto."+${columnJavaField}+ "!= null")
+#if(${column.javaType}=="String")
+#set($columnJudge ="StrUtil.isNotBlank(dto."+${columnJavaField}+")")
 #end
-#if($column.queryType=="between"&&$column.javaType=="LocalDateTime")
-#set($columnTimeStart = "dto.get"+$column.upperFirstJavaField+"Start()")
-#set($columnTimeEnd = "dto.get"+$column.upperFirstJavaField+"End()")
-            .ge(StrUtil.isNotBlank($columnTimeStart), ${ClassName}::get$column.upperFirstJavaField, $columnTimeStart + AdminConsts.START_TIME)
-            .le(StrUtil.isNotBlank($columnTimeEnd), ${ClassName}::get$column.upperFirstJavaField, $columnTimeEnd + AdminConsts.END_TIME)
+#if(${column.queryType}=="between"&&${column.javaType}=="LocalDateTime")
+#set($columnTimeStart = "dto.get"+${column.upperFirstJavaField}+"Start()")
+#set($columnTimeEnd = "dto.get"+${column.upperFirstJavaField}+"End()")
+            .ge(StrUtil.isNotBlank(${columnTimeStart}), ${ClassName}::get${column.upperFirstJavaField}, ${columnTimeStart} + AdminConsts.START_TIME)
+            .le(StrUtil.isNotBlank(${columnTimeEnd}), ${ClassName}::get${column.upperFirstJavaField}, ${columnTimeEnd} + AdminConsts.END_TIME)
 #else
-            .$columnQueryType($columnJudge, ${ClassName}::get$column.upperFirstJavaField, dto.$columnJavaField)
+            .${columnQueryType}(${columnJudge}, ${ClassName}::get${column.upperFirstJavaField}, dto.${columnJavaField})
 #end
 #set($columnQueryType = "")
 #end

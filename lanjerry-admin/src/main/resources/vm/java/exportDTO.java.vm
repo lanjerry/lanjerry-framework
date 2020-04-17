@@ -2,8 +2,8 @@ package ${packageName}.dto.${moduleName};
 
 import java.util.List;
 
-#foreach ($import in $selectDTOImports)
-import $import
+#foreach ($import in ${selectDTOImports})
+import ${import}
 #end
 
 import ${basePackage}.common.core.bean.SplitPage;
@@ -24,36 +24,36 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class ${ClassName}ExportDTO extends BaseEntity {
 #set($position = 0)
-#foreach ($column in $queryColumns)
-#set($position = $position + 10)
-#if($column.queryType=="between"&&$column.javaType=="LocalDateTime")
+#foreach ($column in ${queryColumns})
+#set($position = ${position} + 10)
+#if(${column.queryType}=="between"&&${column.javaType}=="LocalDateTime")
 
     /**
-     * $column.columnComment始
+     * ${column.columnComment}始
      */
-    @ApiModelProperty(value = "$column.columnComment始", example = "$date", position = $position)
+    @ApiModelProperty(value = "${column.columnComment}始", example = "${date}", position = ${position})
     private String ${column.javaField}Start;
-#set($position = $position + 10)
+#set($position = ${position} + 10)
 
     /**
-     * $column.columnComment止
+     * ${column.columnComment}止
      */
-    @ApiModelProperty(value = "$column.columnComment止", example = "$date", position = $position)
+    @ApiModelProperty(value = "${column.columnComment}止", example = "${date}", position = ${position})
     private String ${column.javaField}End;
 #else
 
     /**
-     * $column.columnComment
+     * ${column.columnComment}
      */
-    @ApiModelProperty(value = "$column.columnComment", example = "$column.columnExample", position = $position)
-    private $column.javaType $column.javaField;
+    @ApiModelProperty(value = "${column.columnComment}", example = "${column.columnExample}", position = ${position})
+    private ${column.javaType} ${column.javaField};
 #end
 #end
 
-#set($position = $position + 10)
+#set($position = ${position} + 10)
     /**
      * ${pkComment}数组
      */
-    @ApiModelProperty(value = "${pkComment}数组", example = "[1,2,3]", position = $position)
+    @ApiModelProperty(value = "${pkComment}数组", example = "[1,2,3]", position = ${position})
     private List<${pkJavaType}> ${pkJavaField}s;
 }

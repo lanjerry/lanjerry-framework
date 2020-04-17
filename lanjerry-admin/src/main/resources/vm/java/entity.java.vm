@@ -2,8 +2,8 @@ package ${basePackage}.common.core.entity.${moduleName};
 
 import ${basePackage}.common.core.bean.BaseEntity;
 
-#foreach ($import in $entityImports)
-import $import
+#foreach ($import in ${entityImports})
+import ${import}
 #end
 import com.baomidou.mybatisplus.annotation.TableName;
 
@@ -22,22 +22,27 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @TableName("${tableName}")
 public class ${ClassName} extends BaseEntity {
-#foreach ($column in $columns)
+## 新增自动填充字段集合
+#set($insertFillFields = ["deleteFlag", "creatorId", "creatorName", "createdTime"])
+## 修改自动填充字段集合
+#set($updateFillFields = ["updatedTime"])
+#foreach ($column in ${columns})
 
     /**
-     * $column.columnComment
+     * ${column.columnComment}
      */
-#if($column.pkFlag)
-    @TableId(value = "$column.javaField", type = IdType.AUTO)
+#if(${column.pkFlag})
+    @TableId(value = "${column.javaField}", type = IdType.AUTO)
 #end
-#if($column.javaField=="deleteFlag")
+#if(${column.javaField}=="deleteFlag")
     @TableLogic
 #end
-#if($column.javaField=="deleteFlag"||$column.javaField=="creatorId"||$column.javaField=="creatorName"||$column.javaField=="createdTime")
+#if(${insertFillFields.indexOf(${column.javaField})}!=-1)
     @TableField(fill = FieldFill.INSERT)
-#elseif($column.javaField=="updatedTime")
+#end
+#if(${updateFillFields.indexOf(${column.javaField})}!=-1)
     @TableField(fill = FieldFill.UPDATE)
 #end
-    private $column.javaType $column.javaField;
+    private ${column.javaType} ${column.javaField};
 #end
 }
