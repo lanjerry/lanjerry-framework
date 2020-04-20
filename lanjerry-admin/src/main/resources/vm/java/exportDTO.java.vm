@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * ${functionName}导出查询DTO
+ * ${functionName}导出参数
  * </p>
  *
  * @author ${author}
@@ -22,6 +22,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@ApiModel("${functionName}导出参数")
 public class ${ClassName}ExportDTO extends BaseEntity {
 #set($position = 0)
 #foreach ($column in ${queryColumns})

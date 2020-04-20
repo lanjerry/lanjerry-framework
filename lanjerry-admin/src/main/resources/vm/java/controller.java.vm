@@ -49,7 +49,7 @@ public class ${ClassName}Controller {
     @GetMapping("/page")
     @RequiresPermissions("${permissionPrefix}:page")
     @ApiOperation(value = "分页查询${functionName}列表", position = ${position})
-    public ApiResult<IPage<${ClassName}PageVO>> page${BusinessName}s(@ApiParam(value = "${functionName}列表查询参数", required = true) ${ClassName}PageDTO dto) {
+    public ApiResult<IPage<${ClassName}PageVO>> page${BusinessName}s(@ApiParam(value = "${functionName}查询参数", required = true) ${ClassName}PageDTO dto) {
         return ApiResult.success(${businessName}Service.page${BusinessName}s(dto));
     }
 #end
@@ -59,7 +59,7 @@ public class ${ClassName}Controller {
     @GetMapping("/list")
     @RequiresPermissions("${permissionPrefix}:list")
     @ApiOperation(value = "查询${functionName}列表", position = ${position})
-    public ApiResult<List<${ClassName}ListVO>> list${BusinessName}s(@ApiParam(value = "${functionName}列表查询参数", required = true) ${ClassName}ListDTO dto) {
+    public ApiResult<List<${ClassName}ListVO>> list${BusinessName}s(@ApiParam(value = "${functionName}查询参数", required = true) ${ClassName}ListDTO dto) {
         return ApiResult.success(${businessName}Service.list${BusinessName}s(dto));
     }
 #end
@@ -115,7 +115,7 @@ public class ${ClassName}Controller {
     @RequiresPermissions("${permissionPrefix}:export")
     @SysLog("导出${functionName}")
     @ApiOperation(value = "导出${functionName}", position = ${position})
-    public void export${BusinessName}s(@RequestBody @ApiParam(value = "${functionName}列表导出参数", required = true) ${ClassName}ExportDTO dto, HttpServletResponse response) {
+    public void export${BusinessName}s(@RequestBody @ApiParam(value = "${functionName}导出参数", required = true) ${ClassName}ExportDTO dto, HttpServletResponse response) {
         ${businessName}Service.export${BusinessName}s(dto, response);
     }
 #end

@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * ${functionName}分页查询DTO
+ * ${functionName}查询参数
  * </p>
  *
  * @author ${author}
@@ -20,6 +20,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@ApiModel("${functionName}查询参数")
 public class ${ClassName}PageDTO extends SplitPage {
 #set($position = 0)
 #foreach ($column in ${queryColumns})

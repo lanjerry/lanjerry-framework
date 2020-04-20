@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * ${functionName}新增DTO
+ * ${functionName}新增参数
  * </p>
  *
  * @author ${author}
@@ -20,11 +20,8 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@ApiModel("${functionName}新增参数")
 public class ${ClassName}SaveDTO extends BaseEntity {
-## 邮箱字段
-#set($mailFields = ["mail", "Mail"])
-## 手机号码字段
-#set($phoneFields = ["phone", "Phone"])
 #set($position = 0)
 #foreach ($column in ${formColumns})
 #set($position = ${position} + 10)
@@ -35,10 +32,10 @@ public class ${ClassName}SaveDTO extends BaseEntity {
 #if(${column.javaType}=="String")
     @Size(max = ${column.columnLength}, message = "${column.columnComment}输入长度不能超过${column.columnLength}个字符")
 #end
-#if(${mailFields.indexOf(${column.javaField})}!=-1)
+#if(${column.javaField.indexOf("mail")}!=-1 || ${column.javaField.indexOf("Mail")}!=-1)
     @Email(message = "${column.columnComment}格式不正确")
 #end
-#if(${phoneFields.indexOf(${column.javaField})}!=-1&&${column.requiredFlag})
+#if((${column.javaField.indexOf("phone")}!=-1 || ${column.javaField.indexOf("Phone")}!=-1)&&${column.requiredFlag})
     @Pattern(regexp = "^[1](([3|5|8][\\d])|([4][5,6,7,8,9])|([6][5,6])|([7][3,4,5,6,7,8])|([9][8,9]))[\\d]{8}$", message = "${column.columnComment}格式不正确")
 #end
 #if(${column.requiredFlag})
