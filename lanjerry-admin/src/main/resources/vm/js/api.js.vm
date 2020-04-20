@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 #if($!{tplFunctions})
-#if(${tplFunctions.indexOf("pageList")}!=-1)
+#if(${showPageListFlag})
 
 // 分页查询${functionName}列表
 export function page${BusinessName}s(query) {
@@ -11,7 +11,7 @@ export function page${BusinessName}s(query) {
   })
 }
 #end
-#if(${tplFunctions.indexOf("list")}!=-1)
+#if(${showListFlag})
 
   // 查询${functionName}列表
   export function list${BusinessName}s(query) {
@@ -22,7 +22,7 @@ export function page${BusinessName}s(query) {
       })
   }
 #end
-#if(${tplFunctions.indexOf("update")}!=-1)
+#if(${showUpdateFlag})
 
 // 根据${pkComment}查询${functionName}信息
 export function get${BusinessName}(${pkJavaField}) {
@@ -32,7 +32,7 @@ export function get${BusinessName}(${pkJavaField}) {
   })
 }
 #end
-#if(${tplFunctions.indexOf("add")}!=-1)
+#if(${showAddFlag})
 
 // 新增${functionName}
 export function save${BusinessName}(data) {
@@ -43,7 +43,7 @@ export function save${BusinessName}(data) {
   })
 }
 #end
-#if(${tplFunctions.indexOf("update")}!=-1)
+#if(${showUpdateFlag})
 
 // 更新${functionName}
 export function update${BusinessName}(${pkJavaField}, data) {
@@ -54,7 +54,7 @@ export function update${BusinessName}(${pkJavaField}, data) {
   })
 }
 #end
-#if(${tplFunctions.indexOf("delete")}!=-1)
+#if(${showDeleteFlag})
 
 // 删除${functionName}
 export function remove${BusinessName}s(${pkJavaField}s) {
@@ -64,7 +64,7 @@ export function remove${BusinessName}s(${pkJavaField}s) {
   })
 }
 #end
-#if(${tplFunctions.indexOf("export")}!=-1)
+#if(${showExportFlag})
 
 // 导出${functionName}
 export function export${BusinessName}s(data) {

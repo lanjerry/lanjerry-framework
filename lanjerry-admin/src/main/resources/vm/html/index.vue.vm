@@ -1,29 +1,36 @@
+## 定义弹出层的文本
+#if(${showAddFlag} && ${showUpdateFlag})
+    #set($dialogNote = "新增或者修改")
+#elseif(${showAddFlag})
+    #set($dialogNote = "新增")
+#else
+    #set($dialogNote = "修改")
+#end
 <template>
   <div class="app-container">
-#if(${tplFunctions.indexOf("pageList")}!=-1||${tplFunctions.indexOf("list")}!=-1)
+#if(${showPageListFlag} || ${showListFlag})
     <!-- 查询条件 -->
     <${moduleName}-${businessName}-search-form ref="searchForm" @handleQuery="handleQuery"/>
 #end
-
-#if(${tplFunctions.indexOf("add")}!=-1||${tplFunctions.indexOf("update")}!=-1||${tplFunctions.indexOf("delete")}!=-1)
+#if(${showAddFlag} || ${showUpdateFlag} || ${showDeleteFlag} || ${showExportFlag})
     <!-- 操作栏 -->
     <el-row :gutter="10" class="mb8">
-#if(${tplFunctions.indexOf("add")}!=-1)
+#if(${showAddFlag})
       <el-col :span="1.5">
         <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAdd" v-hasPermi="${businessName}.save">新增</el-button>
       </el-col>
 #end
-#if(${tplFunctions.indexOf("update")}!=-1)
+#if(${showUpdateFlag})
       <el-col :span="1.5">
         <el-button type="success" icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate" v-hasPermi="${businessName}.update">修改</el-button>
       </el-col>
 #end
-#if(${tplFunctions.indexOf("delete")}!=-1)
+#if(${showDeleteFlag})
       <el-col :span="1.5">
         <el-button type="danger" icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete" v-hasPermi="${businessName}.remove">删除</el-button>
       </el-col>
 #end
-#if(${tplFunctions.indexOf("export")}!=-1)
+#if(${showExportFlag})
       <el-col :span="1.5">
         <el-button type="warning" icon="el-icon-download" size="mini" @click="handleExport" v-hasPermi="${businessName}.export">导出</el-button>
       </el-col>
@@ -32,21 +39,21 @@
 #end
 
     <!-- 表格 -->
-#if(${tplFunctions.indexOf("pageList")}!=-1||${tplFunctions.indexOf("list")}!=-1)
-    <el-table v-loading="loading" :data="list" #if(${tplFunctions.indexOf("update")}!=-1||${tplFunctions.indexOf("delete")}!=-1)@selection-change="handleSelectionChange"#end>
-#if(${tplFunctions.indexOf("update")}!=-1||${tplFunctions.indexOf("delete")}!=-1)
+#if(${showPageListFlag} || ${showListFlag})
+    <el-table v-loading="loading" :data="list" #if(${showUpdateFlag} || ${showDeleteFlag} || ${showExportFlag})@selection-change="handleSelectionChange"#end>
+#if(${showUpdateFlag} || ${showDeleteFlag} || ${showExportFlag})
       <el-table-column type="selection"/>
 #end
-#foreach ($column in $listColumns)
-      <el-table-column prop="$column.javaField" label="$column.columnComment" #if($column.javaType=='LocalDateTime')width="155"#end/>
+#foreach ($column in ${listColumns})
+      <el-table-column prop="${column.javaField}" label="${column.columnComment}" #if(${column.javaType}=='LocalDateTime')width="155"#end/>
 #end
-#if(${tplFunctions.indexOf("update")}!=-1||${tplFunctions.indexOf("delete")}!=-1)
+#if(${showUpdateFlag} || ${showDeleteFlag})
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-#if(${tplFunctions.indexOf("update")}!=-1)
+#if(${showUpdateFlag})
           <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)" v-hasPermi="${businessName}.update">修改</el-button>
 #end
-#if(${tplFunctions.indexOf("delete")}!=-1)
+#if(${showDeleteFlag})
           <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)" v-hasPermi="${businessName}.remove">删除</el-button>
 #end
         </template>
@@ -54,65 +61,39 @@
 #end
     </el-table>
 #end
-#if(${tplFunctions.indexOf("pageList")}!=-1)
+#if(${showPageListFlag})
     <common-pagination v-show="total>0" :total="total" :page.sync="page" :size.sync="size" @pagination="fetchData"/>
 #end
 
-#if(${tplFunctions.indexOf("add")}!=-1||${tplFunctions.indexOf("update")}!=-1)
-#if(${tplFunctions.indexOf("add")}!=-1&&${tplFunctions.indexOf("update")}!=-1)
-#set($dialogNote = "新增或者修改")
-#elseif(${tplFunctions.indexOf("add")}!=-1)
-#set($dialogNote = "新增")
-#else
-#set($dialogNote = "修改")
-#end
-    <!-- $dialogNote${functionName}弹出层 -->
-    <${moduleName}-${businessName}-modify-dialog #if(${tplFunctions.indexOf("update")}!=-1):id="id"#end :title="title" v-model="showModifyDialog" @success="fetchData"/>
+#if(${showAddFlag} || ${showUpdateFlag})
+    <!-- ${dialogNote}${functionName}弹出层 -->
+    <${moduleName}-${businessName}-modify-dialog #if(${showUpdateFlag}):id="id"#end :title="title" v-model="showModifyDialog" @success="fetchData"/>
 #end
   </div>
 </template>
 
 <script>
-#if(${tplFunctions.indexOf("pageList")}!=-1||${tplFunctions.indexOf("list")}!=-1)
   import mixin from '@/mixin'
-#end
-#if(${tplFunctions.indexOf("pageList")}!=-1&&${tplFunctions.indexOf("delete")}!=-1&&${tplFunctions.indexOf("export")}!=-1)
-  import { page${BusinessName}s, remove${BusinessName}s, export${BusinessName}s } from '@/api/${moduleName}/${businessName}'
-#end
-#if(${tplFunctions.indexOf("pageList")}!=-1&&${tplFunctions.indexOf("delete")}!=-1&&${tplFunctions.indexOf("export")}==-1)
-  import { page${BusinessName}s, remove${BusinessName}s } from '@/api/${moduleName}/${businessName}'
-#end
-#if(${tplFunctions.indexOf("list")}!=-1&&${tplFunctions.indexOf("delete")}!=-1&&${tplFunctions.indexOf("export")}!=-1)
-  import { list${BusinessName}s, remove${BusinessName}s, export${BusinessName}s } from '@/api/${moduleName}/${businessName}'
-#end
-#if(${tplFunctions.indexOf("list")}!=-1&&${tplFunctions.indexOf("delete")}!=-1&&${tplFunctions.indexOf("export")}==-1)
-  import { list${BusinessName}s, remove${BusinessName}s } from '@/api/${moduleName}/${businessName}'
-#end
-#if(${tplFunctions.indexOf("pageList")}!=-1&&${tplFunctions.indexOf("delete")}==-1&&${tplFunctions.indexOf("export")}==-1)
-  import { page${BusinessName}s } from '@/api/${moduleName}/${businessName}'
-#end
-#if(${tplFunctions.indexOf("list")}!=-1&&${tplFunctions.indexOf("delete")}==-1&&${tplFunctions.indexOf("export")}==-1)
-  import { list${BusinessName}s } from '@/api/${moduleName}/${businessName}'
-#end
-#if(${tplFunctions.indexOf("pageList")}!=-1||${tplFunctions.indexOf("list")}!=-1)
+  import { #foreach ($function in ${apiIndexFunctions})${function}#if($velocityCount != ${apiIndexFunctions.size()}), #end#end } from '@/api/${moduleName}/${businessName}'
+#if(${showPageListFlag} || ${showListFlag})
   import ${ClassName}SearchForm from '@/components/${moduleName}/${businessName}/${ClassName}SearchForm'
 #end
-#if(${tplFunctions.indexOf("add")}!=-1||${tplFunctions.indexOf("update")}!=-1)
+#if(${showAddFlag} || ${showUpdateFlag})
   import ${ClassName}ModifyDialog from '@/components/${moduleName}/${businessName}/${ClassName}ModifyDialog'
 #end
 
   export default {
     name: '${ClassName}',
-#if((${tplFunctions.indexOf("pageList")}!=-1||${tplFunctions.indexOf("list")}!=-1)&&(${tplFunctions.indexOf("add")}!=-1||${tplFunctions.indexOf("update")}!=-1))
+#if((${showPageListFlag} || ${showListFlag}) && (${showAddFlag} || ${showUpdateFlag}))
     components: { ${ClassName}SearchForm, ${ClassName}ModifyDialog },
 #end
-#if((${tplFunctions.indexOf("pageList")}!=-1||${tplFunctions.indexOf("list")}!=-1)&&(${tplFunctions.indexOf("add")}==-1&&${tplFunctions.indexOf("update")}==-1))
+#if((${showPageListFlag} || ${showListFlag}) && (!${showAddFlag} && !${showUpdateFlag}))
     components: { ${ClassName}SearchForm },
 #end
-#if(${tplFunctions.indexOf("pageList")}!=-1||${tplFunctions.indexOf("list")}!=-1)
+#if(${showPageListFlag} || ${showListFlag})
     mixins: [
       mixin.search,
-#if(${tplFunctions.indexOf("pageList")}!=-1)
+#if(${showPageListFlag})
       mixin.pager
 #end
     ],
@@ -121,79 +102,72 @@
       return {
         // 遮罩层
         loading: false,
-#if(${tplFunctions.indexOf("update")}!=-1||${tplFunctions.indexOf("delete")}!=-1)
+#if(${showUpdateFlag} || ${showDeleteFlag} || ${showExportFlag})
         // 选中数组
         ${pkJavaField}s: [],
 #end
-#if(${tplFunctions.indexOf("update")}!=-1)
+#if(${showUpdateFlag})
         // 非单个禁用
         single: true,
 #end
-#if(${tplFunctions.indexOf("delete")}!=-1)
+#if(${showDeleteFlag} || ${showExportFlag})
         // 非多个禁用
         multiple: true,
 #end
-#if(${tplFunctions.indexOf("add")}!=-1||${tplFunctions.indexOf("update")}!=-1||${tplFunctions.indexOf("delete")}!=-1)
+#if(${showAddFlag} || ${showUpdateFlag} || ${showDeleteFlag} || ${showExportFlag})
         // 权限标识
         ${businessName}: {
-#if(${tplFunctions.indexOf("add")}!=-1)
+#if(${showAddFlag})
           save: ['${permissionPrefix}:save'],
 #end
-#if(${tplFunctions.indexOf("update")}!=-1)
+#if(${showUpdateFlag})
           update: ['${permissionPrefix}:update'],
 #end
-#if(${tplFunctions.indexOf("delete")}!=-1)
+#if(${showDeleteFlag})
           remove: ['${permissionPrefix}:remove'],
 #end
-#if(${tplFunctions.indexOf("export")}!=-1)
+#if(${showExportFlag})
           export: ['${permissionPrefix}:export']
 #end
         },
 #end
-#if(${tplFunctions.indexOf("pageList")}!=-1||${tplFunctions.indexOf("list")}!=-1)
+#if(${showPageListFlag} || ${showListFlag})
         // 表格数据
         list: [],
 #end
-#if(${tplFunctions.indexOf("update")}!=-1)
+#if(${showUpdateFlag})
         // ${pkComment}
         ${pkJavaField}: '',
 #end
-#if(${tplFunctions.indexOf("add")}!=-1||${tplFunctions.indexOf("update")}!=-1)
-#if(${tplFunctions.indexOf("add")}!=-1&&${tplFunctions.indexOf("update")}!=-1)
-#set($dialogNote = "新增或者修改")
-#elseif(${tplFunctions.indexOf("add")}!=-1)
-#set($dialogNote = "新增")
-#else
-#set($dialogNote = "修改")
-#end
+#if(${showAddFlag} || ${showUpdateFlag})
         // 弹出层标题
         title: '',
-        // 是否显示$dialogNote的弹出层
+        // 是否显示${dialogNote}的弹出层
         showModifyDialog: false
 #end
       }
     },
-#if(${tplFunctions.indexOf("pageList")}!=-1||${tplFunctions.indexOf("list")}!=-1)
+#if(${showPageListFlag} || ${showListFlag})
     mounted() {
       this.fetchData()
     },
 #end
     methods: {
-#if(${tplFunctions.indexOf("pageList")}!=-1||${tplFunctions.indexOf("list")}!=-1)
+#if(${showPageListFlag} || ${showListFlag})
 #set($pageListNote = "")
-#if(${tplFunctions.indexOf("pageList")}!=-1)
+#if(${showPageListFlag})
 #set($pageListNote = "分页")
 #end
       // $pageListNote查询${functionName}列表
       fetchData() {
         this.loading = true
-#if(${tplFunctions.indexOf("pageList")}!=-1)
+#if(${showPageListFlag})
         const { page: pageNum, size: pageSize } = this
         const params = Object.assign(this.$refs.searchForm.queryParams, { pageNum, pageSize })
 #else
         const params = this.$refs.searchForm.queryParams
 #end
-#if(${tplFunctions.indexOf("pageList")}!=-1)
+#if(${showPageListFlag})
         page${BusinessName}s(params).then(res => {
           this.list = res.data.records
           this.total = res.data.total
@@ -203,7 +177,7 @@
 #end
         }).catch(() => {
           this.list = []
-#if(${tplFunctions.indexOf("pageList")}!=-1)
+#if(${showPageListFlag})
           this.total = 0
 #end
         }).then(() => {
@@ -211,29 +185,29 @@
         })
       },
 #end
-#if(${tplFunctions.indexOf("update")}!=-1||${tplFunctions.indexOf("delete")}!=-1)
+#if(${showUpdateFlag} || ${showDeleteFlag} || ${showExportFlag})
       // 多选框选中数据
       handleSelectionChange(selection) {
         this.ids = selection.map(item => item.id)
-#if(${tplFunctions.indexOf("update")}!=-1)
+#if(${showUpdateFlag})
         this.single = selection.length != 1
 #end
-#if(${tplFunctions.indexOf("delete")}!=-1)
+#if(${showDeleteFlag} || ${showExportFlag})
         this.multiple = !selection.length
 #end
       },
 #end
-#if(${tplFunctions.indexOf("add")}!=-1)
+#if(${showAddFlag})
       // 新增按钮操作
       handleAdd() {
-#if(${tplFunctions.indexOf("update")}!=-1)
+#if(${showUpdateFlag})
         this.id = ''
 #end
         this.showModifyDialog = true
         this.title = '添加${functionName}'
       },
 #end
-#if(${tplFunctions.indexOf("update")}!=-1)
+#if(${showUpdateFlag})
       // 修改按钮操作
       handleUpdate(row) {
         this.id = row.id || (this.ids ? this.ids[0] : '')
@@ -241,7 +215,7 @@
         this.title = '修改${functionName}'
       },
 #end
-#if(${tplFunctions.indexOf("delete")}!=-1)
+#if(${showDeleteFlag})
       // 删除按钮操作
       handleDelete(row) {
         const ${pkJavaField}s = row.${pkJavaField} || this.${pkJavaField}s
@@ -258,7 +232,7 @@
         })
       },
 #end
-#if(${tplFunctions.indexOf("export")}!=-1)
+#if(${showExportFlag})
       // 导出按钮操作
       handleExport() {
         const ${pkJavaField}s = this.${pkJavaField}s

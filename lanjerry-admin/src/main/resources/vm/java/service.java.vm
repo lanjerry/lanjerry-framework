@@ -17,41 +17,41 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface ${ClassName}Service extends IService<${ClassName}> {
 #if($!{tplFunctions})
 ## 设置新增获取修改的DTO的名称
-#if(${tplFunctions.indexOf("add")}!=-1||${tplFunctions.indexOf("update")}!=-1)
+#if(${showAddFlag} || ${showUpdateFlag})
 #set($saveOrUpdateDTOName = "")
-#if(${tplFunctions.indexOf("add")}!=-1&&${tplFunctions.indexOf("update")}!=-1)
+#if(${showAddFlag} && ${showUpdateFlag})
 #set($saveOrUpdateDTOName = "SaveOrUpdateDTO")
-#elseif(${tplFunctions.indexOf("add")}!=-1)
+#elseif(${showAddFlag})
 #set($saveOrUpdateDTOName = "SaveDTO")
 #else
 #set($saveOrUpdateDTOName = "UpdateDTO")
 #end
 #end
-#if(${tplFunctions.indexOf("pageList")}!=-1)
+#if(${showPageListFlag})
 
     /**
      * 分页查询${functionName}列表
      *
      * @author ${author}
      * @since ${datetime}
-     * @param dto ${functionName}列表查询参数
+     * @param dto ${functionName}查询参数
      * @return com.baomidou.mybatisplus.core.metadata.IPage<${packageName}.vo.${moduleName}.${ClassName}PageVO>
      */
     IPage<${ClassName}PageVO> page${BusinessName}s(${ClassName}PageDTO dto);
 #end
-#if(${tplFunctions.indexOf("list")}!=-1)
+#if(${showListFlag})
 
     /**
      * 查询${functionName}列表
      *
      * @author ${author}
      * @since ${datetime}
-     * @param dto ${functionName}列表查询参数
+     * @param dto ${functionName}查询参数
      * @return java.util.List<${packageName}.vo.${moduleName}.${ClassName}ListVO>
      */
     List<${ClassName}ListVO> list${BusinessName}s(${ClassName}ListDTO dto);
 #end
-#if(${tplFunctions.indexOf("update")}!=-1)
+#if(${showUpdateFlag})
 
     /**
      * 根据${pkComment}查询${functionName}信息
@@ -63,7 +63,7 @@ public interface ${ClassName}Service extends IService<${ClassName}> {
      */
     ${ClassName}InfoVO get${BusinessName}(${pkJavaType} ${pkJavaField});
 #end
-#if(${tplFunctions.indexOf("add")}!=-1)
+#if(${showAddFlag})
 
     /**
      * 新增${functionName}
@@ -74,7 +74,7 @@ public interface ${ClassName}Service extends IService<${ClassName}> {
      */
     void save${BusinessName}(${ClassName}${saveOrUpdateDTOName} dto);
 #end
-#if(${tplFunctions.indexOf("update")}!=-1)
+#if(${showUpdateFlag})
 
     /**
      * 更新${functionName}
@@ -86,7 +86,7 @@ public interface ${ClassName}Service extends IService<${ClassName}> {
      */
     void update${BusinessName}(${pkJavaType} ${pkJavaField}, ${ClassName}${saveOrUpdateDTOName} dto);
 #end
-#if(${tplFunctions.indexOf("delete")}!=-1)
+#if(${showDeleteFlag})
 
     /**
      * 删除${functionName}
@@ -97,14 +97,14 @@ public interface ${ClassName}Service extends IService<${ClassName}> {
      */
     void remove${BusinessName}s(${pkJavaType}[] ${pkJavaField}s);
 #end
-#if(${tplFunctions.indexOf("export")}!=-1)
+#if(${showExportFlag})
 
     /**
      * 导出${functionName}
      *
      * @author ${author}
      * @since ${datetime}
-     * @param dto ${functionName}列表导出参数
+     * @param dto ${functionName}导出参数
      * @param response 输出流
      */
     void export${BusinessName}s(${ClassName}ExportDTO dto, HttpServletResponse response);

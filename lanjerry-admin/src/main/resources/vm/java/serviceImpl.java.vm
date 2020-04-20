@@ -20,17 +20,17 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${ClassName}> implements ${ClassName}Service {
 #if($!{tplFunctions})
 ## 设置新增获取修改的DTO的名称
-#if(${tplFunctions.indexOf("add")}!=-1||${tplFunctions.indexOf("update")}!=-1)
+#if(${showAddFlag} || ${showUpdateFlag})
 #set($saveOrUpdateDTOName = "")
-#if(${tplFunctions.indexOf("add")}!=-1&&${tplFunctions.indexOf("update")}!=-1)
+#if(${showAddFlag} && ${showUpdateFlag})
 #set($saveOrUpdateDTOName = "SaveOrUpdateDTO")
-#elseif(${tplFunctions.indexOf("add")}!=-1)
+#elseif(${showAddFlag})
 #set($saveOrUpdateDTOName = "SaveDTO")
 #else
 #set($saveOrUpdateDTOName = "UpdateDTO")
 #end
 #end
-#if(${tplFunctions.indexOf("pageList")}!=-1)
+#if(${showPageListFlag})
 
     @Override
     public IPage<${ClassName}PageVO> page${BusinessName}s(${ClassName}PageDTO dto) {
@@ -56,7 +56,7 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
         return BeanCopyUtil.pageCopy(page, ${ClassName}.class, ${ClassName}PageVO.class);
     }
 #end
-#if(${tplFunctions.indexOf("list")}!=-1)
+#if(${showListFlag})
 
     @Override
     public List<${ClassName}ListVO> list${BusinessName}s(${ClassName}ListDTO dto) {
@@ -82,7 +82,7 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
         return BeanCopyUtil.listCopy(list, ${ClassName}.class, ${ClassName}ListVO.class);
     }
 #end
-#if(${tplFunctions.indexOf("update")}!=-1)
+#if(${showUpdateFlag})
 
     @Override
     public ${ClassName}InfoVO get${BusinessName}(${pkJavaType} ${pkJavaField}) {
@@ -91,7 +91,7 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
         return BeanCopyUtil.beanCopy(ori${BusinessName}, ${ClassName}InfoVO.class);
     }
 #end
-#if(${tplFunctions.indexOf("add")}!=-1)
+#if(${showAddFlag})
 
     @Override
     public void save${BusinessName}(${ClassName}${saveOrUpdateDTOName} dto) {
@@ -103,7 +103,7 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
         this.save(${businessName});
     }
 #end
-#if(${tplFunctions.indexOf("update")}!=-1)
+#if(${showUpdateFlag})
 
     @Override
     public void update${BusinessName}(${pkJavaType} ${pkJavaField}, ${ClassName}${saveOrUpdateDTOName} dto) {
@@ -118,7 +118,7 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
         this.updateById(${businessName});
     }
 #end
-#if(${tplFunctions.indexOf("delete")}!=-1)
+#if(${showDeleteFlag})
 
     @Override
     public void remove${BusinessName}s(${pkJavaType}[] ${pkJavaField}s) {
@@ -129,7 +129,7 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
         }
     }
 #end
-#if(${tplFunctions.indexOf("export")}!=-1)
+#if(${showExportFlag})
 
     @Override
     public void export${BusinessName}s(${ClassName}ExportDTO dto, HttpServletResponse response) {

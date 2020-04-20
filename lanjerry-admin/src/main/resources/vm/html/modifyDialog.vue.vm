@@ -35,15 +35,7 @@
 
 <script>
   import mixin from '@/mixin'
-#if(${tplFunctions.indexOf("update")}!=-1&&${tplFunctions.indexOf("add")}!=-1)
-  import { get${BusinessName}, save${BusinessName}, update${BusinessName} } from '@/api/${moduleName}/${businessName}'
-#end
-#if(${tplFunctions.indexOf("update")}!=-1&&${tplFunctions.indexOf("add")}==-1)
-  import { get${BusinessName}, update${BusinessName} } from '@/api/${moduleName}/${businessName}'
-#end
-#if(${tplFunctions.indexOf("update")}==-1&&${tplFunctions.indexOf("add")}!=-1)
-  import { save${BusinessName} } from '@/api/${moduleName}/${businessName}'
-#end
+  import { #foreach ($function in ${apiModifyFunctions})${function}#if($velocityCount != ${apiModifyFunctions.size()}), #end#end } from '@/api/${moduleName}/${businessName}'
 
   export default {
     name: '${ClassName}ModifyDialog',
@@ -55,7 +47,7 @@
       title: {
         type: String,
         required: true
-      }#if(${tplFunctions.indexOf("update")}!=-1),
+      }#if(${showUpdateFlag}),
       ${pkJavaField}: {
         type: [String, Number],
         required: true
@@ -120,7 +112,7 @@
       },
       // 打开弹出层
       open() {
-#if(${tplFunctions.indexOf("update")}!=-1)
+#if(${showUpdateFlag})
         this.loading = true
         if (this.${pkJavaField}) {
           // 查询${functionName}信息
@@ -148,7 +140,7 @@
         this.#[[$]]#refs["form"].validate(valid => {
           if (valid) {
             this.button.save = true
-#if(${tplFunctions.indexOf("update")}!=-1&&${tplFunctions.indexOf("add")}!=-1)
+#if(${showUpdateFlag} && ${showAddFlag})
             if (this.${pkJavaField}) {
               update${BusinessName}(this.${pkJavaField}, this.form).then(res => {
                 this.msgSuccess('修改成功')
@@ -169,7 +161,7 @@
               })
             }
 #end
-#if(${tplFunctions.indexOf("update")}!=-1&&${tplFunctions.indexOf("add")}==-1)
+#if(${showUpdateFlag} && !${showAddFlag})
             if (this.${pkJavaField}) {
               update${BusinessName}(this.${pkJavaField}, this.form).then(res => {
                 this.msgSuccess('修改成功')
@@ -181,7 +173,7 @@
               })
             }
 #end
-#if(${tplFunctions.indexOf("update")}==-1&&${tplFunctions.indexOf("add")}!=-1)
+#if(${showAddFlag} && !${showUpdateFlag})
             save${BusinessName}(this.form).then(res => {
               this.msgSuccess('新增成功')
               this.closed()
