@@ -6,13 +6,14 @@ import org.lanjerry.common.core.bean.BaseEntity;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 系统日志分页查询VO
+ * 系统日志导出信息
  * </p>
  *
  * @author lanjerry
@@ -20,6 +21,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@ApiModel("系统日志导出信息")
 public class SysLogExportVO extends BaseEntity {
 
     /**

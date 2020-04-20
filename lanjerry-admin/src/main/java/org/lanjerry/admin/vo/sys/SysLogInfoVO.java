@@ -6,13 +6,14 @@ import java.time.LocalDateTime;
 import org.lanjerry.common.core.bean.BaseEntity;
 import org.lanjerry.common.core.enums.sys.SysLogStatusEnum;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 系统日志分页查询VO
+ * 系统日志信息
  * </p>
  *
  * @author lanjerry
@@ -20,6 +21,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@ApiModel("系统日志信息")
 public class SysLogInfoVO extends BaseEntity {
 
     /**

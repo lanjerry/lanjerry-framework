@@ -20,11 +20,11 @@ import org.lanjerry.admin.vo.global.CurrentUserRouterVO;
 public interface CurrentUserService {
 
     /**
-     * 系统用户登录
+     * 当前用户登录
      *
      * @author lanjerry
      * @since 2019/9/16 17:36
-     * @param dto 系统用户登录参数
+     * @param dto 当前用户登录参数
      * @return java.lang.String
      */
     String login(CurrentUserLoginDTO dto);

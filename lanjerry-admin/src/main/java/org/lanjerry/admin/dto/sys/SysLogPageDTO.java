@@ -2,13 +2,14 @@ package org.lanjerry.admin.dto.sys;
 
 import org.lanjerry.common.core.bean.SplitPage;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 系统日志分页查询DTO
+ * 系统日志查询参数
  * </p>
  *
  * @author lanjerry
@@ -16,6 +17,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@ApiModel("系统日志查询参数")
 public class SysLogPageDTO extends SplitPage {
 
     /**

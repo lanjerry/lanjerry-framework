@@ -8,13 +8,14 @@ import javax.validation.constraints.Size;
 
 import org.lanjerry.common.core.bean.BaseEntity;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 代码生成业务基本信息更新DTO
+ * 代码生成业务基本信息更新参数
  * </p>
  *
  * @author lanjerry
@@ -22,6 +23,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@ApiModel("代码生成业务基本信息更新参数")
 public class ToolGenInfoUpdateDTO extends BaseEntity {
 
     /**

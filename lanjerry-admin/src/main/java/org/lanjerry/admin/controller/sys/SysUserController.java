@@ -47,7 +47,7 @@ public class SysUserController {
     @GetMapping("/page")
     @RequiresPermissions("sys:user:page")
     @ApiOperation(value = "分页查询系统用户列表", position = 10)
-    public ApiResult<IPage<SysUserPageVO>> pageUsers(@ApiParam(value = "系统用户列表查询参数", required = true) SysUserPageDTO dto) {
+    public ApiResult<IPage<SysUserPageVO>> pageUsers(@ApiParam(value = "系统用户查询参数", required = true) SysUserPageDTO dto) {
         return ApiResult.success(userService.pageUsers(dto));
     }
 

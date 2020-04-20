@@ -4,13 +4,14 @@ import javax.validation.constraints.NotBlank;
 
 import org.lanjerry.common.core.bean.BaseEntity;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 当前用户登录DTO
+ * 当前用户登录参数
  * </p>
  *
  * @author lanjerry
@@ -18,6 +19,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@ApiModel("当前用户登录参数")
 public class CurrentUserLoginDTO extends BaseEntity {
 
     /**

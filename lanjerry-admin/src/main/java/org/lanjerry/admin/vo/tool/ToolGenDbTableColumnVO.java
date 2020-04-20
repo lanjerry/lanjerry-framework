@@ -2,13 +2,14 @@ package org.lanjerry.admin.vo.tool;
 
 import org.lanjerry.common.core.bean.BaseEntity;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 代码生成数据库表字段查询VO
+ * 代码生成数据库表字段查询信息
  * </p>
  *
  * @author lanjerry
@@ -16,6 +17,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@ApiModel("代码生成数据库表字段查询信息")
 public class ToolGenDbTableColumnVO extends BaseEntity {
 
     /**

@@ -29,7 +29,7 @@ public interface ToolGenService extends IService<ToolGen> {
      *
      * @author lanjerry
      * @since 2020/3/2 11:11
-     * @param dto 代码生成业务列表查询参数
+     * @param dto 代码生成业务查询参数
      * @return com.baomidou.mybatisplus.core.metadata.IPage<org.lanjerry.admin.vo.tool.ToolGenPageVO>
      */
     IPage<ToolGenPageVO> pageGens(ToolGenPageDTO dto);

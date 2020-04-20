@@ -27,7 +27,7 @@ public interface SysUserService extends IService<SysUser> {
      *
      * @author lanjerry
      * @since 2019/9/5 11:53
-     * @param dto 系统用户列表查询参数
+     * @param dto 系统用户查询参数
      * @return com.baomidou.mybatisplus.core.metadata.IPage<org.lanjerry.admin.vo.sys.SysUserPageVO>
      */
     IPage<SysUserPageVO> pageUsers(SysUserPageDTO dto);

@@ -43,7 +43,7 @@ public class SysLogController {
     @GetMapping("/page")
     @RequiresPermissions("sys:log:page")
     @ApiOperation(value = "分页查询系统日志列表", position = 10)
-    public ApiResult<IPage<SysLogPageVO>> pageLogs(@ApiParam(value = "系统日志列表查询参数", required = true) SysLogPageDTO dto) {
+    public ApiResult<IPage<SysLogPageVO>> pageLogs(@ApiParam(value = "系统日志查询参数", required = true) SysLogPageDTO dto) {
         return ApiResult.success(logService.pageLogs(dto));
     }
 
@@ -64,7 +64,7 @@ public class SysLogController {
     @PostMapping("/export")
     @RequiresPermissions("sys:log:export")
     @ApiOperation(value = "导出系统日志", position = 40)
-    public void exportLogs(@RequestBody @ApiParam(value = "系统日志列表导出参数", required = true) SysLogExportDTO dto, HttpServletResponse response) {
+    public void exportLogs(@RequestBody @ApiParam(value = "系统日志导出参数", required = true) SysLogExportDTO dto, HttpServletResponse response) {
         logService.exportLogs(dto, response);
     }
 }

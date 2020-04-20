@@ -6,13 +6,14 @@ import org.lanjerry.common.core.bean.BaseEntity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 系统权限树形结构列表查询VO
+ * 系统权限树形结构查询信息
  * </p>
  *
  * @author lanjerry
@@ -21,6 +22,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@ApiModel("系统权限树形结构查询信息")
 public class SysPermissionTreeVO extends BaseEntity {
 
     /**

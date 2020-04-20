@@ -5,13 +5,14 @@ import javax.validation.constraints.NotNull;
 
 import org.lanjerry.common.core.bean.BaseEntity;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 系统用户重置密码DTO
+ * 系统用户重置密码参数
  * </p>
  *
  * @author lanjerry
@@ -19,6 +20,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@ApiModel("系统用户重置密码参数")
 public class SysUserResetPasswordDTO extends BaseEntity {
 
     /**

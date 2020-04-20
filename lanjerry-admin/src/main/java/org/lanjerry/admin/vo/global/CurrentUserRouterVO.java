@@ -7,13 +7,14 @@ import org.lanjerry.common.core.bean.BaseEntity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 系统用户路由VO
+ * 当前登录用户的路由信息
  * </p>
  *
  * @author lanjerry
@@ -22,6 +23,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@ApiModel("当前登录用户的路由信息")
 public class CurrentUserRouterVO extends BaseEntity {
 
     /**

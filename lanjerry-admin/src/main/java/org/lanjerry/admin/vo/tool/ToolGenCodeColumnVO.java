@@ -2,12 +2,13 @@ package org.lanjerry.admin.vo.tool;
 
 import org.lanjerry.common.core.bean.BaseEntity;
 
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 代码生成字段VO
+ * 代码生成字段信息
  * </p>
  *
  * @author lanjerry
@@ -15,6 +16,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@ApiModel("代码生成字段信息")
 public class ToolGenCodeColumnVO extends BaseEntity {
 
     /**

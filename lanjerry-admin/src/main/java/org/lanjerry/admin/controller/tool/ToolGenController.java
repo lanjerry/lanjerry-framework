@@ -54,7 +54,7 @@ public class ToolGenController {
     @GetMapping("/page")
     @RequiresPermissions("tool:gen:page")
     @ApiOperation(value = "分页查询代码生成业务列表", position = 10)
-    public ApiResult<IPage<ToolGenPageVO>> pageGens(@ApiParam(value = "代码生成业务列表查询参数", required = true) ToolGenPageDTO dto) {
+    public ApiResult<IPage<ToolGenPageVO>> pageGens(@ApiParam(value = "代码生成业务查询参数", required = true) ToolGenPageDTO dto) {
         return ApiResult.success(genService.pageGens(dto));
     }
 

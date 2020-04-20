@@ -4,13 +4,14 @@ import java.time.LocalDateTime;
 
 import org.lanjerry.common.core.bean.BaseEntity;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 系统角色分页查询VO
+ * 系统角色查询信息
  * </p>
  *
  * @author lanjerry
@@ -18,6 +19,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@ApiModel("系统角色查询信息")
 public class SysRolePageVO extends BaseEntity {
 
     /**

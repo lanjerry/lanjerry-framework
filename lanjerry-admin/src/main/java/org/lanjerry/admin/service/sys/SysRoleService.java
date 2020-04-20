@@ -27,7 +27,7 @@ public interface SysRoleService extends IService<SysRole> {
      *
      * @author lanjerry
      * @since 2019/9/5 11:55
-     * @param dto 系统角色列表查询参数
+     * @param dto 系统角色查询参数
      * @return com.baomidou.mybatisplus.core.metadata.IPage<org.lanjerry.admin.vo.sys.SysRolePageVO>
      */
     IPage<SysRolePageVO> pageRoles(SysRolePageDTO dto);

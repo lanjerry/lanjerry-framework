@@ -4,13 +4,14 @@ import java.util.List;
 
 import org.lanjerry.common.core.bean.BaseEntity;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 系统日志导出查询DTO
+ * 系统日志导出参数
  * </p>
  *
  * @author lanjerry
@@ -18,6 +19,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@ApiModel("系统日志导出参数")
 public class SysLogExportDTO extends BaseEntity {
 
     /**

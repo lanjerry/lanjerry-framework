@@ -6,13 +6,14 @@ import java.util.Set;
 import org.lanjerry.common.core.bean.BaseEntity;
 import org.lanjerry.common.core.enums.sys.SysUserStatusEnum;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 系统用户分页查询VO
+ * 系统用户查询信息
  * </p>
  *
  * @author lanjerry
@@ -20,6 +21,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@ApiModel("系统用户查询信息")
 public class SysUserPageVO extends BaseEntity {
 
     /**

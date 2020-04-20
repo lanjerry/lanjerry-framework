@@ -47,7 +47,7 @@ public class SysRoleController {
     @GetMapping("/page")
     @RequiresPermissions("sys:role:page")
     @ApiOperation(value = "分页查询系统角色列表", position = 10)
-    public ApiResult<IPage<SysRolePageVO>> pageRoles(@ApiParam(value = "系统角色列表查询参数", required = true) SysRolePageDTO dto) {
+    public ApiResult<IPage<SysRolePageVO>> pageRoles(@ApiParam(value = "系统角色查询参数", required = true) SysRolePageDTO dto) {
         return ApiResult.success(roleService.pageRoles(dto));
     }
 

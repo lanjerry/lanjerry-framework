@@ -5,13 +5,14 @@ import javax.validation.constraints.NotNull;
 import org.lanjerry.common.core.bean.BaseEntity;
 import org.lanjerry.common.core.enums.sys.SysUserSexEnum;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 当前登录用户基本资料更新DTO
+ * 当前登录用户基本资料更新参数
  * </p>
  *
  * @author lanjerry
@@ -19,6 +20,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@ApiModel("当前登录用户基本资料更新参数")
 public class CurrentUserProfileUpdateDTO extends BaseEntity {
 
     /**

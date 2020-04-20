@@ -7,13 +7,14 @@ import org.lanjerry.common.core.bean.BaseEntity;
 import org.lanjerry.common.core.enums.sys.SysPermissionStatusEnum;
 import org.lanjerry.common.core.enums.sys.SysPermissionTypeEnum;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 系统权限列表查询VO
+ * 系统权限查询信息
  * </p>
  *
  * @author lanjerry
@@ -21,6 +22,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@ApiModel("系统权限查询信息")
 public class SysPermissionListVO extends BaseEntity {
 
     /**

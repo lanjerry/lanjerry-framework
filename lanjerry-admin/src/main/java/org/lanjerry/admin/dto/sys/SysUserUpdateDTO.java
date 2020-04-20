@@ -10,13 +10,14 @@ import org.lanjerry.common.core.bean.BaseEntity;
 import org.lanjerry.common.core.enums.sys.SysUserSexEnum;
 import org.lanjerry.common.core.enums.sys.SysUserStatusEnum;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 系统用户更新DTO
+ * 系统用户更新参数
  * </p>
  *
  * @author lanjerry
@@ -24,6 +25,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@ApiModel("系统用户更新参数")
 public class SysUserUpdateDTO extends BaseEntity {
 
     /**

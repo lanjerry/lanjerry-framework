@@ -2,6 +2,7 @@ package org.lanjerry.admin.dto.tool;
 
 import org.lanjerry.common.core.bean.SplitPage;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,6 +17,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@ApiModel("代码生成数据库表查询参数")
 public class ToolGenDbTableDTO extends SplitPage {
 
     /**

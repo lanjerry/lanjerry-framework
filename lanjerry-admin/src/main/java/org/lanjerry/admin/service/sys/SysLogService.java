@@ -26,7 +26,7 @@ public interface SysLogService extends IService<SysLog> {
      *
      * @author lanjerry
      * @since 2019/9/5 16:59
-     * @param dto 系统日志列表查询参数
+     * @param dto 系统日志查询参数
      * @return com.baomidou.mybatisplus.core.metadata.IPage<org.lanjerry.admin.vo.sys.SysLogPageVO>
      */
     IPage<SysLogPageVO> pageLogs(SysLogPageDTO dto);
