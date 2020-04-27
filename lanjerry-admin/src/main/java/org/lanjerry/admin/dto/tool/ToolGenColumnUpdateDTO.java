@@ -90,4 +90,10 @@ public class ToolGenColumnUpdateDTO extends BaseEntity {
      */
     @ApiModelProperty(value = "是否导出字段 0.否 1.是", example = "是", position = 110)
     private Boolean exportFlag;
+
+    /**
+     * 排序
+     */
+    @ApiModelProperty(value = "排序", example = "99", position = 120)
+    private Integer sort;
 }

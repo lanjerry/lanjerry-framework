@@ -118,6 +118,11 @@ public class ToolGenDetail extends BaseEntity {
     private Boolean exportFlag;
 
     /**
+     * 排序
+     */
+    private Integer sort;
+
+    /**
      * 创建人id
      */
     @TableField(fill = FieldFill.INSERT)
