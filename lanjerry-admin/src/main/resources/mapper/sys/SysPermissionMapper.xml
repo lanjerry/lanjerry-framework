@@ -6,7 +6,7 @@
 		SELECT DISTINCT(sp.permission) FROM sys_permission sp
 		LEFT JOIN sys_role_permission srp ON srp.permission_id=sp.id
 		LEFT JOIN sys_user_role sur ON sur.role_id=srp.role_id
-		WHERE sp.type=#{type} AND sur.user_id=#{userId}
+		WHERE sp.type=#{type} AND sur.user_id=#{userId} AND sp.status=1
     </select>
 
 	<select id="getIdsByRoleId" resultType="int">
