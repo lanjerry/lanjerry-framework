@@ -7,12 +7,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import io.swagger.annotations.ApiOperation;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
 import springfox.documentation.service.Parameter;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -42,7 +44,7 @@ public class Swagger2Config {
         pars.add(tokenPar.build());
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("org.lanjerry.admin.controller"))
+                .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
                 .paths(PathSelectors.any())
                 .build()
                 .globalOperationParameters(pars)
@@ -53,7 +55,7 @@ public class Swagger2Config {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("后台接口文档")
+                .title("接口文档")
                 .description("<table><tbody>" +
                         "<tr><td colspan='2'>状态码</td></tr>" +
                         "<tr><td>200</td><td>成功</td></tr>" +
@@ -67,6 +69,7 @@ public class Swagger2Config {
                         "<tr><td>账户注销登录</td><td>/sys/user/logout</td></tr>" +
                         "<tr><td>上传</td><td>/util/upload</td></tr>" +
                         "</tbody></table>")
+                .contact(new Contact("lanjerry", "https://gitee.com/lanjerry/lanjerry-framework", "38046851@qq.com"))
                 .version("1.0")
                 .build();
     }
