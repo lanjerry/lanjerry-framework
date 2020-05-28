@@ -37,7 +37,3 @@ gen:
   packageName: org.lanjerry.admin
   # 自动去除表前缀，默认是true
   autoRemovePre: false
-
-# 演示模式配置
-demo:
-  enable: true

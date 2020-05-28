@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -46,7 +47,8 @@ import lombok.AllArgsConstructor;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/tool/gen")
-@Api(tags = "代码生成模块api")
+@Api(tags = "代码生成模块api", position = 50)
+@ApiSupport(author = "38046851@qq.com")
 public class ToolGenController {
 
     private final ToolGenService genService;

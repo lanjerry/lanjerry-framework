@@ -3,10 +3,8 @@ package org.lanjerry.common.core.bean;
 import java.io.Serializable;
 
 import org.lanjerry.common.core.jackson.serializer.CustomEnumSerializer;
-import org.lanjerry.common.core.jackson.deserializer.CustomEnumDeserializer;
 
 import com.baomidou.mybatisplus.core.enums.IEnum;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
@@ -18,7 +16,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  * @since 2019-12-20
  */
 @JsonSerialize(using = CustomEnumSerializer.class)
-@JsonDeserialize(using = CustomEnumDeserializer.class)
 public interface BaseEnum<T extends Serializable> extends IEnum<T> {
 
     /**

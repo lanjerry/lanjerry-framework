@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.wf.captcha.SpecCaptcha;
 
 import io.swagger.annotations.Api;
@@ -26,7 +27,8 @@ import io.swagger.annotations.ApiOperation;
  */
 @RestController
 @RequestMapping("/util")
-@Api(tags = "工具类api")
+@Api(tags = "工具类api", position = 1)
+@ApiSupport(author = "38046851@qq.com")
 public class UtilController {
 
     @GetMapping("/captchaCode/create")

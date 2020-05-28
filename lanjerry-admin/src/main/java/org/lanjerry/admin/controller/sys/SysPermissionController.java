@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -37,7 +39,8 @@ import lombok.AllArgsConstructor;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/sys/permission")
-@Api(tags = "系统权限模块api")
+@Api(tags = "系统权限模块api", position = 30)
+@ApiSupport(author = "38046851@qq.com")
 public class SysPermissionController {
 
     private final SysPermissionService permissionService;

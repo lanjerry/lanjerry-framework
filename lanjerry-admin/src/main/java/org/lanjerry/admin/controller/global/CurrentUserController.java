@@ -3,12 +3,12 @@ package org.lanjerry.admin.controller.global;
 import java.util.List;
 
 import org.lanjerry.admin.dto.global.CurrentUserLoginDTO;
-import org.lanjerry.admin.dto.global.CurrentUserProfileUpdateDTO;
 import org.lanjerry.admin.dto.global.CurrentUserPasswordUpdateDTO;
+import org.lanjerry.admin.dto.global.CurrentUserProfileUpdateDTO;
 import org.lanjerry.admin.service.global.CurrentUserService;
 import org.lanjerry.admin.vo.global.CurrentUserInfoVO;
-import org.lanjerry.admin.vo.global.CurrentUserRouterVO;
 import org.lanjerry.admin.vo.global.CurrentUserProfileVO;
+import org.lanjerry.admin.vo.global.CurrentUserRouterVO;
 import org.lanjerry.common.core.bean.ApiResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,7 +36,8 @@ import lombok.AllArgsConstructor;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/sys/user")
-@Api(tags = "当前用户模块api")
+@Api(tags = "当前用户模块api", position = 2)
+@ApiSupport(author = "38046851@qq.com")
 public class CurrentUserController {
 
     private final CurrentUserService currentUserService;

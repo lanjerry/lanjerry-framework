@@ -35,9 +35,7 @@
         <hutool.version>4.5.16</hutool.version>
         <shiro.version>1.4.1</shiro.version>
         <jwt.version>3.3.0</jwt.version>
-        <swagger2.version>2.9.2</swagger2.version>
-        <swaggerBootstrapUI.version>1.9.3</swaggerBootstrapUI.version>
-        <swagger2-models.version>1.5.21</swagger2-models.version>
+        <swagger2.version>2.0.3</swagger2.version>
         <easy-captcha.version>1.6.2</easy-captcha.version>
         <log4j.version>2.11.2</log4j.version>
         <disruptor.version>3.4.2</disruptor.version>
@@ -82,24 +80,9 @@
             </dependency>
             <!--swagger2-->
             <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-swagger2</artifactId>
-                <version>${swagger2.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>com.github.xiaoymin</groupId>
-                <artifactId>swagger-bootstrap-ui</artifactId>
-                <version>${swaggerBootstrapUI.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.swagger</groupId>
-                <artifactId>swagger-annotations</artifactId>
-                <version>${swagger2-models.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.swagger</groupId>
-                <artifactId>swagger-models</artifactId>
-                <version>${swagger2-models.version}</version>
+                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <version>${swagger2.version}</version>
             </dependency>
             <!-- 图形验证码 -->
             <dependency>

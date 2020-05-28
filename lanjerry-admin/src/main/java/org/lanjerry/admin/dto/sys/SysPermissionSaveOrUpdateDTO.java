@@ -43,7 +43,7 @@ public class SysPermissionSaveOrUpdateDTO extends BaseEntity {
      * 类型 1.菜单 2.按钮
      */
     @NotNull(message = "类型不能为空")
-    @ApiModelProperty(value = "类型 1.菜单 2.按钮", example = "1", required = true, position = 30)
+    @ApiModelProperty(value = "类型 1.菜单 2.按钮", example = "MENU", required = true, position = 30)
     private SysPermissionTypeEnum type;
 
     /**
@@ -81,7 +81,7 @@ public class SysPermissionSaveOrUpdateDTO extends BaseEntity {
      * 状态 1.启用 2.停用
      */
     @NotNull(message = "状态不能为空")
-    @ApiModelProperty(value = "状态 1.启用 2.停用", example = "1", required = true, position = 90)
+    @ApiModelProperty(value = "状态 1.启用 2.停用", example = "ENABLE", required = true, position = 90)
     private SysPermissionStatusEnum status;
 
     /**

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,7 +36,8 @@ import lombok.AllArgsConstructor;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/sys/log")
-@Api(tags = "系统日志模块api")
+@Api(tags = "系统日志模块api", position = 40)
+@ApiSupport(author = "38046851@qq.com")
 public class SysLogController {
 
     private final SysLogService logService;

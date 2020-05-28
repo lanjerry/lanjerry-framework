@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -39,7 +40,8 @@ import lombok.AllArgsConstructor;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/sys/role")
-@Api(tags = "系统角色模块api")
+@Api(tags = "系统角色模块api", position = 20)
+@ApiSupport(author = "38046851@qq.com")
 public class SysRoleController {
 
     private final SysRoleService roleService;

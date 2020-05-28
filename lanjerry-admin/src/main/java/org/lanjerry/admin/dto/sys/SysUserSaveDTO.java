@@ -53,7 +53,7 @@ public class SysUserSaveDTO extends BaseEntity {
      * 性别 1.男 2.女 3.未知
      */
     @NotNull(message = "性别不能为空")
-    @ApiModelProperty(value = "性别 1.男 2.女 3.未知", example = "1", required = true, position = 40)
+    @ApiModelProperty(value = "性别 1.男 2.女 3.未知", example = "MALE", required = true, position = 40)
     private SysUserSexEnum sex;
 
     /**
@@ -72,7 +72,7 @@ public class SysUserSaveDTO extends BaseEntity {
      * 状态 1.启用 2.停用
      */
     @NotNull(message = "状态不能为空")
-    @ApiModelProperty(value = "状态 1.启用 2.停用", example = "1", required = true, position = 70)
+    @ApiModelProperty(value = "状态 1.启用 2.停用", example = "ENABLE", required = true, position = 70)
     private SysUserStatusEnum status;
 
     /**

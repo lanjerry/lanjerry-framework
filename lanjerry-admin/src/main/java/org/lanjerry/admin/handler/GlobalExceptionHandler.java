@@ -107,7 +107,7 @@ public class GlobalExceptionHandler {
 
         log.error("BusinessExceptionHandler:" + ex.getMessage());
         log.error("ErrorUrl：" + request.getRequestURI());
-        log.error("Msg：" + ex.getMessage());
+        log.error(ex.getMessage(), ex);
         return ApiResult.systemError(String.format("url：%s，ex：%s", request.getRequestURI(), ex.getMessage()));
     }
 }
