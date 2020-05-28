@@ -112,12 +112,16 @@ public class SysLogAspect {
             JSONArray result = JSONUtil.createArray();
             JSONArray params = JSONUtil.parseArray(jsonParams);
             params.forEach(param -> {
-                JSONObject jsonParam = JSONUtil.parseObj(param);
-                if (jsonParam.size() > 0) {
-                    for (String key : JsonConsts.REMOVE_KEYS) {
-                        jsonParam.remove(key);
+                if (param != null && JSONUtil.isJsonObj(param.toString())) {
+                    JSONObject jsonParam = JSONUtil.parseObj(param);
+                    if (jsonParam.size() > 0) {
+                        for (String key : JsonConsts.REMOVE_KEYS) {
+                            jsonParam.remove(key);
+                        }
+                        result.add(jsonParam);
                     }
-                    result.add(jsonParam);
+                } else {
+                    result.add(param);
                 }
             });
             return JSONUtil.toJsonStr(result);
