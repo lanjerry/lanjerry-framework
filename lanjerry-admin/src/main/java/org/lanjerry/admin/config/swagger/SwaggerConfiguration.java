@@ -1,5 +1,6 @@
 package org.lanjerry.admin.config.swagger;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.context.annotation.Bean;
@@ -12,14 +13,16 @@ import com.google.common.collect.Lists;
 import io.swagger.annotations.ApiOperation;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.AuthorizationScope;
 import springfox.documentation.service.Contact;
+import springfox.documentation.service.Parameter;
 import springfox.documentation.service.SecurityReference;
-import springfox.documentation.service.SecurityScheme;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -41,6 +44,11 @@ public class SwaggerConfiguration {
 
     @Bean
     public Docket api() {
+        //添加head参数
+        ParameterBuilder tokenPar = new ParameterBuilder();
+        List<Parameter> parameters = new ArrayList<>();
+        tokenPar.name("Authorization").description("身份认证Token").modelRef(new ModelRef("string")).parameterType("header").required(false).build();
+        parameters.add(tokenPar.build());
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .groupName("1.0版本")
@@ -49,7 +57,7 @@ public class SwaggerConfiguration {
                 .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
                 .paths(PathSelectors.any())
                 .build()
-                .securityContexts(Lists.newArrayList(securityContext())).securitySchemes(Lists.<SecurityScheme>newArrayList(apiKey()));
+                .globalOperationParameters(parameters);
     }
 
     private ApiInfo apiInfo() {

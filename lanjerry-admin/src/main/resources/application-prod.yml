@@ -36,6 +36,12 @@ spring:
 demo:
   enable: true
 
-#swagger配置
-swagger:
-  enable: true
+# swagger配置
+knife4j:
+  # 开启生产环境,屏蔽Swagger所有资源接口
+  production: false
+  ## 开启Swagger的Basic认证功能,默认是false
+  basic:
+    enable: true
+    username: admin
+    password: 123456
