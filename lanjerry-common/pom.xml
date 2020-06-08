@@ -10,11 +10,11 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>lanjerry-common</artifactId>
     <packaging>pom</packaging>
+
     <modules>
         <module>lanjerry-common-core</module>
         <module>lanjerry-common-auth</module>
         <module>lanjerry-common-log</module>
         <module>lanjerry-common-redis</module>
     </modules>
-
 </project>
