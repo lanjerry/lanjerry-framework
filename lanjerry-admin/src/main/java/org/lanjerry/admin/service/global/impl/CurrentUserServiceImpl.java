@@ -222,6 +222,18 @@ public class CurrentUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> 
                 router.setAlwaysShow(true);
                 router.setRedirect("noRedirect");
                 router.setChildren(this.buildRouters(p.getChildren()));
+            } else if (SysPermissionTypeEnum.MENU.equals(p.getType()) && CollectionUtil.isEmpty(p.getChildren()) && AdminConsts.SYS_PERMISSION_PARENT_ID.equals(p.getParentId()) && StrUtil.isNotBlank(p.getComponent())) {
+                router.setName(StrUtil.EMPTY);
+                router.setPath("/");
+                router.setComponent("Layout");
+                List<CurrentUserRouterVO> childrenList = new ArrayList<>();
+                CurrentUserRouterVO children = new CurrentUserRouterVO();
+                children.setName(StrUtil.upperFirst(p.getPath()));
+                children.setPath(p.getPath());
+                children.setComponent(p.getComponent());
+                children.setMeta(SysUserRouterMetaVO.builder().title(p.getName()).icon(p.getIcon()).build());
+                childrenList.add(children);
+                router.setChildren(childrenList);
             }
             result.add(router);
         });

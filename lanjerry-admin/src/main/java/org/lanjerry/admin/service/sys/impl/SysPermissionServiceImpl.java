@@ -60,6 +60,9 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         }
         SysPermission permission = BeanCopyUtil.beanCopy(dto, SysPermission.class);
         this.save(permission);
+
+        // 清空redis中的所有系统权限数据
+        this.clearCache();
     }
 
     @Override
@@ -74,8 +77,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         this.updateById(permission);
 
         // 清空redis中的所有系统权限数据
-        RedisUtil.remove(new ArrayList<>(Objects.requireNonNull(RedisUtil.keys(AdminConsts.REDIS_SYS_USER_PERMISSION.concat("*")))));
-        RedisUtil.remove(new ArrayList<>(Objects.requireNonNull(RedisUtil.keys(AdminConsts.REDIS_SYS_USER_ROUTER.concat("*")))));
+        this.clearCache();
     }
 
     @Override
@@ -85,12 +87,10 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         ApiAssert.notNull(oriPermission, String.format("权限编号：%s不存在", id));
         ApiAssert.isTrue(this.count(Wrappers.<SysPermission>lambdaQuery().eq(SysPermission::getParentId, id)) == 0, String.format("权限：%s存在子菜单，不允许删除", oriPermission.getName()));
         ApiAssert.isTrue(rolePermissionService.count(Wrappers.<SysRolePermission>lambdaQuery().eq(SysRolePermission::getPermissionId, id)) == 0, String.format("权限：%s存在已分配，不允许删除", oriPermission.getName()));
-
         this.removeById(id);
 
         // 清空redis中的所有系统权限数据
-        RedisUtil.remove(new ArrayList<>(Objects.requireNonNull(RedisUtil.keys(AdminConsts.REDIS_SYS_USER_PERMISSION.concat("*")))));
-        RedisUtil.remove(new ArrayList<>(Objects.requireNonNull(RedisUtil.keys(AdminConsts.REDIS_SYS_USER_ROUTER.concat("*")))));
+        this.clearCache();
     }
 
     @Override
@@ -103,8 +103,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         this.updateById(permission);
 
         // 清空redis中的所有系统权限数据
-        RedisUtil.remove(new ArrayList<>(Objects.requireNonNull(RedisUtil.keys(AdminConsts.REDIS_SYS_USER_PERMISSION.concat("*")))));
-        RedisUtil.remove(new ArrayList<>(Objects.requireNonNull(RedisUtil.keys(AdminConsts.REDIS_SYS_USER_ROUTER.concat("*")))));
+        this.clearCache();
     }
 
     @Override
@@ -149,5 +148,16 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
             }
         });
         return result;
+    }
+
+    /**
+     * 清除缓存
+     *
+     * @author lanjerry
+     * @since 2020/6/10 9:46
+     */
+    private void clearCache(){
+        RedisUtil.remove(new ArrayList<>(Objects.requireNonNull(RedisUtil.keys(AdminConsts.REDIS_SYS_USER_PERMISSION.concat("*")))));
+        RedisUtil.remove(new ArrayList<>(Objects.requireNonNull(RedisUtil.keys(AdminConsts.REDIS_SYS_USER_ROUTER.concat("*")))));
     }
 }
