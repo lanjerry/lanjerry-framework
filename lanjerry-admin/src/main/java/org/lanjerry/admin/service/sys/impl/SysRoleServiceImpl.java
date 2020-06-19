@@ -71,6 +71,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
         // 新增角色权限
         this.updateRolePermission(role.getId(), dto.getPermissionIds());
+
+        // 清空redis中的所有系统权限数据
+        this.clearCache();
     }
 
     @Override
@@ -84,6 +87,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
         // 修改角色权限
         this.updateRolePermission(id, dto.getPermissionIds());
+
+        // 清空redis中的所有系统权限数据
+        this.clearCache();
     }
 
     @Override
@@ -97,6 +103,8 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             // 删除角色权限
             this.updateRolePermission(id, null);
         }
+        // 清空redis中的所有系统权限数据
+        this.clearCache();
     }
 
     @Override
@@ -139,8 +147,15 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                 this.rolePermissionService.save(rolePermission);
             });
         }
+    }
 
-        // 清空redis中的所有系统角色和权限数据
+    /**
+     * 清除缓存
+     *
+     * @author lanjerry
+     * @since 2020/6/10 9:46
+     */
+    private void clearCache(){
         RedisUtil.remove(new ArrayList<>(Objects.requireNonNull(RedisUtil.keys(AdminConsts.REDIS_SYS_USER_ROLE.concat("*")))));
         RedisUtil.remove(new ArrayList<>(Objects.requireNonNull(RedisUtil.keys(AdminConsts.REDIS_SYS_USER_PERMISSION.concat("*")))));
     }
