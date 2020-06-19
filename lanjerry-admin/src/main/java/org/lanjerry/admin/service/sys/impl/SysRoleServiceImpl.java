@@ -72,7 +72,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         // 新增角色权限
         this.updateRolePermission(role.getId(), dto.getPermissionIds());
 
-        // 清空redis中的所有系统权限数据
+        // 清空redis中的所有系统角色数据
         this.clearCache();
     }
 
@@ -88,7 +88,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         // 修改角色权限
         this.updateRolePermission(id, dto.getPermissionIds());
 
-        // 清空redis中的所有系统权限数据
+        // 清空redis中的所有系统角色数据
         this.clearCache();
     }
 
@@ -103,7 +103,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             // 删除角色权限
             this.updateRolePermission(id, null);
         }
-        // 清空redis中的所有系统权限数据
+        // 清空redis中的所有系统角色数据
         this.clearCache();
     }
 
