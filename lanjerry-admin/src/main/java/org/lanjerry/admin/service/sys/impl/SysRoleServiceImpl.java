@@ -55,6 +55,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         IPage<SysRole> page = this.lambdaQuery().orderByDesc(SysRole::getId)
                 .eq(dto.getId() != null, SysRole::getId, dto.getId())
                 .like(StrUtil.isNotBlank(dto.getName()), SysRole::getName, dto.getName())
+                .like(StrUtil.isNotBlank(dto.getPermissionTag()), SysRole::getPermissionTag, dto.getName())
                 .ge(StrUtil.isNotBlank(dto.getCreatedTimeStart()), SysRole::getCreatedTime, dto.getCreatedTimeStart() + AdminConsts.START_TIME)
                 .le(StrUtil.isNotBlank(dto.getCreatedTimeEnd()), SysRole::getCreatedTime, dto.getCreatedTimeEnd() + AdminConsts.END_TIME)
                 .page(new Page<>(dto.getPageNum(), dto.getPageSize()));
