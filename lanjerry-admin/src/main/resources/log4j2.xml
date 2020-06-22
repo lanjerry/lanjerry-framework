@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--日志级别以及优先级排序: OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > ALL -->
 <!--status，这个用于设置log4j2自身内部的信息输出，可以不设置，当设置成trace时，你会看到log4j2内部各种详细输出。-->
 <!--monitorInterval：Log4j2能够自动检测修改配置 文件和重新配置本身，设置间隔秒数。-->
 <Configuration status="off" monitorInterval="600">
-    <properties>
+    <Properties>
         <!--通用变量-->
-        <property name="LOG_HOME" value="logs"/>
-        <property name="ERROR_LOG_FILE_NAME" value="error"/>
-        <property name="INFO_LOG_FILE_NAME" value="info"/>
+        <Property name="LOG_HOME">logs</Property>
+        <Property name="ERROR_LOG_FILE_NAME">error</Property>
+        <Property name="INFO_LOG_FILE_NAME">info</Property>
         <Property name="PID">????</Property>
         <Property name="LOG_EXCEPTION_CONVERSION_WORD">%xwEx</Property>
         <Property name="LOG_LEVEL_PATTERN">%5p</Property>
         <Property name="LOG_DATEFORMAT_PATTERN">yyyy-MM-dd HH:mm:ss.SSS</Property>
         <Property name="CONSOLE_LOG_PATTERN">%clr{${LOG_LEVEL_PATTERN}} %clr{%d{${LOG_DATEFORMAT_PATTERN}}}{faint} %clr{${sys:PID}}{magenta} %clr{-}{faint} [%style{%t}{bright,blue}] %clr{%-c{1.}}{cyan} %clr{(%F:%L)}{faint} %clr{-}{faint} %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}</Property>
         <Property name="LOG_PATTERN">${LOG_LEVEL_PATTERN} %d{${LOG_DATEFORMAT_PATTERN}} ${sys:PID} -&#45;&#45; [%t] %-c{1.} %F:%L - %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}</Property>
-    </properties>
+    </Properties>
     <Appenders>
         <!--console-->
         <Console name="CONSOLE" target="SYSTEM_OUT">
@@ -75,14 +76,14 @@
     </Appenders>
     <Loggers>
         <!--AsyncLogger-->
-        <AsyncLogger name="org.lanjerry" level="INFO" includeLocation="true"/>
-        <AsyncLogger name="org.lanjerry.common.log.p6spy" level="DEBUG" includeLocation="true"/>
-        <AsyncLogger name="com.baomidou.mybatisplus.core.metadata.TableInfoHelper" level="ERROR" includeLocation="true"/>
+        <AsyncLogger name="org.lanjerry" level="info" includeLocation="true"/>
+        <AsyncLogger name="org.lanjerry.common.log.p6spy" level="debug" includeLocation="true"/>
+        <AsyncLogger name="com.baomidou.mybatisplus.core.metadata.TableInfoHelper" level="error" includeLocation="true"/>
         <!--AsyncRoot-->
         <AsyncRoot level="warn" includeLocation="true">
-            <appender-ref ref="CONSOLE"/>
-            <appender-ref ref="REWRITE"/>
-            <appender-ref ref="ERROR_LOG"/>
+            <AppenderRef ref="CONSOLE" />
+            <AppenderRef ref="REWRITE" />
+            <AppenderRef ref="ERROR_LOG" />
         </AsyncRoot>
     </Loggers>
 </Configuration>
