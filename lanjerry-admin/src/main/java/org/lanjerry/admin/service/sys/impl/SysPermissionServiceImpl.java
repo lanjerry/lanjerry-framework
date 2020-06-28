@@ -56,7 +56,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     @Override
     public void savePermission(SysPermissionSaveOrUpdateDTO dto) {
         if (SysPermissionTypeEnum.MENU.equals(dto.getType())) {
-            ApiAssert.isTrue(this.count(Wrappers.<SysPermission>lambdaQuery().eq(SysPermission::getName, dto.getName())) == 0, String.format("名称：%s已存在", dto.getName()));
+            ApiAssert.isTrue(this.count(Wrappers.<SysPermission>lambdaQuery().eq(SysPermission::getName, dto.getName()).eq(SysPermission::getParentId, dto.getParentId())) == 0, String.format("名称：%s已存在", dto.getName()));
         }
         SysPermission permission = BeanCopyUtil.beanCopy(dto, SysPermission.class);
         this.save(permission);
@@ -70,7 +70,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         SysPermission oriPermission = this.getById(id);
         ApiAssert.notNull(oriPermission, String.format("权限编号：%s不存在", id));
         if (SysPermissionTypeEnum.MENU.equals(oriPermission.getType())) {
-            ApiAssert.isTrue(this.count(Wrappers.<SysPermission>lambdaQuery().eq(SysPermission::getName, dto.getName()).ne(SysPermission::getId, id)) == 0, String.format("名称：%s已存在", dto.getName()));
+            ApiAssert.isTrue(this.count(Wrappers.<SysPermission>lambdaQuery().eq(SysPermission::getName, dto.getName()).eq(SysPermission::getParentId, dto.getParentId()).ne(SysPermission::getId, id)) == 0, String.format("名称：%s已存在", dto.getName()));
         }
         SysPermission permission = BeanCopyUtil.beanCopy(dto, SysPermission.class);
         permission.setId(id);
