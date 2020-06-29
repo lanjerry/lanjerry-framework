@@ -13,8 +13,7 @@ import org.lanjerry.admin.mapper.sys.SysUserMapper;
 import org.lanjerry.admin.service.sys.SysRoleService;
 import org.lanjerry.admin.service.sys.SysUserRoleService;
 import org.lanjerry.admin.service.sys.SysUserService;
-import org.lanjerry.admin.util.AdminConsts;
-import org.lanjerry.admin.util.RedisUtil;
+import org.lanjerry.admin.util.CacheUtil;
 import org.lanjerry.admin.vo.sys.SysUserInfoVO;
 import org.lanjerry.admin.vo.sys.SysUserPageVO;
 import org.lanjerry.common.core.entity.sys.SysRole;
@@ -107,6 +106,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
         // 修改用户角色
         this.updateUserRole(id, dto.getRoleIds());
+
+        // 清除用户权限缓存数据
+        CacheUtil.clearUserCache(String.valueOf(id));
     }
 
     @Override
@@ -120,6 +122,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
             // 删除用户角色
             this.updateUserRole(id, null);
+
+            // 清除用户权限缓存数据
+            CacheUtil.clearUserCache(String.valueOf(id));
         }
     }
 
@@ -164,9 +169,5 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 this.userRoleService.save(userRole);
             });
         }
-
-        // 清空redis中的系统角色和权限数据
-        RedisUtil.remove(AdminConsts.REDIS_SYS_USER_ROLE.concat(String.valueOf(userId)));
-        RedisUtil.remove(AdminConsts.REDIS_SYS_USER_PERMISSION.concat(String.valueOf(userId)));
     }
 }

@@ -1,8 +1,6 @@
 package org.lanjerry.admin.service.sys.impl;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import org.lanjerry.admin.dto.sys.SysRolePageDTO;
 import org.lanjerry.admin.dto.sys.SysRoleSaveOrUpdateDTO;
@@ -12,7 +10,7 @@ import org.lanjerry.admin.service.sys.SysPermissionService;
 import org.lanjerry.admin.service.sys.SysRolePermissionService;
 import org.lanjerry.admin.service.sys.SysRoleService;
 import org.lanjerry.admin.util.AdminConsts;
-import org.lanjerry.admin.util.RedisUtil;
+import org.lanjerry.admin.util.CacheUtil;
 import org.lanjerry.admin.vo.sys.SysRoleInfoVO;
 import org.lanjerry.admin.vo.sys.SysRolePageVO;
 import org.lanjerry.admin.vo.sys.SysUserRoleVO;
@@ -71,9 +69,6 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
         // 新增角色权限
         this.updateRolePermission(role.getId(), dto.getPermissionIds());
-
-        // 清空redis中的所有系统角色数据
-        this.clearCache();
     }
 
     @Override
@@ -88,8 +83,8 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         // 修改角色权限
         this.updateRolePermission(id, dto.getPermissionIds());
 
-        // 清空redis中的所有系统角色数据
-        this.clearCache();
+        // 清除用户权限缓存数据
+        CacheUtil.clearUserCache("*");
     }
 
     @Override
@@ -103,8 +98,8 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             // 删除角色权限
             this.updateRolePermission(id, null);
         }
-        // 清空redis中的所有系统角色数据
-        this.clearCache();
+        // 清除用户权限缓存数据
+        CacheUtil.clearUserCache("*");
     }
 
     @Override
@@ -147,16 +142,5 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                 this.rolePermissionService.save(rolePermission);
             });
         }
-    }
-
-    /**
-     * 清除缓存
-     *
-     * @author lanjerry
-     * @since 2020/6/10 9:46
-     */
-    private void clearCache(){
-        RedisUtil.remove(new ArrayList<>(Objects.requireNonNull(RedisUtil.keys(AdminConsts.REDIS_SYS_USER_ROLE.concat("*")))));
-        RedisUtil.remove(new ArrayList<>(Objects.requireNonNull(RedisUtil.keys(AdminConsts.REDIS_SYS_USER_PERMISSION.concat("*")))));
     }
 }

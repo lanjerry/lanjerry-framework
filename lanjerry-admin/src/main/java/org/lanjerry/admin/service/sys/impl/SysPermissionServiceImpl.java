@@ -2,14 +2,13 @@ package org.lanjerry.admin.service.sys.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import org.lanjerry.admin.dto.sys.SysPermissionSaveOrUpdateDTO;
 import org.lanjerry.admin.mapper.sys.SysPermissionMapper;
 import org.lanjerry.admin.service.sys.SysPermissionService;
 import org.lanjerry.admin.service.sys.SysRolePermissionService;
 import org.lanjerry.admin.util.AdminConsts;
-import org.lanjerry.admin.util.RedisUtil;
+import org.lanjerry.admin.util.CacheUtil;
 import org.lanjerry.admin.vo.sys.SysPermissionInfoVO;
 import org.lanjerry.admin.vo.sys.SysPermissionListVO;
 import org.lanjerry.admin.vo.sys.SysPermissionTreeVO;
@@ -60,9 +59,6 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         }
         SysPermission permission = BeanCopyUtil.beanCopy(dto, SysPermission.class);
         this.save(permission);
-
-        // 清空redis中的所有系统权限数据
-        this.clearCache();
     }
 
     @Override
@@ -76,8 +72,8 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         permission.setId(id);
         this.updateById(permission);
 
-        // 清空redis中的所有系统权限数据
-        this.clearCache();
+        // 清除用户权限缓存数据
+        CacheUtil.clearUserCache("*");
     }
 
     @Override
@@ -89,8 +85,8 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         ApiAssert.isTrue(rolePermissionService.count(Wrappers.<SysRolePermission>lambdaQuery().eq(SysRolePermission::getPermissionId, id)) == 0, String.format("权限：%s存在已分配，不允许删除", oriPermission.getName()));
         this.removeById(id);
 
-        // 清空redis中的所有系统权限数据
-        this.clearCache();
+        // 清除用户权限缓存数据
+        CacheUtil.clearUserCache("*");
     }
 
     @Override
@@ -102,8 +98,8 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         permission.setId(id);
         this.updateById(permission);
 
-        // 清空redis中的所有系统权限数据
-        this.clearCache();
+        // 清除用户权限缓存数据
+        CacheUtil.clearUserCache("*");
     }
 
     @Override
@@ -148,16 +144,5 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
             }
         });
         return result;
-    }
-
-    /**
-     * 清除缓存
-     *
-     * @author lanjerry
-     * @since 2020/6/10 9:46
-     */
-    private void clearCache(){
-        RedisUtil.remove(new ArrayList<>(Objects.requireNonNull(RedisUtil.keys(AdminConsts.REDIS_SYS_USER_PERMISSION.concat("*")))));
-        RedisUtil.remove(new ArrayList<>(Objects.requireNonNull(RedisUtil.keys(AdminConsts.REDIS_SYS_USER_ROUTER.concat("*")))));
     }
 }
