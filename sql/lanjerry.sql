@@ -40,6 +40,15 @@ CREATE TABLE `sys_log`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 358025 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统日志表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of sys_log
+-- ----------------------------
+INSERT INTO `sys_log` VALUES (358025, 1, 'admin', '127.0.0.1', 1, '/sys/user/1', '[1,{\"roleIds\":[1],\"phone\":\"15017919916\",\"sex\":\"MALE\",\"name\":\"管理员\",\"account\":\"admin\",\"email\":\"123456@qq.com\",\"status\":\"ENABLE\"}]', 'PUT', 'org.lanjerry.admin.controller.sys.SysUserController.updateUser()', '更新系统用户', 1, 0.13, NULL, '2020-06-30 16:52:05');
+INSERT INTO `sys_log` VALUES (358026, 1, 'admin', '127.0.0.1', 1, '/sys/role/1', '[1,{\"name\":\"管理员\",\"permissionTag\":\"admin\",\"permissionIds\":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,34,36,35,37]}]', 'PUT', 'org.lanjerry.admin.controller.sys.SysRoleController.updateRole()', '更新系统角色', 1, 0.36, NULL, '2020-06-30 16:52:21');
+INSERT INTO `sys_log` VALUES (358027, 1, 'admin', '127.0.0.1', 1, '/tool/gen/61', '[61,{\"columns\":[{\"exportFlag\":false,\"queryFlag\":false,\"listFlag\":false,\"formFlag\":false,\"columnComment\":\"日志编号\",\"id\":685,\"onlyFlag\":false,\"requiredFlag\":true},{\"exportFlag\":false,\"queryFlag\":false,\"listFlag\":false,\"formFlag\":false,\"columnComment\":\"用户编号\",\"id\":686,\"onlyFlag\":false,\"requiredFlag\":true},{\"exportFlag\":false,\"queryFlag\":false,\"listFlag\":false,\"formFlag\":false,\"columnComment\":\"用户帐号\",\"id\":687,\"onlyFlag\":false,\"requiredFlag\":true},{\"exportFlag\":false,\"queryFlag\":false,\"listFlag\":false,\"fo', 'PUT', 'org.lanjerry.admin.controller.tool.ToolGenController.updateGen()', '更新代码生成业务', 2, NULL, '模板功能的分页列表和列表只能选择一个', '2020-06-30 16:53:09');
+INSERT INTO `sys_log` VALUES (358028, 1, 'admin', '127.0.0.1', 1, '/tool/gen/61', '[61,{\"columns\":[{\"exportFlag\":false,\"queryFlag\":false,\"listFlag\":false,\"formFlag\":false,\"columnComment\":\"日志编号\",\"id\":685,\"onlyFlag\":false,\"requiredFlag\":true},{\"exportFlag\":false,\"queryFlag\":false,\"listFlag\":false,\"formFlag\":false,\"columnComment\":\"用户编号\",\"id\":686,\"onlyFlag\":false,\"requiredFlag\":true},{\"exportFlag\":false,\"queryFlag\":false,\"listFlag\":false,\"formFlag\":false,\"columnComment\":\"用户帐号\",\"id\":687,\"onlyFlag\":false,\"requiredFlag\":true},{\"exportFlag\":false,\"queryFlag\":false,\"listFlag\":false,\"fo', 'PUT', 'org.lanjerry.admin.controller.tool.ToolGenController.updateGen()', '更新代码生成业务', 1, 0.19, NULL, '2020-06-30 16:53:16');
+INSERT INTO `sys_log` VALUES (358029, 1, 'admin', '127.0.0.1', 1, '/tool/gen/61', '[61,{\"columns\":[{\"exportFlag\":true,\"queryFlag\":false,\"listFlag\":true,\"formFlag\":false,\"columnComment\":\"日志编号\",\"id\":685,\"onlyFlag\":true,\"requiredFlag\":true},{\"exportFlag\":true,\"queryFlag\":true,\"queryHtmlType\":\"input\",\"formHtmlType\":\"input\",\"listFlag\":true,\"formFlag\":true,\"columnComment\":\"用户编号\",\"id\":686,\"onlyFlag\":false,\"requiredFlag\":true,\"queryType\":\"like\"},{\"exportFlag\":true,\"queryFlag\":true,\"queryHtmlType\":\"input\",\"formHtmlType\":\"input\",\"listFlag\":true,\"formFlag\":true,\"columnComment\":\"用户帐号\",\"id', 'PUT', 'org.lanjerry.admin.controller.tool.ToolGenController.updateGen()', '更新代码生成业务', 1, 0.16, NULL, '2020-06-30 16:55:10');
+
+-- ----------------------------
 -- Table structure for sys_permission
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_permission`;
@@ -60,7 +69,7 @@ CREATE TABLE `sys_permission`  (
   `creator_name` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '创建人',
   `created_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 37 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统权限表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 38 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统权限表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_permission
@@ -131,27 +140,34 @@ CREATE TABLE `sys_role_permission`  (
 -- ----------------------------
 -- Records of sys_role_permission
 -- ----------------------------
-INSERT INTO `sys_role_permission` VALUES (1, 1, 1, 1, '管理员', '2019-09-25 15:21:21');
-INSERT INTO `sys_role_permission` VALUES (2, 1, 2, 1, '管理员', '2019-09-25 15:21:21');
-INSERT INTO `sys_role_permission` VALUES (3, 1, 3, 1, '管理员', '2019-09-25 15:21:21');
-INSERT INTO `sys_role_permission` VALUES (4, 1, 4, 1, '管理员', '2019-09-25 15:21:21');
-INSERT INTO `sys_role_permission` VALUES (5, 1, 5, 1, '管理员', '2019-09-25 15:21:21');
-INSERT INTO `sys_role_permission` VALUES (6, 1, 6, 1, '管理员', '2019-09-25 15:21:21');
-INSERT INTO `sys_role_permission` VALUES (7, 1, 7, 1, '管理员', '2019-09-25 15:21:21');
-INSERT INTO `sys_role_permission` VALUES (8, 1, 8, 1, '管理员', '2019-09-25 15:21:21');
-INSERT INTO `sys_role_permission` VALUES (9, 1, 9, 1, '管理员', '2019-09-25 15:21:21');
-INSERT INTO `sys_role_permission` VALUES (10, 1, 10, 1, '管理员', '2019-09-25 15:21:21');
-INSERT INTO `sys_role_permission` VALUES (11, 1, 11, 1, '管理员', '2019-09-25 15:21:21');
-INSERT INTO `sys_role_permission` VALUES (12, 1, 12, 1, '管理员', '2019-09-25 15:21:21');
-INSERT INTO `sys_role_permission` VALUES (13, 1, 13, 1, '管理员', '2019-09-25 15:21:21');
-INSERT INTO `sys_role_permission` VALUES (14, 1, 14, 1, '管理员', '2019-09-25 15:21:21');
-INSERT INTO `sys_role_permission` VALUES (15, 1, 15, 1, '管理员', '2019-09-25 15:21:21');
-INSERT INTO `sys_role_permission` VALUES (16, 1, 16, 1, '管理员', '2019-09-25 15:21:21');
-INSERT INTO `sys_role_permission` VALUES (17, 1, 17, 1, '管理员', '2019-09-25 15:21:21');
-INSERT INTO `sys_role_permission` VALUES (18, 1, 18, 1, '管理员', '2019-09-25 15:21:21');
-INSERT INTO `sys_role_permission` VALUES (19, 1, 19, 1, '管理员', '2019-09-25 15:21:21');
-INSERT INTO `sys_role_permission` VALUES (20, 1, 20, 1, '管理员', '2019-09-25 15:21:21');
-INSERT INTO `sys_role_permission` VALUES (21, 1, 21, 1, '管理员', '2019-09-25 15:21:21');
+INSERT INTO `sys_role_permission` VALUES (85, 1, 1, 1, '管理员', '2020-06-30 16:52:20');
+INSERT INTO `sys_role_permission` VALUES (86, 1, 2, 1, '管理员', '2020-06-30 16:52:20');
+INSERT INTO `sys_role_permission` VALUES (87, 1, 3, 1, '管理员', '2020-06-30 16:52:20');
+INSERT INTO `sys_role_permission` VALUES (88, 1, 4, 1, '管理员', '2020-06-30 16:52:20');
+INSERT INTO `sys_role_permission` VALUES (89, 1, 5, 1, '管理员', '2020-06-30 16:52:20');
+INSERT INTO `sys_role_permission` VALUES (90, 1, 6, 1, '管理员', '2020-06-30 16:52:20');
+INSERT INTO `sys_role_permission` VALUES (91, 1, 7, 1, '管理员', '2020-06-30 16:52:20');
+INSERT INTO `sys_role_permission` VALUES (92, 1, 8, 1, '管理员', '2020-06-30 16:52:20');
+INSERT INTO `sys_role_permission` VALUES (93, 1, 9, 1, '管理员', '2020-06-30 16:52:20');
+INSERT INTO `sys_role_permission` VALUES (94, 1, 10, 1, '管理员', '2020-06-30 16:52:20');
+INSERT INTO `sys_role_permission` VALUES (95, 1, 11, 1, '管理员', '2020-06-30 16:52:20');
+INSERT INTO `sys_role_permission` VALUES (96, 1, 12, 1, '管理员', '2020-06-30 16:52:20');
+INSERT INTO `sys_role_permission` VALUES (97, 1, 13, 1, '管理员', '2020-06-30 16:52:20');
+INSERT INTO `sys_role_permission` VALUES (98, 1, 14, 1, '管理员', '2020-06-30 16:52:20');
+INSERT INTO `sys_role_permission` VALUES (99, 1, 15, 1, '管理员', '2020-06-30 16:52:20');
+INSERT INTO `sys_role_permission` VALUES (100, 1, 16, 1, '管理员', '2020-06-30 16:52:20');
+INSERT INTO `sys_role_permission` VALUES (101, 1, 17, 1, '管理员', '2020-06-30 16:52:20');
+INSERT INTO `sys_role_permission` VALUES (102, 1, 18, 1, '管理员', '2020-06-30 16:52:20');
+INSERT INTO `sys_role_permission` VALUES (103, 1, 19, 1, '管理员', '2020-06-30 16:52:20');
+INSERT INTO `sys_role_permission` VALUES (104, 1, 20, 1, '管理员', '2020-06-30 16:52:20');
+INSERT INTO `sys_role_permission` VALUES (105, 1, 21, 1, '管理员', '2020-06-30 16:52:20');
+INSERT INTO `sys_role_permission` VALUES (106, 1, 22, 1, '管理员', '2020-06-30 16:52:20');
+INSERT INTO `sys_role_permission` VALUES (107, 1, 23, 1, '管理员', '2020-06-30 16:52:20');
+INSERT INTO `sys_role_permission` VALUES (108, 1, 24, 1, '管理员', '2020-06-30 16:52:20');
+INSERT INTO `sys_role_permission` VALUES (109, 1, 34, 1, '管理员', '2020-06-30 16:52:20');
+INSERT INTO `sys_role_permission` VALUES (110, 1, 35, 1, '管理员', '2020-06-30 16:52:20');
+INSERT INTO `sys_role_permission` VALUES (111, 1, 36, 1, '管理员', '2020-06-30 16:52:20');
+INSERT INTO `sys_role_permission` VALUES (112, 1, 37, 1, '管理员', '2020-06-30 16:52:21');
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -179,7 +195,7 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 'admin', 'aaa42296669b958c3cee6c0475c8093e', '管理员', 1, '123456@qq.com', '15017919916', '', 1, '127.0.0.1', '2020-03-02 01:48:54', 0, 1, '管理员', '2019-04-11 16:01:33');
+INSERT INTO `sys_user` VALUES (1, 'admin', 'aaa42296669b958c3cee6c0475c8093e', '管理员', 1, '123456@qq.com', '15017919916', '', 1, '127.0.0.1', '2020-06-30 16:51:39', 0, 1, '管理员', '2019-04-11 16:01:33');
 
 -- ----------------------------
 -- Table structure for sys_user_role
@@ -193,12 +209,12 @@ CREATE TABLE `sys_user_role`  (
   `creator_name` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '创建人',
   `created_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 48 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统用户角色表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 49 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统用户角色表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user_role
 -- ----------------------------
-INSERT INTO `sys_user_role` VALUES (48, 1, 1, 1, '管理员', '2020-02-15 01:23:05');
+INSERT INTO `sys_user_role` VALUES (49, 1, 1, 1, '管理员', '2020-06-30 16:52:05');
 
 -- ----------------------------
 -- Table structure for tool_gen
@@ -221,7 +237,12 @@ CREATE TABLE `tool_gen`  (
   `created_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `updated_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 46 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '代码生成业务表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 62 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '代码生成业务表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of tool_gen
+-- ----------------------------
+INSERT INTO `tool_gen` VALUES (61, 'sys_log', '系统日志表', 'SysLog', 'pageList,add,update,delete,export', 'org.lanjerry.admin', 'sys', 'log', '系统日志', 'lanjerry', NULL, 1, '管理员', '2020-06-30 16:52:53', '2020-06-30 16:55:10');
 
 -- ----------------------------
 -- Table structure for tool_gen_detail
@@ -239,17 +260,37 @@ CREATE TABLE `tool_gen_detail`  (
   `increment_flag` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否自增 0.否 1.是',
   `required_flag` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否必填 0.否 1.是',
   `only_flag` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否唯一 0.否 1.是',
-  `form_flag` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否表单字段 0.否 1.是',
   `list_flag` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否列表字段 0.否 1.是',
+  `form_flag` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否表单字段 0.否 1.是',
+  `form_html_type` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '表单显示类型',
   `query_flag` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否查询字段 0.否 1.是',
   `query_type` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '查询方式',
-  `html_type` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '查询显示类型',
+  `query_html_type` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '查询显示类型',
   `export_flag` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否导出字段 0.否 1.是',
+  `sort` int(11) NOT NULL DEFAULT 99 COMMENT '排序',
   `creator_id` int(11) NULL DEFAULT NULL COMMENT '创建人id',
   `creator_name` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '创建人',
   `created_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `updated_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 541 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '代码生成业务明细表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 699 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '代码生成业务明细表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of tool_gen_detail
+-- ----------------------------
+INSERT INTO `tool_gen_detail` VALUES (685, 61, 'id', '日志编号', 'int(11)', 'Integer', 'id', 1, 1, 1, 1, 1, 0, NULL, 0, NULL, NULL, 1, 99, 1, '管理员', '2020-06-30 16:52:53', '2020-06-30 16:55:10');
+INSERT INTO `tool_gen_detail` VALUES (686, 61, 'user_id', '用户编号', 'int(11)', 'Integer', 'userId', 0, 0, 1, 0, 1, 1, 'input', 1, 'like', 'input', 1, 99, 1, '管理员', '2020-06-30 16:52:53', '2020-06-30 16:55:10');
+INSERT INTO `tool_gen_detail` VALUES (687, 61, 'user_account', '用户帐号', 'varchar(45)', 'String', 'userAccount', 0, 0, 1, 0, 1, 1, 'input', 1, 'like', 'input', 1, 99, 1, '管理员', '2020-06-30 16:52:53', '2020-06-30 16:55:10');
+INSERT INTO `tool_gen_detail` VALUES (688, 61, 'ip_address', 'ip地址', 'varchar(45)', 'String', 'ipAddress', 0, 0, 1, 0, 1, 1, 'input', 1, 'like', 'input', 1, 99, 1, '管理员', '2020-06-30 16:52:53', '2020-06-30 16:55:10');
+INSERT INTO `tool_gen_detail` VALUES (689, 61, 'ajax_flag', '是否异步请求 0.否 1.是', 'tinyint(1)', 'Boolean', 'ajaxFlag', 0, 0, 0, 0, 1, 0, NULL, 1, 'like', 'input', 1, 99, 1, '管理员', '2020-06-30 16:52:53', '2020-06-30 16:55:10');
+INSERT INTO `tool_gen_detail` VALUES (690, 61, 'request_uri', '请求uri', 'varchar(100)', 'String', 'requestUri', 0, 0, 1, 0, 1, 0, NULL, 0, NULL, NULL, 1, 99, 1, '管理员', '2020-06-30 16:52:53', '2020-06-30 16:55:10');
+INSERT INTO `tool_gen_detail` VALUES (691, 61, 'request_params', '请求参数', 'varchar(500)', 'String', 'requestParams', 0, 0, 0, 0, 1, 0, NULL, 0, NULL, NULL, 1, 99, 1, '管理员', '2020-06-30 16:52:53', '2020-06-30 16:55:10');
+INSERT INTO `tool_gen_detail` VALUES (692, 61, 'request_method', '请求方式', 'varchar(45)', 'String', 'requestMethod', 0, 0, 0, 0, 1, 0, NULL, 0, NULL, NULL, 0, 99, 1, '管理员', '2020-06-30 16:52:53', '2020-06-30 16:55:10');
+INSERT INTO `tool_gen_detail` VALUES (693, 61, 'class_method', '操作方法', 'varchar(100)', 'String', 'classMethod', 0, 0, 0, 0, 1, 0, NULL, 0, NULL, NULL, 0, 99, 1, '管理员', '2020-06-30 16:52:53', '2020-06-30 16:55:10');
+INSERT INTO `tool_gen_detail` VALUES (694, 61, 'action_name', '动作名称', 'varchar(45)', 'String', 'actionName', 0, 0, 0, 0, 1, 0, NULL, 0, NULL, NULL, 0, 99, 1, '管理员', '2020-06-30 16:52:53', '2020-06-30 16:55:10');
+INSERT INTO `tool_gen_detail` VALUES (695, 61, 'status', '状态 1.成功 2.失败', 'int(1)', 'Integer', 'status', 0, 0, 1, 0, 0, 0, NULL, 0, NULL, NULL, 0, 99, 1, '管理员', '2020-06-30 16:52:53', '2020-06-30 16:55:10');
+INSERT INTO `tool_gen_detail` VALUES (696, 61, 'execution_time', '执行时间（秒）', 'decimal(10,2)', 'BigDecimal', 'executionTime', 0, 0, 0, 0, 1, 0, NULL, 0, NULL, NULL, 0, 99, 1, '管理员', '2020-06-30 16:52:53', '2020-06-30 16:55:10');
+INSERT INTO `tool_gen_detail` VALUES (697, 61, 'exception_msg', '异常信息', 'text', 'String', 'exceptionMsg', 0, 0, 0, 0, 1, 0, NULL, 0, NULL, NULL, 0, 99, 1, '管理员', '2020-06-30 16:52:53', '2020-06-30 16:55:10');
+INSERT INTO `tool_gen_detail` VALUES (698, 61, 'created_time', '创建时间', 'datetime', 'LocalDateTime', 'createdTime', 0, 0, 0, 0, 1, 0, NULL, 0, NULL, NULL, 0, 99, 1, '管理员', '2020-06-30 16:52:53', '2020-06-30 16:55:10');
 
 SET FOREIGN_KEY_CHECKS = 1;
