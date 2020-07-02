@@ -1,8 +1,7 @@
 package org.lanjerry.common.log.consolelog;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Builder;
+import lombok.Data;
 
 /**
  * 页面控制台日志实体
@@ -10,9 +9,8 @@ import lombok.Setter;
  * @author Caratacus
  * @link https://cloud.tencent.com/developer/article/1096792
  */
-@Setter
-@Getter
-@AllArgsConstructor
+@Data
+@Builder
 public class ConsoleLog {
 
     public static final String VIEW_PERM = "monitor:consolelog:view";
@@ -21,22 +19,27 @@ public class ConsoleLog {
      * 日志内容
      */
     private String body;
+
     /**
      * 时间戳
      */
     private String timestamp;
+
     /**
      * 类名
      */
     private String fileName;
+
     /**
      * 行号
      */
     private int lineNumber;
+
     /**
      * 线程名
      */
     private String threadName;
+
     /**
      * 日志等级
      */

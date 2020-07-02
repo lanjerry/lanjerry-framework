@@ -23,14 +23,15 @@ public final class ConsoleLogPolicy implements RewritePolicy {
 
     @Override
     public LogEvent rewrite(LogEvent source) {
-        ConsoleLog loggerMessage = new ConsoleLog(
-                source.getMessage().getFormattedMessage(),
-                DateFormat.getDateTimeInstance().format(new Date(source.getTimeMillis())),
-                source.getSource().getFileName(),
-                source.getSource().getLineNumber(),
-                source.getThreadName(),
-                source.getLevel().name());
-        ConsoleLogQueue.getInstance().push(loggerMessage);
+        ConsoleLog log = ConsoleLog.builder()
+                .body(source.getMessage().getFormattedMessage())
+                .timestamp(DateFormat.getDateTimeInstance().format(new Date(source.getTimeMillis())))
+                .fileName(source.getSource().getFileName())
+                .lineNumber(source.getSource().getLineNumber())
+                .threadName(source.getThreadName())
+                .level(source.getLevel().name())
+                .build();
+        ConsoleLogQueue.getInstance().push(log);
         return source;
     }
 }
