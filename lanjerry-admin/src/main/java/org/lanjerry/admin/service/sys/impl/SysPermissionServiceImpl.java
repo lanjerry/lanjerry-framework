@@ -59,6 +59,9 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         }
         SysPermission permission = BeanCopyUtil.beanCopy(dto, SysPermission.class);
         this.save(permission);
+
+        // 清除用户权限缓存数据
+        CacheUtil.clearUserCache("*");
     }
 
     @Override
