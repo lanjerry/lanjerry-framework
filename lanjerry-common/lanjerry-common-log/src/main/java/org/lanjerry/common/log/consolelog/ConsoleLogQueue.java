@@ -17,40 +17,27 @@ public class ConsoleLogQueue {
     /**
      * 队列大小
      */
-    public static final int QUEUE_MAX_SIZE = 10000;
+    private static final int QUEUE_MAX_SIZE = 10000;
 
-    private static final ConsoleLogQueue alarmMessageQueue = new ConsoleLogQueue();
     /**
      * 阻塞队列
      */
-    private final BlockingQueue blockingQueue = new LinkedBlockingQueue<>(QUEUE_MAX_SIZE);
-
-    private ConsoleLogQueue() {
-    }
-
-    public static ConsoleLogQueue getInstance() {
-        return alarmMessageQueue;
-    }
+    private static final BlockingQueue blockingQueue = new LinkedBlockingQueue<>(QUEUE_MAX_SIZE);
 
     /**
      * 消息入队
-     *
-     * @param log
-     * @return
      */
-    public boolean push(ConsoleLog log) {
-        return this.blockingQueue.add(log);
+    public static boolean push(ConsoleLog log) {
+        return blockingQueue.add(log);
     }
 
     /**
      * 消息出队
-     *
-     * @return
      */
-    public ConsoleLog poll() {
+    public static ConsoleLog poll() {
         ConsoleLog result = null;
         try {
-            result = (ConsoleLog) this.blockingQueue.take();
+            result = (ConsoleLog) blockingQueue.take();
         } catch (InterruptedException e) {
             log.warn("消息出列异常:{}", e.getMessage());
         }

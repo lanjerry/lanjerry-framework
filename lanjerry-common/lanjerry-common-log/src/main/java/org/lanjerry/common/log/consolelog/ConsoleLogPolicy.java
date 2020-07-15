@@ -31,7 +31,7 @@ public final class ConsoleLogPolicy implements RewritePolicy {
                 .threadName(source.getThreadName())
                 .level(source.getLevel().name())
                 .build();
-        ConsoleLogQueue.getInstance().push(log);
+        ConsoleLogQueue.push(log);
         return source;
     }
 }

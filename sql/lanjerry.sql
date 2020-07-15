@@ -102,6 +102,7 @@ INSERT INTO `sys_permission` VALUES (34, '系统工具', 0, 1, 'tool', '', 'tool
 INSERT INTO `sys_permission` VALUES (35, '系统接口', 34, 1, 'swagger', 'tool/swagger', '', 'swagger', 99, 1, 0, 0, 1, '管理员', '2020-02-11 16:20:05');
 INSERT INTO `sys_permission` VALUES (36, '代码生成', 34, 1, 'gen', 'tool/gen', '', 'code', 10, 1, 0, 0, 1, '管理员', '2020-02-11 16:54:24');
 INSERT INTO `sys_permission` VALUES (37, '表单构建', 34, 1, 'build', 'tool/build', '', 'build', 99, 1, 0, 0, 1, '管理员', '2020-02-11 16:56:56');
+INSERT INTO `sys_permission` VALUES (68, '即时日志', 34, 1, 'instantLog', 'tool/instantLog', '', 'message', 99, 1, 0, 0, 1, '管理员', '2020-07-13 16:46:34');
 
 -- ----------------------------
 -- Table structure for sys_role

@@ -118,7 +118,8 @@ public class ShiroServiceImpl implements ShiroService {
 
         // 不需要验证的api
         result.put("/sys/user/login", "anon");
-        result.put("/util/**/**", "anon");// 工具
+        result.put("/util/**/**", "anon");// 工具api
+        result.put("/websocket/**/**", "anon");// websocket
 
         // 其他全部需要鉴权
         result.put("/**", "authcToken"); // 默认进行用户鉴权

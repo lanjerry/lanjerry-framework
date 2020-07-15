@@ -13,8 +13,6 @@ import lombok.Data;
 @Builder
 public class ConsoleLog {
 
-    public static final String VIEW_PERM = "monitor:consolelog:view";
-
     /**
      * 日志内容
      */
