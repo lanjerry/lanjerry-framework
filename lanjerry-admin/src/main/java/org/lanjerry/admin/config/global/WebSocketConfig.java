@@ -53,7 +53,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
      */
     @PostConstruct
     public void pushLogger() {
-        ExecutorService executorService = Executors.newFixedThreadPool(1);
+        ExecutorService executorService = Executors.newFixedThreadPool(4);
         Runnable runnable = () -> {
             while (true) {
                 try {
