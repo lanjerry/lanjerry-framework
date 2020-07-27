@@ -23,12 +23,12 @@ import lombok.AllArgsConstructor;
  * @since ${date}
  */
 @RestController
-@AllArgsConstructor
 @RequestMapping("/${moduleName}/${businessName}")
 @Api(tags = "${functionName}模块api")
 public class ${ClassName}Controller {
 
-    private final ${ClassName}Service ${businessName}Service;
+    @Autowired
+    private ${ClassName}Service ${businessName}Service;
 #if($!{tplFunctions})
 ## 设置新增获取修改的DTO的名称
 #if(${showAddFlag} || ${showUpdateFlag})
