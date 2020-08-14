@@ -33,9 +33,15 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
+    /**
+     * 注册stomp端点，主要是起到连接作用
+     */
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/websocket").setAllowedOrigins("*").addInterceptors().withSockJS();
+        registry.addEndpoint("/websocket") //端点名称
+                .setAllowedOrigins("*") //跨域
+                .addInterceptors() //拦截处理，和http拦截类似
+                .withSockJS(); //使用sockJS
     }
 
     /**

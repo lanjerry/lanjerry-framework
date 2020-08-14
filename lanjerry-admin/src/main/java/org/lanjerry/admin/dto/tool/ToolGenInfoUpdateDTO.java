@@ -3,8 +3,6 @@ package org.lanjerry.admin.dto.tool;
 import java.util.List;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import org.lanjerry.common.core.bean.BaseEntity;
 
@@ -63,8 +61,8 @@ public class ToolGenInfoUpdateDTO extends BaseEntity {
     /**
      * 模板功能集
      */
-    @NotNull(message = "生成信息-模板功能不能为空")
-    @Size(min = 1, message = "请至少选择一个模板功能")
+//    @NotNull(message = "生成信息-模板功能不能为空")
+//    @Size(min = 1, message = "请至少选择一个模板功能")
     @ApiModelProperty(value = "模板功能集", example = "[\"pageList\", \"add\", \"update\", \"delete\"]", position = 60)
     private List<String> tplFunctions;
 
