@@ -80,8 +80,14 @@ public class CurrentUserController {
         return ApiResult.success();
     }
 
+    @GetMapping("/notification/count")
+    @ApiOperation(value = "查询当前登录用户消息通知个数", position = 70)
+    public ApiResult<Integer> getCurrentUserNotificationCount() {
+        return ApiResult.success(currentUserService.getCurrentUserNotificationCount());
+    }
+
     @PostMapping("/logout")
-    @ApiOperation(value = "退出登录", position = 70)
+    @ApiOperation(value = "退出登录", position = 80)
     public ApiResult logout() {
         currentUserService.logout();
         return ApiResult.success();

@@ -1,4 +1,4 @@
-package org.lanjerry.admin.config.global;
+package org.lanjerry.admin.config.websocket;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * <p>
- * 配置WebSocket消息代理端点，即stomp服务端
+ * 日志推送的WebSocket，配置消息代理端点，即stomp服务端
  * </p>
  *
  * @author lanjerry
@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Configuration
 @EnableWebSocketMessageBroker
-public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+public class PullLoggerConfig implements WebSocketMessageBrokerConfigurer {
 
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
@@ -38,10 +38,10 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
      */
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/websocket") //端点名称
-                .setAllowedOrigins("*") //跨域
-                .addInterceptors() //拦截处理，和http拦截类似
-                .withSockJS(); //使用sockJS
+        registry.addEndpoint("/ws/logger") // 端点名称
+                .setAllowedOrigins("*") // 跨域
+                .addInterceptors() // 拦截处理，和http拦截类似
+                .withSockJS(); // 使用sockJS
     }
 
     /**

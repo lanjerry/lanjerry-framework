@@ -75,6 +75,15 @@ public interface CurrentUserService {
     void updateCurrentUserPassword(CurrentUserPasswordUpdateDTO dto);
 
     /**
+     * 查询当前登录用户消息通知个数
+     *
+     * @author lanjerry
+     * @since 2020/8/18 11:44
+     * @return java.lang.Integer
+     */
+    Integer getCurrentUserNotificationCount();
+
+    /**
      * 退出登录
      *
      * @author lanjerry

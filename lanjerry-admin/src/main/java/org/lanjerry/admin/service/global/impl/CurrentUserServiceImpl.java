@@ -18,6 +18,7 @@ import org.lanjerry.admin.mapper.sys.SysPermissionMapper;
 import org.lanjerry.admin.mapper.sys.SysRoleMapper;
 import org.lanjerry.admin.mapper.sys.SysUserMapper;
 import org.lanjerry.admin.service.global.CurrentUserService;
+import org.lanjerry.admin.service.sys.SysNotificationService;
 import org.lanjerry.admin.service.sys.SysPermissionService;
 import org.lanjerry.admin.service.sys.SysRoleService;
 import org.lanjerry.admin.util.AdminConsts;
@@ -30,6 +31,7 @@ import org.lanjerry.admin.vo.sys.SysUserRouterMetaVO;
 import org.lanjerry.common.auth.shiro.jwt.JwtToken;
 import org.lanjerry.common.auth.shiro.service.ShiroService;
 import org.lanjerry.common.core.constant.CommonConsts;
+import org.lanjerry.common.core.entity.sys.SysNotification;
 import org.lanjerry.common.core.entity.sys.SysPermission;
 import org.lanjerry.common.core.entity.sys.SysUser;
 import org.lanjerry.common.core.enums.global.ApiResultCodeEnum;
@@ -44,6 +46,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import cn.hutool.core.collection.CollectionUtil;
@@ -70,6 +73,9 @@ public class CurrentUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> 
 
     @Autowired
     private ShiroService shiroService;
+
+    @Autowired
+    private SysNotificationService notificationService;
 
     @Override
     public String login(CurrentUserLoginDTO dto) {
@@ -203,6 +209,14 @@ public class CurrentUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> 
         user.setPassword(Md5Util.encode(dto.getNewPassword(), String.valueOf(oriUser.getId())));
         user.setId(oriUser.getId());
         this.updateById(user);
+    }
+
+    @Override
+    public Integer getCurrentUserNotificationCount() {
+        JwtToken token = (JwtToken) SecurityUtils.getSubject().getPrincipal();
+        return notificationService.count(Wrappers.<SysNotification>lambdaQuery()
+                .eq(SysNotification::getUserId, token.getId())
+                .eq(SysNotification::getReadFlag, false));
     }
 
     @Override
