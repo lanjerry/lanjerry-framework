@@ -10,6 +10,7 @@ import org.lanjerry.common.log.annotation.SysLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,6 +51,14 @@ public class SysNotificationController {
     @ApiOperation(value = "新增系统消息", position = 20)
     public ApiResult saveNotification(@RequestBody @Validated @ApiParam(value = "系统消息新增参数", required = true) SysNotificationSaveDTO dto) {
         notificationService.saveNotification(dto);
+        return ApiResult.success();
+    }
+
+    @PostMapping("/read/{ids}")
+    @RequiresPermissions("sys:notification:read")
+    @ApiOperation(value = "已读系统消息", position = 30)
+    public ApiResult readNotifications(@PathVariable("ids") @ApiParam(value = "编号数组", required = true) Integer[] ids) {
+        notificationService.readNotifications(ids);
         return ApiResult.success();
     }
 }

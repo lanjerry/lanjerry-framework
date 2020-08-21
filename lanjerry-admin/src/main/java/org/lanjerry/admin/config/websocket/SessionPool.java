@@ -7,7 +7,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.websocket.Session;
 
+import org.lanjerry.admin.vo.sys.SysNotificationVO;
+
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.json.JSONUtil;
 
 /**
  * <p>
@@ -31,18 +34,18 @@ public class SessionPool {
         }
     }
 
-    public static void sendMessage(Integer sessionId, String message) {
+    public static void sendMessage(Integer sessionId, SysNotificationVO notification) {
         List<Session> sessions = SessionPool.sessions.get(sessionId);
         if (CollUtil.isNotEmpty(sessions)) {
-            sessions.forEach(session -> session.getAsyncRemote().sendText(message));
+            sessions.forEach(session -> session.getAsyncRemote().sendText(JSONUtil.toJsonStr(notification)));
         }
     }
 
-    public static void sendMessage(String message) {
+    public static void sendMessage(SysNotificationVO notification) {
         for (Integer sessionId : SessionPool.sessions.keySet()) {
             List<Session> sessions = SessionPool.sessions.get(sessionId);
             if (CollUtil.isNotEmpty(sessions)) {
-                sessions.forEach(session -> session.getAsyncRemote().sendText(message));
+                sessions.forEach(session -> session.getAsyncRemote().sendObject(notification));
             }
         }
     }

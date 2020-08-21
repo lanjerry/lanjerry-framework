@@ -13,13 +13,17 @@ import org.lanjerry.admin.service.sys.SysNotificationService;
 import org.lanjerry.admin.service.sys.SysUserService;
 import org.lanjerry.admin.util.AdminConsts;
 import org.lanjerry.admin.vo.sys.SysNotificationPageVO;
+import org.lanjerry.admin.vo.sys.SysNotificationVO;
 import org.lanjerry.common.core.entity.sys.SysNotification;
 import org.lanjerry.common.core.entity.sys.SysUser;
+import org.lanjerry.common.core.enums.sys.SysNotificationTypeEnum;
+import org.lanjerry.common.core.util.ApiAssert;
 import org.lanjerry.common.core.util.BeanCopyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
@@ -67,6 +71,28 @@ public class SysNotificationServiceImpl extends ServiceImpl<SysNotificationMappe
     public void saveNotification(SysNotificationSaveDTO dto) {
         SysNotification notification = BeanCopyUtil.beanCopy(dto, SysNotification.class);
         this.save(notification);
-        SessionPool.sendMessage(dto.getUserId(), dto.getContent());
+        SessionPool.sendMessage(dto.getUserId(), SysNotificationVO.builder().type(SysNotificationTypeEnum.CONTENT).message(dto.getContent()).build());
+    }
+
+    @Override
+    public int getNotificationCount(Integer userId) {
+        return this.count(Wrappers.<SysNotification>lambdaQuery()
+                .eq(SysNotification::getUserId, userId)
+                .eq(SysNotification::getReadFlag, false));
+    }
+
+    @Override
+    public void readNotifications(Integer[] ids) {
+        for (Integer id : ids) {
+            SysNotification oriNotification = this.getById(id);
+            ApiAssert.notNull(oriNotification, String.format("编号：%s不存在", id));
+            ApiAssert.isTrue(!oriNotification.getReadFlag(), String.format("编号：%s已为已读", id));
+            SysNotification notification = new SysNotification();
+            notification.setReadFlag(true);
+            notification.setId(id);
+            this.updateById(notification);
+            SessionPool.sendMessage(oriNotification.getUserId(),
+                    SysNotificationVO.builder().type(SysNotificationTypeEnum.NUMBER).message(String.valueOf(this.getNotificationCount(oriNotification.getUserId()))).build());
+        }
     }
 }

@@ -10,6 +10,8 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
+import org.lanjerry.admin.vo.sys.SysNotificationVO;
+import org.lanjerry.common.core.enums.sys.SysNotificationTypeEnum;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Component
-@ServerEndpoint("/ws/notification/{userId}")
+@ServerEndpoint(value = "/ws/notification/{userId}")
 public class NotificationEndpoint {
 
     /**
@@ -64,6 +66,6 @@ public class NotificationEndpoint {
     @OnMessage
     public void onMessage(String message, Session session) {
         log.info("来自客户端的消息：" + message);
-        SessionPool.sendMessage(message);
+        SessionPool.sendMessage(SysNotificationVO.builder().type(SysNotificationTypeEnum.CONTENT).message(message).build());
     }
 }
