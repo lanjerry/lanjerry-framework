@@ -63,9 +63,6 @@ import cn.hutool.core.util.StrUtil;
 public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> implements ToolGenService {
 
     @Autowired
-    private ToolGenConfig genConfig;
-
-    @Autowired
     private ToolGenDetailService genDetailService;
 
     @Autowired
@@ -144,11 +141,11 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
             toolGen.setTableName(tableName);
             toolGen.setTableComment(t.getTableComment());
             toolGen.setClassName(StrUtil.upperFirst(StrUtil.toCamelCase(tableName)));
-            toolGen.setPackageName(genConfig.getPackageName());
+            toolGen.setPackageName(ToolGenConfig.packageName);
             toolGen.setModuleName(StrUtil.subPre(tableName, tableName.indexOf("_")));
             toolGen.setBusinessName(StrUtil.toCamelCase(StrUtil.subSuf(tableName, tableName.indexOf("_") + 1)));
             toolGen.setFunctionName(StrUtil.removeSuffix(t.getTableComment(), "表"));
-            toolGen.setFunctionAuthor(genConfig.getAuthor());
+            toolGen.setFunctionAuthor(ToolGenConfig.author);
             this.save(toolGen);
 
             // 新增表字段数据

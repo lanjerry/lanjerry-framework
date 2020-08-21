@@ -28,12 +28,3 @@ mybatis-plus:
   mapper-locations: classpath:/mapper/*/*Mapper.xml
   type-enums-package: org.lanjerry.common.core.enums
   type-aliases-package: org.lanjerry.common.core.entity
-
-# 代码生成
-gen:
-  # 作者
-  author: lanjerry
-  # 默认生成包路径
-  packageName: org.lanjerry.admin
-  # 自动去除表前缀，默认是true
-  autoRemovePre: false

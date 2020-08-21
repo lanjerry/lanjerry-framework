@@ -23,6 +23,12 @@ import lombok.EqualsAndHashCode;
 public class CurrentUserInfoVO extends BaseEntity {
 
     /**
+     * id
+     */
+    @ApiModelProperty(value = "id", example = "1", position = 0)
+    private Integer id;
+
+    /**
      * 帐号
      */
     @ApiModelProperty(value = "帐号", example = "admin", position = 10)
