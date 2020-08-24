@@ -72,6 +72,7 @@ public class SysNotificationServiceImpl extends ServiceImpl<SysNotificationMappe
         SysNotification notification = BeanCopyUtil.beanCopy(dto, SysNotification.class);
         this.save(notification);
         SessionPool.sendMessage(dto.getUserId(), SysNotificationVO.builder().type(SysNotificationTypeEnum.CONTENT).message(dto.getContent()).build());
+        SessionPool.sendMessage(dto.getUserId(), SysNotificationVO.builder().type(SysNotificationTypeEnum.NUMBER).message(String.valueOf(this.getNotificationCount(dto.getUserId()))).build());
     }
 
     @Override
@@ -91,8 +92,7 @@ public class SysNotificationServiceImpl extends ServiceImpl<SysNotificationMappe
             notification.setReadFlag(true);
             notification.setId(id);
             this.updateById(notification);
-            SessionPool.sendMessage(oriNotification.getUserId(),
-                    SysNotificationVO.builder().type(SysNotificationTypeEnum.NUMBER).message(String.valueOf(this.getNotificationCount(oriNotification.getUserId()))).build());
+            SessionPool.sendMessage(oriNotification.getUserId(), SysNotificationVO.builder().type(SysNotificationTypeEnum.NUMBER).message(String.valueOf(this.getNotificationCount(oriNotification.getUserId()))).build());
         }
     }
 }
