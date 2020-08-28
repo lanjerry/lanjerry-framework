@@ -1,7 +1,9 @@
 package org.lanjerry.admin.config.websocket;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
@@ -14,6 +16,7 @@ import org.lanjerry.admin.vo.sys.SysNotificationVO;
 import org.lanjerry.common.core.enums.sys.SysNotificationTypeEnum;
 import org.springframework.stereotype.Component;
 
+import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -66,6 +69,17 @@ public class NotificationEndpoint {
     @OnMessage
     public void onMessage(String message, Session session) {
         log.info("来自客户端的消息：" + message);
-        SessionPool.sendMessage(SysNotificationVO.builder().type(SysNotificationTypeEnum.CONTENT).message(message).build());
+        if (message.equalsIgnoreCase("ping")) {
+            try {
+                Map<String, Object> params = new HashMap<>();
+                params.put("type", "pong");
+                session.getBasicRemote().sendText(JSONUtil.toJsonStr(params));
+                log.info("应答客户端的消息：" + JSONUtil.toJsonStr(params));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } else {
+            SessionPool.sendMessage(SysNotificationVO.builder().type(SysNotificationTypeEnum.CONTENT).message(message).build());
+        }
     }
 }
