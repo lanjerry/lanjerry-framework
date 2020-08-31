@@ -2,7 +2,7 @@
 # spring配置
 spring:
   profiles:
-    active: dev
+    active: prod
   #文件上传的大小限制
   servlet:
     multipart:
