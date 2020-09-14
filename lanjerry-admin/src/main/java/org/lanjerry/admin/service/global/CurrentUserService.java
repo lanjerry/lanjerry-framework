@@ -3,11 +3,12 @@ package org.lanjerry.admin.service.global;
 import java.util.List;
 
 import org.lanjerry.admin.dto.global.CurrentUserLoginDTO;
-import org.lanjerry.admin.dto.global.CurrentUserProfileUpdateDTO;
 import org.lanjerry.admin.dto.global.CurrentUserPasswordUpdateDTO;
+import org.lanjerry.admin.dto.global.CurrentUserProfileUpdateDTO;
 import org.lanjerry.admin.vo.global.CurrentUserInfoVO;
 import org.lanjerry.admin.vo.global.CurrentUserProfileVO;
 import org.lanjerry.admin.vo.global.CurrentUserRouterVO;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * <p>
@@ -73,6 +74,15 @@ public interface CurrentUserService {
      * @param dto 当前登录用户密码更新参数
      */
     void updateCurrentUserPassword(CurrentUserPasswordUpdateDTO dto);
+
+    /**
+     * 更新用户头像
+     *
+     * @author lanjerry
+     * @since 2020/9/11 16:38
+     * @param file 头像
+     */
+    String updateCurrentUserAvatar(MultipartFile file);
 
     /**
      * 查询当前登录用户消息通知个数

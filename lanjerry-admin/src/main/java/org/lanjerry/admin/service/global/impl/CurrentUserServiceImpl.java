@@ -1,5 +1,6 @@
 package org.lanjerry.admin.service.global.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -22,6 +23,7 @@ import org.lanjerry.admin.service.sys.SysNotificationService;
 import org.lanjerry.admin.service.sys.SysPermissionService;
 import org.lanjerry.admin.service.sys.SysRoleService;
 import org.lanjerry.admin.util.AdminConsts;
+import org.lanjerry.admin.util.FileUploadUtil;
 import org.lanjerry.admin.util.RedisUtil;
 import org.lanjerry.admin.vo.global.CurrentUserInfoVO;
 import org.lanjerry.admin.vo.global.CurrentUserProfileVO;
@@ -44,6 +46,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
@@ -207,6 +210,24 @@ public class CurrentUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> 
         user.setPassword(Md5Util.encode(dto.getNewPassword(), String.valueOf(oriUser.getId())));
         user.setId(oriUser.getId());
         this.updateById(user);
+    }
+
+    @Override
+    public String updateCurrentUserAvatar(MultipartFile file) {
+        String avatar = "";
+        try {
+            avatar = FileUploadUtil.upload(file);
+            JwtToken token = (JwtToken) SecurityUtils.getSubject().getPrincipal();
+            // 更新头像
+            SysUser user = new SysUser();
+            user.setId(token.getId());
+            user.setAvatar(avatar);
+            this.updateById(user);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return avatar;
     }
 
     @Override

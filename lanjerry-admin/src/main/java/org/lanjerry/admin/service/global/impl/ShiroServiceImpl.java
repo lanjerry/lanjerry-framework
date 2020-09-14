@@ -11,6 +11,7 @@ import org.lanjerry.admin.service.sys.SysPermissionService;
 import org.lanjerry.admin.service.sys.SysRoleService;
 import org.lanjerry.admin.service.sys.SysUserService;
 import org.lanjerry.admin.util.AdminConsts;
+import org.lanjerry.admin.util.FileUploadUtil;
 import org.lanjerry.admin.util.RedisUtil;
 import org.lanjerry.common.auth.shiro.service.ShiroService;
 import org.lanjerry.common.core.entity.sys.SysUser;
@@ -120,6 +121,7 @@ public class ShiroServiceImpl implements ShiroService {
         result.put("/sys/user/login", "anon");
         result.put("/util/**/**", "anon");// 工具api
         result.put("/ws/**/**", "anon");// websocket
+        result.put(FileUploadUtil.RESOURCE_PREFIX + "/**", "anon");// 上传接口
 
         // 其他全部需要鉴权
         result.put("/**", "authcToken"); // 默认进行用户鉴权

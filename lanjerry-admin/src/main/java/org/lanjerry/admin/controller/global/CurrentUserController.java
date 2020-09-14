@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 
@@ -80,14 +82,20 @@ public class CurrentUserController {
         return ApiResult.success();
     }
 
+    @PostMapping("/profile/avatar")
+    @ApiOperation(value = "更新用户头像", position = 70)
+    public ApiResult<String> updateCurrentUserAvatar(@RequestParam("avatarfile") MultipartFile file) {
+        return ApiResult.success(currentUserService.updateCurrentUserAvatar(file));
+    }
+
     @GetMapping("/notification/count")
-    @ApiOperation(value = "查询当前登录用户消息通知个数", position = 70)
+    @ApiOperation(value = "查询当前登录用户消息通知个数", position = 80)
     public ApiResult<Integer> getCurrentUserNotificationCount() {
         return ApiResult.success(currentUserService.getCurrentUserNotificationCount());
     }
 
     @PostMapping("/logout")
-    @ApiOperation(value = "退出登录", position = 80)
+    @ApiOperation(value = "退出登录", position = 90)
     public ApiResult logout() {
         currentUserService.logout();
         return ApiResult.success();
