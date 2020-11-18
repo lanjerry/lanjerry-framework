@@ -315,40 +315,6 @@ public class GeneratorCodeUtil {
         return dbType;
     }
 
-    /**
-     * 根据java类型设置字段例子值
-     *
-     * @author lanjerry
-     * @since 2020/3/1 1:12
-     */
-    public static String getColumnExample(ToolGenCodeColumnVO column) {
-        String result = column.getColumnComment();
-        switch (column.getJavaType()) {
-            case "String":
-                result = "测试" + column.getColumnComment();
-                break;
-            case "LocalDateTime":
-                result = DateUtil.date().toString();
-                break;
-            case "Integer":
-                result = "1";
-                break;
-            case "Long":
-                result = "1L";
-                break;
-            case "Float":
-                result = "1.18";
-                break;
-            case "BigDecimal":
-                result = "1.18";
-                break;
-            case "Boolean":
-                result = "true";
-                break;
-        }
-        return result;
-    }
-
     public static String getColumnQueryInitValue(ToolGenCodeColumnVO column) {
         String result = "undefined";
         if (CollectionUtil.contains(Arrays.asList("Integer", "BigDecimal", "LocalDateTime"), column.getJavaType())) {

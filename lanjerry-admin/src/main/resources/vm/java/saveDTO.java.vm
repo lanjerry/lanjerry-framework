@@ -45,7 +45,7 @@ public class ${ClassName}SaveDTO extends BaseEntity {
     @NotNull(message = "${column.columnComment}不能为空")
 #end
 #end
-    @ApiModelProperty(value = "${column.columnComment}", example = "${column.columnExample}", position = ${position})
+    @ApiModelProperty(value = "${column.columnComment}", position = ${position})
     private ${column.javaType} ${column.javaField};
 #end
 }

@@ -31,7 +31,7 @@ public class ${ClassName}ExportVO extends BaseEntity {
     /**
      * ${column.columnComment}
      */
-    @ApiModelProperty(value = "${column.columnComment}", example = "${column.columnExample}", position = ${position})
+    @ApiModelProperty(value = "${column.columnComment}", position = ${position})
     @ExcelProperty("${column.columnComment}")
     private ${column.javaType} ${column.javaField};
 #end

@@ -258,8 +258,6 @@ public class ToolGenServiceImpl extends ServiceImpl<ToolGenMapper, ToolGen> impl
             c.setColumnLength(StrUtil.subBetween(c.getColumnType(), "(", ")"));
             // 设置JAVA字段名首字母大写
             c.setUpperFirstJavaField(StrUtil.upperFirst(c.getJavaField()));
-            // 设置字段例子
-            c.setColumnExample(GeneratorCodeUtil.getColumnExample(c));
             // 设置字段查询初始值
             c.setQueryInitValue(GeneratorCodeUtil.getColumnQueryInitValue(c));
             // 设置字段表单初始值
