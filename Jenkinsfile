@@ -1,8 +1,8 @@
 pipeline{
     agent any
      parameters {
-        booleanParam(name: 'package', defaultValue: true, description: '打包项目')
         booleanParam(name: 'push', defaultValue: false, description: '推送镜像')
+        string(name: 'version', defaultValue: 'v1.0', description: '推送镜像版本')
     }
     tools {
         maven 'apache-maven-3.6.3' 
@@ -19,7 +19,8 @@ pipeline{
         }
         stage("build images"){
             steps{
-                sh 'docker build -t lanjerry-admin:v1.0 .'
+                sh 'docker build -t lanjerry-admin .'
+                sh 'docker tag lanjerry-admin lanjerry-admin:${version}'
             }
         }
         stage("run"){
@@ -32,8 +33,8 @@ pipeline{
                 expression { return params.push } 
             }
              steps{
-                sh 'docker tag lanjerry-admin:v1.0 registry.cn-hangzhou.aliyuncs.com/nieqiurong/lanjerry-admin:v1.0'
-                sh 'docker push registry.cn-hangzhou.aliyuncs.com/nieqiurong/lanjerry-admin:v1.0'
+                sh 'docker tag lanjerry-admin:${version} registry.cn-hangzhou.aliyuncs.com/nieqiurong/lanjerry-admin:${version}'
+                sh 'docker push registry.cn-hangzhou.aliyuncs.com/nieqiurong/lanjerry-admin:${version}'
             }
         }
     }
