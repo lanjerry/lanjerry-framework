@@ -26,7 +26,7 @@ pipeline{
         }
         stage("run"){
             steps{
-                sh 'docker-compose -f lanjerry-admin/docker-compose-admin.yml up -d'
+                sh '/usr/local/bin/docker-compose -f lanjerry-admin/docker-compose-admin.yml up -d'
             }
         }
         stage("push"){
