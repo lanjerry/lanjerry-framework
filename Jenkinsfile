@@ -1,6 +1,7 @@
 pipeline{
     agent any
      parameters {
+        booleanParam(name: 'package', defaultValue: true, description: '打包项目')
         booleanParam(name: 'push', defaultValue: false, description: '推送镜像')
         string(name: 'version', defaultValue: 'v1.0', description: '推送镜像版本')
     }
