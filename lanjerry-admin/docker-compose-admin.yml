@@ -1,21 +1,26 @@
 version: '3.3'
 services:
-   admin:
-     image: lanjerry-admin:v1.0
-     container_name: admin
-     restart: always
-     environment:
-       MYSQL_HOST: mysql-test
-       MYSQL_DATA_BASE: lanjerry
-       MYSQL_USER: root
-       MYSQL_PASSWORD: 123456
-       REDIS_HOST: redis-test
-       JAVA_OPTS: -Xms256m -Xmx256m
-     deploy:
+  admin:
+    image: lanjerry-admin:v1.0
+    container_name: admin
+    ports:
+      - "1000:1000"
+    restart: always
+    environment:
+      MYSQL_HOST: mysql
+      #MYSQL_PORT: 6606
+      MYSQL_DATA_BASE: lanjerry
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 123456
+      REDIS_HOST: redis
+      #REDIS_PORT: 6679
+      REDIS_PASSWORD: 123456
+      JAVA_OPTS: -Xms256m -Xmx256m
+    deploy:
       resources:
         limits:
           memory: 500M
         reservations:
           memory: 500M
-     volumes:
+    volumes:
       - /opt/lanjerry/logs:/opt/lanjerry/logs

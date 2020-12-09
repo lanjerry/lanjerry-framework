@@ -1,5 +1,5 @@
 FROM java:8
-LABEL maintainer="nieqiurong@163.com"
+LABEL maintainer="38046851@qq.com"
 WORKDIR /opt/lanjerry
 RUN echo "Asia/Shanghai" > /etc/timezone
 RUN apt install fontconfig -y --force-yes  && apt install --fix-broken -y --force-yes

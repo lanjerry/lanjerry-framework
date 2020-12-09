@@ -26,7 +26,7 @@ pipeline{
         }
         stage("run"){
             steps{
-                sh '/usr/local/bin/docker-compose -f lanjerry-admin/docker-compose-admin.yml up -d'
+                sh 'docker-compose -f lanjerry-admin/docker-compose-admin.yml up -d'
             }
         }
         stage("push"){
@@ -34,8 +34,8 @@ pipeline{
                 expression { return params.push } 
             }
              steps{
-                sh 'docker tag lanjerry-admin:${version} registry.cn-hangzhou.aliyuncs.com/nieqiurong/lanjerry-admin:${version}'
-                sh 'docker push registry.cn-hangzhou.aliyuncs.com/nieqiurong/lanjerry-admin:${version}'
+                sh 'docker tag lanjerry-admin:${version} registry.cn-hangzhou.aliyuncs.com/lanjerry/lanjerry-admin:${version}'
+                sh 'docker push registry.cn-hangzhou.aliyuncs.com/lanjerry/lanjerry-admin:${version}'
             }
         }
     }
