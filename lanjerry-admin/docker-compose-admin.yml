@@ -6,6 +6,7 @@ services:
     ports:
       - "1000:1000"
     restart: always
+    network_mode: bridge
     environment:
       MYSQL_HOST: mysql
       #MYSQL_PORT: 6606
