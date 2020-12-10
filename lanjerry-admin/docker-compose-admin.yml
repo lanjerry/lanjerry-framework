@@ -15,7 +15,7 @@ services:
       MYSQL_PASSWORD: 123456
       REDIS_HOST: redis
       #REDIS_PORT: 6679
-      REDIS_PASSWORD: 123456
+      #REDIS_PASSWORD: 123456
       JAVA_OPTS: -Xms256m -Xmx256m
     deploy:
       resources:
