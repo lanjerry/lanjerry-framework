@@ -6,12 +6,6 @@ services:
     ports:
       - "1000:1000"
     restart: always
-    links:
-      - mysql
-      - redis
-    depends_on:
-      - mysql
-      - redis
     environment:
       MYSQL_HOST: mysql
       #MYSQL_PORT: 6606
@@ -30,21 +24,3 @@ services:
           memory: 500M
     volumes:
       - /opt/lanjerry/logs:/opt/lanjerry/logs
-  mysql:
-    image: mysql:8.0.18
-    ports:
-      - "3307:3306"
-    container_name: mysql
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: 123456
-  redis:
-    image: redis
-    ports:
-      - "6379:6379"
-    container_name: redis
-    restart: always
-    command: [ "redis-server", "--appendonly", "yes", "--requirepass","123456" ]
-networks:
-  default:
-    driver: bridge
