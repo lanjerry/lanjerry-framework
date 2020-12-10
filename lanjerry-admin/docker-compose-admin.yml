@@ -45,3 +45,6 @@ services:
     container_name: redis
     restart: always
     command: [ "redis-server", "--appendonly", "yes", "--requirepass","123456" ]
+networks:
+  default:
+    driver: bridge
