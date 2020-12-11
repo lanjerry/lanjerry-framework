@@ -5,6 +5,8 @@ services:
     container_name: admin
     ports:
       - "1000:1000"
+    networks:
+      - lanjerry-network
     restart: always
     links:
       - mysql
@@ -33,7 +35,9 @@ services:
   mysql:
     image: mysql:8.0.18
     ports:
-      - "3307:3306"
+      - "3306:3306"
+    networks:
+      - lanjerry-network
     container_name: mysql
     restart: always
     environment:
@@ -42,9 +46,11 @@ services:
     image: redis
     ports:
       - "6379:6379"
+    networks:
+      - lanjerry-network
     container_name: redis
     restart: always
     command: [ "redis-server", "--appendonly", "yes", "--requirepass","123456" ]
 networks:
-  default:
-    driver: bridge
+  lanjerry-network:
+    external: true
