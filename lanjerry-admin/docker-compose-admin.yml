@@ -53,4 +53,5 @@ services:
     command: [ "redis-server", "--appendonly", "yes", "--requirepass","123456" ]
 networks:
   lanjerry-network:
-    external: true
+    external: false
+    name: lanjerry-network
