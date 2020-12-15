@@ -35,7 +35,7 @@ services:
   mysql:
     image: mysql:8.0.22
     ports:
-      - "3306:3306"
+      - "6606:3306"
     networks:
       - lanjerry-network
     container_name: mysql
@@ -45,7 +45,7 @@ services:
   redis:
     image: redis
     ports:
-      - "6379:6379"
+      - "6679:6379"
     networks:
       - lanjerry-network
     container_name: redis
