@@ -37,7 +37,7 @@ import io.swagger.annotations.ApiOperation;
 public class UtilController {
 
     @GetMapping("/captchaCode/create")
-    @ApiOperation(value = "生成图形验证码", position = 10)
+    @ApiOperation(value = "生成验证码", position = 10)
     public ApiResult<Map<String, String>> createCaptchaCode() {
         Map<String, String> result = new HashMap<>();
         SpecCaptcha specCaptcha = new SpecCaptcha(111, 36, 4);
