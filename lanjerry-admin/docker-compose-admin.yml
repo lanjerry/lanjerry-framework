@@ -19,10 +19,10 @@ services:
       MYSQL_PORT: 6606
       MYSQL_DATA_BASE: lanjerry
       MYSQL_USER: root
-      MYSQL_PASSWORD: 123456
+      MYSQL_PASSWORD: lanjerry@Mysql
       REDIS_HOST: redis
       REDIS_PORT: 6679
-      REDIS_PASSWORD: 123456
+      REDIS_PASSWORD: lanjerry@Redis
       JAVA_OPTS: -Xms256m -Xmx256m
     deploy:
       resources:
