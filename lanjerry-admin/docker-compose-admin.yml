@@ -1,8 +1,8 @@
 version: '3.3'
 services:
   admin:
-    image: lanjerry-admin:v1.0
-    container_name: admin
+    image: lanjerry-admin-api:v1.0
+    container_name: lanjerry-admin-api
     ports:
       - "1000:1000"
     networks:
@@ -16,12 +16,12 @@ services:
       - redis
     environment:
       MYSQL_HOST: mysql
-      MYSQL_PORT: 3306
+      MYSQL_PORT: 6606
       MYSQL_DATA_BASE: lanjerry
       MYSQL_USER: root
       MYSQL_PASSWORD: 123456
       REDIS_HOST: redis
-      REDIS_PORT: 6379
+      REDIS_PORT: 6679
       REDIS_PASSWORD: 123456
       JAVA_OPTS: -Xms256m -Xmx256m
     deploy:
@@ -31,11 +31,11 @@ services:
         reservations:
           memory: 500M
     volumes:
-      - /opt/lanjerry/logs:/opt/lanjerry/logs
+      - /opt/logs/lanjerry-admin-api:/opt/lanjerry/lanjerry-admin/logs
   mysql:
-    image: mysql:8.0.18
+    image: mysql:8.0.22
     ports:
-      - "3306:3306"
+      - "6606:3306"
     networks:
       - lanjerry-network
     container_name: mysql
@@ -45,7 +45,7 @@ services:
   redis:
     image: redis
     ports:
-      - "6379:6379"
+      - "6679:6379"
     networks:
       - lanjerry-network
     container_name: redis

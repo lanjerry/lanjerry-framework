@@ -6,7 +6,7 @@ pipeline{
         string(name: 'version', defaultValue: 'v1.0', description: '推送镜像版本')
     }
     tools {
-        maven 'apache-maven-3.6.3' 
+        maven 'maven3.6.3'
     }
     stages{
         stage("package"){
@@ -20,8 +20,8 @@ pipeline{
         }
         stage("build images"){
             steps{
-                sh 'docker build -t lanjerry-admin .'
-                sh 'docker tag lanjerry-admin lanjerry-admin:${version}'
+                sh 'docker build -t lanjerry-admin-api lanjerry-admin/.'
+                sh 'docker tag lanjerry-admin-api lanjerry-admin-api:${version}'
             }
         }
         stage("run"){
@@ -34,8 +34,8 @@ pipeline{
                 expression { return params.push } 
             }
              steps{
-                sh 'docker tag lanjerry-admin:${version} registry.cn-hangzhou.aliyuncs.com/lanjerry/lanjerry-admin:${version}'
-                sh 'docker push registry.cn-hangzhou.aliyuncs.com/lanjerry/lanjerry-admin:${version}'
+                sh 'docker tag lanjerry-admin-api:${version} registry.cn-hangzhou.aliyuncs.com/lanjerry/lanjerry-admin-api:${version}'
+                sh 'docker push registry.cn-hangzhou.aliyuncs.com/lanjerry/lanjerry-admin-api:${version}'
             }
         }
     }

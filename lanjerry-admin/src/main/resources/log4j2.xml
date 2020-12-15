@@ -5,7 +5,7 @@
 <Configuration status="off" monitorInterval="600">
     <Properties>
         <!--通用变量-->
-        <Property name="LOG_HOME">logs</Property>
+        <Property name="LOG_HOME">lanjerry-admin/logs</Property>
         <Property name="ERROR_LOG_FILE_NAME">error</Property>
         <Property name="INFO_LOG_FILE_NAME">info</Property>
         <Property name="PID">????</Property>
