@@ -1,6 +1,6 @@
 version: '3.3'
 services:
-  admin:
+  lanjerry-admin-api:
     image: lanjerry-admin-api:v1.0
     container_name: lanjerry-admin-api
     ports:
