@@ -34,8 +34,8 @@ pipeline{
                 expression { return params.push } 
             }
              steps{
-                sh 'docker tag lanjerry-admin-api:${version} registry.cn-hangzhou.aliyuncs.com/lanjerry/lanjerry-admin-api:${version}'
-                sh 'docker push registry.cn-hangzhou.aliyuncs.com/lanjerry/lanjerry-admin-api:${version}'
+                sh 'docker tag lanjerry-admin-api:${version} registry.cn-shenzhen.aliyuncs.com/lanjerry/lanjerry-admin-api:${version}'
+                sh 'docker push registry.cn-shenzhen.aliyuncs.com/lanjerry/lanjerry-admin-api:${version}'
             }
         }
     }
