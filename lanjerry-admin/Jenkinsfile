@@ -16,7 +16,6 @@ pipeline{
             steps{
                 sh 'mvn clean package -Dmaven.skip.tests=true'
             }
-           
         }
         stage("build images"){
             steps{
