@@ -6,4 +6,4 @@ RUN apt install fontconfig -y --force-yes  && apt install --fix-broken -y --forc
 ADD target/lanjerry-admin-1.0-SNAPSHOT.jar lanjerry-admin-api.jar
 EXPOSE 1000/tcp
 EXPOSE 1000/udp
-ENTRYPOINT ["sh", "-c", "java ${JAVA_OPTS} -jar lanjerry-admin-api.jar"]
+ENTRYPOINT ["sh", "-c", "java ${JAVA_OPTS} -jar lanjerry-admin-api.jar --spring.profiles.active=prod"]
