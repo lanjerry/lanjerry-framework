@@ -32,6 +32,7 @@ services:
           memory: 500M
     volumes:
       - /opt/logs/lanjerry-admin-api:/opt/lanjerry/lanjerry-admin/logs
+      - /opt/upload:/opt/upload
   mysql:
     image: mysql:8.0.22
     ports:
