@@ -28,3 +28,13 @@ mybatis-plus:
   mapper-locations: classpath:/mapper/*/*Mapper.xml
   type-enums-package: org.lanjerry.common.core.enums
   type-aliases-package: org.lanjerry.common.core.entity
+
+# swagger配置
+knife4j:
+  enable: true
+  setting:
+    enableOpenApi: false
+    enableFooter: false
+    enableGroup: false
+    enableDebug: true
+    enableHost: true

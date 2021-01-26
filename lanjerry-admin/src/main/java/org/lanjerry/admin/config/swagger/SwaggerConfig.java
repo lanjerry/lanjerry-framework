@@ -3,14 +3,13 @@ package org.lanjerry.admin.config.swagger;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 
-import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
+import com.github.xiaoymin.knife4j.spring.extension.OpenApiExtensionResolver;
 
 import io.swagger.annotations.ApiOperation;
-import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -21,7 +20,7 @@ import springfox.documentation.service.Contact;
 import springfox.documentation.service.Parameter;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 
 /**
  * <p>
@@ -32,10 +31,15 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @since 2020-05-26
  */
 @Configuration
-@EnableSwagger2
-@EnableKnife4j
-@Import(BeanValidatorPluginsConfiguration.class)
+@EnableSwagger2WebMvc
 public class SwaggerConfig {
+
+    private final OpenApiExtensionResolver openApiExtensionResolver;
+
+    @Autowired
+    public SwaggerConfig(OpenApiExtensionResolver openApiExtensionResolver) {
+        this.openApiExtensionResolver = openApiExtensionResolver;
+    }
 
     @Bean
     public Docket api() {
@@ -44,14 +48,16 @@ public class SwaggerConfig {
         List<Parameter> parameters = new ArrayList<>();
         tokenPar.name("Authorization").description("身份认证Token").modelRef(new ModelRef("string")).parameterType("header").required(false).build();
         parameters.add(tokenPar.build());
+        String groupName = "1.0版本";
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
-                .groupName("1.0版本")
+                .groupName(groupName)
                 .select()
                 // 这里指定Controller扫描包路径
                 .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
                 .paths(PathSelectors.any())
                 .build()
+                .extensions(openApiExtensionResolver.buildExtensions(groupName))
                 .globalOperationParameters(parameters);
     }
 

@@ -24,7 +24,6 @@ spring:
   redis:
     host: ${REDIS_HOST:127.0.0.1}
     port: ${REDIS_PORT:6379}
-    password: ${REDIS_PASSWORD:123456}
     timeout: 5000ms
     lettuce:
       pool:
@@ -46,3 +45,5 @@ knife4j:
     enable: true
     username: admin
     password: 123456
+  setting:
+    enableHostText: http://localhost:1000/

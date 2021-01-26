@@ -46,3 +46,5 @@ knife4j:
     enable: true
     username: admin
     password: 123456
+  setting:
+    enableHostText: https://vue.lanjerry.com/prod-api/
