@@ -1,9 +1,9 @@
 #spring配置
 spring:
   datasource:
-    url: jdbc:p6spy:mysql://120.24.72.202:6606/lanjerry?useUnicode=yes&characterEncoding=UTF8&useSSL=false&serverTimezone=CTT&allowMultiQueries=true
-    username: lanjerry_dev
-    password: lanjerry123
+    url: jdbc:p6spy:mysql://${MYSQL_HOST:127.0.0.1}:${MYSQL_PORT:3306}/${MYSQL_DATA_BASE:lanjerry}?useUnicode=yes&characterEncoding=UTF8&useSSL=false&serverTimezone=CTT&allowMultiQueries=true
+    username: ${MYSQL_USER:root}
+    password: ${MYSQL_PASSWORD:123456}
     driver-class-name: com.p6spy.engine.spy.P6SpyDriver
     hikari:
       # 最小空闲连接数量
@@ -22,8 +22,9 @@ spring:
     proxy-target-class: true
     auto: true
   redis:
-    host: 120.24.72.202
-    port: 6679
+    host: ${REDIS_HOST:127.0.0.1}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:123456}
     timeout: 5000ms
     lettuce:
       pool:
@@ -31,7 +32,6 @@ spring:
         max-active: 10
         max-wait: -1ms
         max-idle: 10
-    password: lanjerry@Redis
 
 # 演示模式配置
 demo:
