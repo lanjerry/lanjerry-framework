@@ -33,7 +33,7 @@
         <mybatis-plus.version>3.3.0</mybatis-plus.version>
         <lombok.version>1.18.8</lombok.version>
         <hutool.version>4.5.16</hutool.version>
-        <shiro.version>1.4.1</shiro.version>
+        <shiro.version>1.7.0</shiro.version>
         <jwt.version>3.3.0</jwt.version>
         <swagger2.version>2.0.8</swagger2.version>
         <easy-captcha.version>1.6.2</easy-captcha.version>
