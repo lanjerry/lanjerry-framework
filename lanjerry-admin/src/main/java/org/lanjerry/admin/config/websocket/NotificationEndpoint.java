@@ -1,9 +1,12 @@
 package org.lanjerry.admin.config.websocket;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import cn.hutool.json.JSONUtil;
+import lombok.extern.slf4j.Slf4j;
+import org.lanjerry.admin.service.sys.SysNotificationService;
+import org.lanjerry.admin.vo.sys.SysNotificationVO;
+import org.lanjerry.common.core.enums.sys.SysNotificationTypeEnum;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
@@ -11,13 +14,10 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
-
-import org.lanjerry.admin.vo.sys.SysNotificationVO;
-import org.lanjerry.common.core.enums.sys.SysNotificationTypeEnum;
-import org.springframework.stereotype.Component;
-
-import cn.hutool.json.JSONUtil;
-import lombok.extern.slf4j.Slf4j;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -31,6 +31,13 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @ServerEndpoint(value = "/ws/notification/{userId}")
 public class NotificationEndpoint {
+
+    private static SysNotificationService sysNotificationService;
+
+    @Autowired
+    public void setSysNotificationService(SysNotificationService sysNotificationService) {
+        NotificationEndpoint.sysNotificationService = sysNotificationService;
+    }
 
     /**
      * 客户端的连接会话
@@ -49,6 +56,7 @@ public class NotificationEndpoint {
         }
         sessions.add(session);
         SessionPool.sessions.put(userId, sessions);
+        SessionPool.sendMessage(userId, SysNotificationVO.builder().type(SysNotificationTypeEnum.NUMBER).message(String.valueOf(sysNotificationService.getNotificationCount(userId))).build());
     }
 
     /**
