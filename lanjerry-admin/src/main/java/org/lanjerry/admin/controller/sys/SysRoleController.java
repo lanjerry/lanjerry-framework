@@ -11,6 +11,7 @@ import org.lanjerry.admin.vo.sys.SysRolePageVO;
 import org.lanjerry.admin.vo.sys.SysUserRoleVO;
 import org.lanjerry.common.core.bean.ApiResult;
 import org.lanjerry.common.log.annotation.SysLog;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,13 +39,13 @@ import lombok.AllArgsConstructor;
  * @since 2019-09-03
  */
 @RestController
-@AllArgsConstructor
 @RequestMapping("/sys/role")
 @Api(tags = "系统角色模块api", position = 20)
 @ApiSupport(author = "38046851@qq.com")
 public class SysRoleController {
 
-    private final SysRoleService roleService;
+    @Autowired
+    private SysRoleService roleService;
 
     @GetMapping("/page")
     @RequiresPermissions("sys:role:page")

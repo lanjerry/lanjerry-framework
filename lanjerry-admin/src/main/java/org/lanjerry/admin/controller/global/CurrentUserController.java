@@ -10,6 +10,7 @@ import org.lanjerry.admin.vo.global.CurrentUserInfoVO;
 import org.lanjerry.admin.vo.global.CurrentUserProfileVO;
 import org.lanjerry.admin.vo.global.CurrentUserRouterVO;
 import org.lanjerry.common.core.bean.ApiResult;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,13 +37,13 @@ import lombok.AllArgsConstructor;
  * @since 2019-12-25
  */
 @RestController
-@AllArgsConstructor
 @RequestMapping("/sys/user")
 @Api(tags = "当前用户模块api", position = 2)
 @ApiSupport(author = "38046851@qq.com")
 public class CurrentUserController {
 
-    private final CurrentUserService currentUserService;
+    @Autowired
+    private CurrentUserService currentUserService;
 
     @PostMapping("/login")
     @ApiOperation(value = "当前用户登录", position = 10)

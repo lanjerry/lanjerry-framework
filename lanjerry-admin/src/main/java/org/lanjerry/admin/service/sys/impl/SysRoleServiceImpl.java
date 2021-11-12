@@ -20,6 +20,7 @@ import org.lanjerry.common.core.entity.sys.SysRolePermission;
 import org.lanjerry.common.core.enums.sys.SysPermissionTypeEnum;
 import org.lanjerry.common.core.util.ApiAssert;
 import org.lanjerry.common.core.util.BeanCopyUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,12 +42,13 @@ import lombok.AllArgsConstructor;
  * @since 2019-09-03
  */
 @Service
-@AllArgsConstructor
 public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> implements SysRoleService {
 
-    private final SysPermissionService permissionService;
+    @Autowired
+    private SysPermissionService permissionService;
 
-    private final SysRolePermissionService rolePermissionService;
+    @Autowired
+    private SysRolePermissionService rolePermissionService;
 
     @Override
     public IPage<SysRolePageVO> pageRoles(SysRolePageDTO dto) {

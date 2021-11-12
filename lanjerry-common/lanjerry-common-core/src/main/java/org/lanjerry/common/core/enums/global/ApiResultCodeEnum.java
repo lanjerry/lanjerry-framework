@@ -1,7 +1,5 @@
 package org.lanjerry.common.core.enums.global;
 
-import lombok.AllArgsConstructor;
-
 /**
  * <p>
  * api响应状态码枚举
@@ -10,7 +8,6 @@ import lombok.AllArgsConstructor;
  * @author lanjerry
  * @since 2019-09-03
  */
-@AllArgsConstructor
 public enum ApiResultCodeEnum {
     SUCCESS(200, "成功"),
     FAIL(201, "操作失败"),
@@ -22,4 +19,9 @@ public enum ApiResultCodeEnum {
     public final Integer value;
 
     public final String text;
+
+    ApiResultCodeEnum(final Integer value, final String text) {
+        this.value = value;
+        this.text = text;
+    }
 }

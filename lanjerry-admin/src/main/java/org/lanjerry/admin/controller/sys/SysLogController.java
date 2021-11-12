@@ -9,6 +9,7 @@ import org.lanjerry.admin.service.sys.SysLogService;
 import org.lanjerry.admin.vo.sys.SysLogInfoVO;
 import org.lanjerry.admin.vo.sys.SysLogPageVO;
 import org.lanjerry.common.core.bean.ApiResult;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,13 +35,13 @@ import lombok.AllArgsConstructor;
  * @since 2019-09-03
  */
 @RestController
-@AllArgsConstructor
 @RequestMapping("/sys/log")
 @Api(tags = "系统日志模块api", position = 40)
 @ApiSupport(author = "38046851@qq.com")
 public class SysLogController {
 
-    private final SysLogService logService;
+    @Autowired
+    private SysLogService logService;
 
     @GetMapping("/page")
     @RequiresPermissions("sys:log:page")

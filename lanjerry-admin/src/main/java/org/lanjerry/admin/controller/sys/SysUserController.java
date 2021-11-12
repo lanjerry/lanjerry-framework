@@ -11,6 +11,7 @@ import org.lanjerry.admin.vo.sys.SysUserPageVO;
 import org.lanjerry.common.core.bean.ApiResult;
 import org.lanjerry.common.core.enums.sys.SysUserStatusEnum;
 import org.lanjerry.common.log.annotation.SysLog;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,13 +39,13 @@ import lombok.AllArgsConstructor;
  * @since 2019-09-03
  */
 @RestController
-@AllArgsConstructor
 @RequestMapping("/sys/user")
 @Api(tags = "系统用户模块api", position = 10)
 @ApiSupport(author = "38046851@qq.com")
 public class SysUserController {
 
-    private final SysUserService userService;
+    @Autowired
+    private SysUserService userService;
 
     @GetMapping("/page")
     @RequiresPermissions("sys:user:page")

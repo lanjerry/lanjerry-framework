@@ -1,11 +1,12 @@
 package org.lanjerry.common.log.aspect;
 
-import java.lang.reflect.Method;
-import java.math.BigDecimal;
-import java.util.Objects;
-
-import javax.servlet.http.HttpServletRequest;
-
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.URLUtil;
+import cn.hutool.extra.servlet.ServletUtil;
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
+import lombok.SneakyThrows;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -26,14 +27,10 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.core.util.URLUtil;
-import cn.hutool.extra.servlet.ServletUtil;
-import cn.hutool.json.JSONArray;
-import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
-import lombok.AllArgsConstructor;
-import lombok.SneakyThrows;
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.util.Objects;
 
 /**
  * <p>
@@ -44,10 +41,13 @@ import lombok.SneakyThrows;
  * @since 2019-09-04
  */
 @Aspect
-@AllArgsConstructor
 public class SysLogAspect {
 
-    private final ApplicationEventPublisher publisher;
+    private ApplicationEventPublisher publisher;
+
+    public SysLogAspect(ApplicationEventPublisher publisher) {
+        this.publisher = publisher;
+    }
 
     @Pointcut("@annotation(org.lanjerry.common.log.annotation.SysLog)")
     public void log() {
