@@ -1,15 +1,9 @@
 package org.lanjerry.admin.handler;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.shiro.authz.AuthorizationException;
+import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.lanjerry.common.core.bean.ApiResult;
 import org.lanjerry.common.core.enums.global.ApiResultCodeEnum;
@@ -20,7 +14,14 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import lombok.extern.slf4j.Slf4j;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -42,9 +43,8 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(ApiException.class)
     public ApiResult handleApiException(HttpServletRequest request, ApiException ex) {
-        log.error("BusinessExceptionHandler:" + ex.getMessage());
         log.error("ErrorUrl：" + request.getRequestURI());
-        log.error("Msg：" + ex.getMsg());
+        log.error(errInfo(ex));
         return new ApiResult().setCode(ex.getCode()).setMsg(ex.getMsg());
     }
 
@@ -56,6 +56,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ApiResult handleParamValidException(Exception ex) {
+        log.error(errInfo(ex));
         String msg = "参数验证失败";
         if (ex instanceof MethodArgumentNotValidException) {
             MethodArgumentNotValidException methodArgument = (MethodArgumentNotValidException) ex;
@@ -84,6 +85,14 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(UnauthorizedException.class)
     public ApiResult handleUnauthorizedException(UnauthorizedException ex) {
+        log.error(errInfo(ex));
+        return new ApiResult().setCode(ApiResultCodeEnum.UN_AUTHORIZED.value).setMsg(ApiResultCodeEnum.UN_AUTHORIZED.text);
+    }
+
+    @ExceptionHandler(UnauthenticatedException.class)
+    public ApiResult handleUnauthenticatedException(UnauthenticatedException ex) {
+        // 应用场景：shiro放行了该方法，但是方法却使用了@RequiresPermissions
+        log.error(errInfo(ex));
         return new ApiResult().setCode(ApiResultCodeEnum.UN_AUTHORIZED.value).setMsg(ApiResultCodeEnum.UN_AUTHORIZED.text);
     }
 
@@ -94,20 +103,38 @@ public class GlobalExceptionHandler {
      * @since 2019/9/3 16:43
      */
     @ExceptionHandler(Exception.class)
-    public ApiResult handleGlobalException(HttpServletRequest request, HttpServletResponse response, Exception ex) {
-        if (ex.getCause() instanceof PersistenceException && ex.getCause().getCause() instanceof ApiException) {
-            ApiException apiException = (ApiException) ex.getCause().getCause();
-            return ApiResult.systemError(apiException.getMsg());
-        }
-
-        // 处理权限不足的异常，应用场景：shiro放行了该方法，但是方法却使用了@RequiresPermissions
-        if (ex.getCause() instanceof AuthorizationException) {
-            return new ApiResult().setCode(ApiResultCodeEnum.UN_AUTHORIZED.value).setMsg(ApiResultCodeEnum.UN_AUTHORIZED.text);
-        }
-
-        log.error("BusinessExceptionHandler:" + ex.getMessage());
+    public ApiResult handleGlobalException(HttpServletRequest request, Exception ex) {
         log.error("ErrorUrl：" + request.getRequestURI());
-        log.error(ex.getMessage(), ex);
+        log.error(errInfo(ex));
         return ApiResult.systemError(String.format("url：%s，ex：%s", request.getRequestURI(), ex.getMessage()));
+    }
+
+    /**
+     * 异常堆栈信息
+     *
+     */
+    public static String errInfo(Exception e) {
+        StringWriter sw = null;
+        PrintWriter pw = null;
+        try {
+            sw = new StringWriter();
+            pw = new PrintWriter(sw);
+            // 将出错的栈信息输出到printWriter中
+            e.printStackTrace(pw);
+            pw.flush();
+            sw.flush();
+        } finally {
+            if (sw != null) {
+                try {
+                    sw.close();
+                } catch (IOException ex) {
+                    log.error("Exception：", ex);
+                }
+            }
+            if (pw != null) {
+                pw.close();
+            }
+        }
+        return sw.toString();
     }
 }

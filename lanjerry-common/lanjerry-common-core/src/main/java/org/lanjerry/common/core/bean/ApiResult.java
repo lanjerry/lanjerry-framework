@@ -63,8 +63,8 @@ public class ApiResult<T> extends BaseEntity {
         return restResult(ApiResultCodeEnum.ARG_ERROR.value, message, null);
     }
 
-    public static <T> ApiResult<T> restResult(ApiResultCodeEnum rEnum, T data) {
-        return restResult(rEnum.value, rEnum.text, data);
+    public static <T> ApiResult<T> restResult(ApiResultCodeEnum codeEnum, T data) {
+        return restResult(codeEnum.value, codeEnum.text, data);
     }
 
     private static <T> ApiResult<T> restResult(long code, String msg, T data) {

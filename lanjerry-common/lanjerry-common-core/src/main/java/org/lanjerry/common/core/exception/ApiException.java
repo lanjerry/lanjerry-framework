@@ -33,11 +33,6 @@ public class ApiException extends RuntimeException implements Serializable {
      */
     protected String msg;
 
-    /**
-     * 异常信息
-     */
-    private Exception ex;
-
     public static ApiException argError(String msg) {
         return restException(ApiResultCodeEnum.ARG_ERROR.value, msg);
     }
