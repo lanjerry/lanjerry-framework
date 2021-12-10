@@ -37,7 +37,7 @@
         <jwt.version>3.3.0</jwt.version>
         <swagger2.version>2.0.8</swagger2.version>
         <easy-captcha.version>1.6.2</easy-captcha.version>
-        <log4j.version>2.11.2</log4j.version>
+        <log4j.version>2.15.0</log4j.version>
         <disruptor.version>3.4.2</disruptor.version>
         <p6spy.version>3.8.5</p6spy.version>
         <commons-io.version>2.5</commons-io.version>
